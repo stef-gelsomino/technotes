@@ -1,0 +1,957 @@
+<html>
+	<head>
+		<title> Mein persoenlich Wiki auf Deutsch! </title>
+		<link rel="stylesheet" type="text/css" href="../prism_2.css">
+		<link rel="stylesheet" type="text/css" href="../style.css">
+	</head>
+	<body>
+		<script type="text/javascript" src="../prism_2.js"></script>
+		<h1><a href="../index.html">Architektur und Entwicklung</a></h1>
+		<nav>
+		    <a href="microservices.html"> Microservices </a> &nbsp;
+		    <a href="mongodb.html"> MongoDB </a> &nbsp;
+		    <a href="http.html"> HTTP </a> &nbsp;
+
+		    <a href="docker.html"> Docker </a> &nbsp;
+		    <a href="git.html"> Git </a> &nbsp;
+		    <a href="ansible.html"> Ansible </a> &nbsp;
+		    <a href="jenkins.html"> Jenkins </a> &nbsp;
+
+		    <a href="java8.html"> Java 8 </a> &nbsp;
+		    <a href="go.html"> Go </a> &nbsp;
+		    <a href="bash.html"> Bash </a> &nbsp;
+		    <a href="hibernate.html"> Hibernate </a> &nbsp;
+		    <a href="maven.html"> Maven </a> &nbsp;
+		    <a href="spring.html"> Spring </a> &nbsp;
+		    <a href="spring_data.html"> Spring Data </a> &nbsp;
+		    <a href="tdd.html"> TDD </a> &nbsp;
+		    <a href="python.html"> Python </a> &nbsp;
+		</nav>
+
+		<article>
+			<header>
+				<h2>
+					Ansible
+				</h2>
+			</header>
+
+			<section>
+				<h3>
+					Einführung
+				</h3>
+				<p>
+					Ansible stellt 4 Funktionalitäten zu Verfügung:
+					<ul>
+						<li>change management</li>
+						<li>provisioning</li>
+						<li>automation</li>
+						<li>orchestration</li>
+					</ul>
+					<b>Change management</b><br>
+					Der Zustand des Systems beschreiben und dann treiben (idempotence).
+					<b>Provisioning</b><br>
+					Ein System vorbereiten, so dass es ist für Einsatz bereit (wechsel von einem Zustand zu ein andere).<br>
+					Zum Beispiel: wenn es sich um VM Clonen handelt, man kann sie installieren und konfigurieren, anstatt eine Image kopieren. <br>
+					<code class="mono-box">
+						[Basic OS] =====> [Web Server]
+						1. Web Software installieren
+						2. Konfigurationen kopieren
+						3. Web Deteien kopieren
+						4. Sicherheit installieren
+						5. Server starten
+					</code>
+					<b>Automation</b><br>
+					Das ist die grundlegende Schicht von Ansible. Sie wird benutzt, um ad-hoc Ausgaben zu automatisch ausführen. (z.B. Dateien aktualisieren, Netzwerkschnittstelle wechseln und so weiter). <br>
+					<b>Orchestration</b><br>
+					Koordiniert Automation auf mehrere Systeme. <br>
+				</p>
+				<p>
+					Vorteile von Ansible:
+					<ul>
+						<li>keinen "Agents"</li>
+						<li>Kein Datenbank</li>
+						<li>kein zusätzliches Software</li>
+						<li>kein komplizierte Aktualisierungen</li>
+					</ul>
+					YAML als Sprache: keine Programmierung notwendig (YAML - Yaml Ain't a Markup Language) aber pass das Leerzeichen auf! <br>
+					Sicher: es nutzt SSH mit sudo/root (Encrypted vault). Kein PKI nötig. <br>
+				</p>
+				<p>
+					<b>Architektur von Ansible</b> <br>
+					<code class="mono-box">
+						[Ansible Control Server] = = = = => [Remote Server] (der wir konfigurieren wollen)
+					</code>
+					Anforderungen:
+					<ol>
+						<li>Muss Unix-based Systeme sein</li>
+						<li>Muss Python 2.6+ installiert sein</li>
+						<li>SSH</li>
+					</ol>
+					Die folgende sind die wichtigsten Teile von Ansible:
+					<code class="mono-box">
+						[Inventory] <br>
+						 &nbsp;&nbsp;&Downarrow; <br>
+						 &nbsp;&nbsp;&Downarrow; <br>
+						 &nbsp;&nbsp;&Downarrow; <br>
+						 &nbsp;&nbsp;&Downarrow; <br>
+						[Playbook] &#x27A0; [Ansible config] &#x27A0; [Python] &#x279C;(SSH)&#x279C; {Servers} <br>
+						 &nbsp;&nbsp;&Uparrow; <br>
+						 &nbsp;&nbsp;&Uparrow; <br>
+						 &nbsp;&nbsp;&Uparrow; <br>
+						 &nbsp;&nbsp;&Uparrow; <br>
+						[Modules]
+					</code>
+					<b>Inventory</b><br>
+					Es ist ein Textdatei, die beschreibt das System, Host-Ebene Variablen bestimmt (groups/roles), Benutzterkonten für bestimmte Systemen anlegt und so weiter. Es kann auch einen Skript sein, nicht obligatorisch ein Textdatei. <br>
+
+					<b>Modules</b><br>
+					Es ist eine Gesamheit von Tätigkeiten, die ausgeführt werden kann. Nämlich es ist wirklich das Softwaremodul, das Ansible verwendet, um eine bestimmte Aufgabe auszuführen. Viele Module sind <i>built-in</i> aber viele andere stehen in der <i>Galaxy</i> zu Verfügung. Beispiel: Will ein Software installieren? Dann nutz einfach das "yum" Modul. <br>
+
+					<b>Playbooks</b><br>
+					Sie sind Dateien, vom Benutzer ergestellt um eine oder mehrere Aufgaben zu erfüllen. Ein Playbook drinnen, stehen verschiedene einzeln Play. <br>
+					Ein Play ist ein einzeln oder ein Gruppe von Aufgaben, die sind durch die Nutzung von Modulen gegen eine bestimmte Hostsgruppe ausgeführt.
+					Ein Playbook ist dann eine Gesamheit von Plays in einem Satz organisiert, damit unsere System nach ein erwarteten Zustand getragen ist.  <br>
+
+					<b>Ansible Config</b><br>
+					Es ist einfach eine Datei, die Konfigurationsvariablen für Ansible enthält (z.B. Parallelitätsgrad vom System, ob eine host war übergesprungen und so weiter). <br>
+
+					Variblen sind sehr wichtig:
+					<ul>
+						<li><i>Host variables</i> die sind in der <i>Inventory</i> pro Host/Gruppe spezifiziert</li>
+						<li><i>Facts</i> die sind Daten, die aus der verwaltet Host gesammelt sind</li>
+						<li><i>Dynamic variables</i> die sind während der Ausführung eines Playbook (z.B. das Ergebnis eine einzelne Play).</li>
+					</ul>
+					Ausführungsschritten:
+					<ol>
+						<li>Ansible erst führt das Playbook ein und stellt die verwaltene Systeme sowie die notwendige Module fest. <br></li>
+						<li>Ansible dann packt Alles zu einer Python Pakete</li>
+						<li>Durch die Nutzung SSH, spielt Ansible die Pakete auf dem ausgewählte Host ein</li>
+						<li>Solche Pakete wird auf dem Host ausgeführt (das Ergebnis wird eine JSON Datei, die zum ACS zurückgesendet wird</li>
+					</ol>
+					Man muss es merken, dass die Pakete wird nach der Ausführung von dem <i>Remote Host</i> entfernt.
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					Vorbereitung einer Beispielsinfrastruktur
+				</h3>
+				<p>
+					Man muss Vagrant und VirtualBox installieren:
+					<ul>
+						<li>Vagrant (einen <i>Virtual Machine Controller</i> um Maschinen und ihre Konfigurationen festzulegen)</li>
+						<li>VirtualBox (einen <i>Virtual Machine Provider</i> also Hypervisor, die stellt eigentlich die Maschinen zu Verfügung)</li>
+					</ul>
+					In der Befehlszeile:
+					<code class="mono-box">
+						$ vagrant &ldca; <br>
+						$ vboxmanage &ldca; <br>
+						$ mkdir hands-on-ansible &ldca;    <i>geh zu diesem Verzeichnis</i> <br>
+						$ vagrant init &ldca; <br>
+					</code>
+					in der Vagrantfile
+					<pre>
+						<code language="ruby">
+							Vagrant.configure(2) do |config|
+								config.vm.define "acs" do |acs|
+									acs.vm.box = "ubuntu/trusty64"
+									acs.vm.hostname = "acs"
+									acs.vm.network "private_network", ip: "192.168.33.10"
+								end
+
+								config.vm.define "web" do |web|
+									web.vm.box = "nrel/CentOS-6.5-x86_64"
+									web.vm.hostname = "web"
+									web.vm.network "private_network" ip: "192.168.33.20"
+									web.vm.network "forwarded_port" guest: 80, host: 8080
+								end
+
+								config.vm.define "db" do |db|
+									db.vm.box =  "nrel/CentOS-6.5-x86_64"
+									db.vm.hostname = "db"
+									db.vm.network "private_network", ip: "192.168.33.30"
+								end
+							end
+						</code>
+					</pre>
+					end dann führen wir die Datei aus
+					<code class="mono-box">
+						$ vagrant up &ldca; <br>
+						$ vboxmanage list runningvms &ldca; <br>
+						$ vagrant ssh acs &ldca; <br>
+					</code>
+					mit dem letzte Befehl greifen wir der ACS Machine zu. Dann installieren wir Ansible auf diesem Box.
+					<code>
+						[acs]$ sudo apt-get install ansible &ldca; <br>
+						[acs]$ ansible &ldca; <br>
+					</code>
+					Auf der "WEB" Maschine
+					<code class="mono-box">
+						[web]$ sudo yum install epel-release &ldca; <br>
+						[web]$ sudo yum install ansible &ldca; <br>
+					</code>
+					Es ist auch möglich, Ansible vom Python Code zu installieren (z.B. auf der DB Maschine)
+					<code class="mono-box">
+						$ vagrant ssh db &ldca; <br>
+						[db]$ sudo yum install gcc &ldca; <br>
+						[db]$ sudo yum install python-setuptools &ldca; <br>
+						[db]$ sudo easy-install pip &ldca; <br> 
+						[db]$ sudo yum install python-devel &ldca; <br>
+						[db]$ sudo pip install ansible &ldca; <br>
+					</code>
+				</p>
+
+				<p>
+					Danach wir mit der ACS verbunden sind, gehen wir zu einem neuem "exercise1" Verzeichnis
+
+					<code class="mono-box">
+						[acs]$ vi inventory &ldca; <br>
+						<br>
+						<i>content sei nur die Adressen der verwaltete Maschinen </i>
+						<br>
+						&nbsp;&nbsp;&nbsp; 192.168.33.20
+						&nbsp;&nbsp;&nbsp; 192.168.33.30
+						<br>
+						[acs]$ ansible 192.168.33.20 -i inventory -u vagrant -m ping -k &ldca; <br>     <i>default Passwort ist vagrant</i>
+					</code>
+					außerdem mussen wir eine <i>SSH Fingerprint</i> in unsere Host
+
+					<code class="mono-box">
+						$ ssh vagrant@192.168.33.20 &ldca; <br>
+						<br>
+						<i>wir können es überprüfen, dass die Host wird in die Known Hosts eingefügen.</i>
+						<br>
+						$ ls ~/.ssh &ldca; <br>
+						$ cat ~/.ssh/known_hosts &ldca; <br>
+					</code>
+
+					In diesem Beispiel nutzen wir nur einfach das Ping Module (-m Option) um die genannte Maschine zu pingen. Drei verschiedene Wortfüllestufen können ausgewahlt werden, durch die Nutzung von die -v, -vv oder -vvv Optionen.
+
+					Viel interessanter ist das "command" Modul, durch der wir einen beliebigen Befehl ausführen können.
+					<code class="mono-box">
+						[acs]$ ansible all -i inventory -u vagrant -m command -a "/sbin/shutdown -h" &ldca; <br>
+						<br>
+						<i>Weil "command" ist das default Modul, wir können auch die -m Option auslaseen</i>
+						<br>
+						[acs]$ ansible all -i inventory -u vagrant -a "/sbin/reboot" &ldca; <br>
+					</code>
+				</p>
+				<p>
+					<b>Die Inventory Datei</b> <br>
+					Grundsätzlich die inventory Datei beschreibt unsere Infrastruktur, durch die Spezifizierung der Machinen, der Gruppen und Datacenters.
+					<ul>
+						<li>"Behavioral" Parameter: SSH Benutzer/Passwort, Private Key Dateien, Python 2.* Pfad (falls die standardmäßige Version ist 3.*)</li>
+						<li>Groups: Hostsgruppen</li>
+						<li>Groups of groups: z.B. "datacenter X", "datacenter Y"</li>
+						<li>Variable Zuweisung: z.B. "ntp_server" und auf ein ganz Datacenter anwenden</li>
+						<li>Verschiedene Dateien pro Inventory können benutzen werden</li>
+					</ul>
+				
+					Hier sind ein paar Beispiele von Inventory Datein.
+					<code class="mono-box">
+						[db]  <br>
+						db1.company.com ansible_ssh_user=gabriele ansible_ssh_pass=123  <br>
+						db2.company.com ansible_python_interpreter=/usr/bin/python  <br>
+	 					<br>
+						[datacenter-west:children]  <br>
+						db  <br>
+						[datacenter-west:vars] <br>
+						ansible_ssh_user=ansible_user <br>
+						ansible_ssh_pass=#45e!@Gh <br>
+						ntp_server=5.6.7.8
+					</code>
+					oder
+					<code class="mono-box">
+						web1 ansible_ssh_host=192.168.33.20 <br>
+							 ansible_ssh_user=vagrant <br>
+							 ansible_ssh_pass=vagrant <br>
+						db1 ansible_ssh_host=192.168.33.30 <br>
+							 ansible_ssh_user=vagrant <br>
+							 ansible_ssh_pass=vagrant <br>
+	 					<br>
+						[webservers] <br>
+						web1 <br>
+						[dbservers]  <br>
+						db1 <br>
+						 <br>
+						[datacenter:children] <br>
+						webservers <br>
+						dbservers <br>
+	 					<br>
+						[datacenter:vars] <br>
+						ansible_ssh_user=vagrant <br>
+						ansible_ssh_pass=vagrant
+					</code>
+
+					Es kann schwer und fehleranfällig sein, um alle diese Deteien zu warten. Es ist besonders so, wenn verschiedene Menschen zusammenarbeiten muss. <br>
+					Wir soll die folgende multi-environment Verzeichnisstruktur
+
+					<code class="mono-box">
+						. <br>
+						|-- Production <br>
+						|     | <br>
+						|	  |-- group_vars	<br>
+						|     |      |  <br>
+						|     |      |-- all <br>
+						|     |      |-- db <br>
+						|     | <br>
+						|	  |-- host_vars <br>
+						|     |      |-- web1 <br>
+						|     |       <br>
+						|	   -- inventory_prod <br>
+						| <br>
+						| <br>
+						 -- Test <br>
+						      | <br>
+						 	  |-- group_vars	 <br>
+						      |      | <br>
+						      |      |-- all <br>
+						      |      |-- db <br>
+						      | <br>
+						 	  |-- host_vars <br>
+						      |      |-- web1 <br>
+						      |       <br>
+						 	   -- inventory_prod <br>
+					</code>
+
+					Die folgende ist die Ausführungsordnung
+					<ol>
+						<li>group_vars/all</li>
+						<li>group_vars/groupName</li>
+						<li>host_vars/hostName</li>
+					</ol>
+
+					Die Deteien, die die Variablen enthalten, sind auf YAML geschrieben:
+					<pre>
+						<code class="language-yaml">
+							---
+							# file: group_vars/dc1-west
+							ntp: npt-west.company.com
+							syslog: logger-west.company.com
+						</code>
+					</pre>
+
+					Die obige Datei soll auch in inventory_prod eingefügt werden. <br>
+					Die Inhalte der group_vars/all Datei sind die folgende:
+					<pre>
+						<code class="language-yaml">
+							---
+							# this is our user
+							username: all_username
+						</code>
+					</pre>				
+
+					Dann im /production Verzeichnis, wir führen den folgenden Befehl ein:
+					<code>
+						[acs]$ ansible webservers -i inventory_prod -m user -a "name={{username}} password=12345" --sudo &ldca; <br>
+					</code>
+
+					in der group_vars Ordner erstellen wir eine Datei, die wie eine Gruppenname genannt ist. Auf diesem Fall, "webservers"
+
+					<pre>
+						<code class="language-yaml">
+							---
+							username: group_user
+						</code>
+					</pre>
+
+					diese Definition hat Vorrang gegenüber die "all" Definition. In der host_vars/web1 Detei, fügen wir die folgenden Inhalte ein:
+					<pre>
+						<code class="language-yaml">
+							---
+							username: web1_user
+						</code>
+					</pre>
+				</p>
+
+				<p>
+					<b>Ansible Config</b> <br>
+					Wo sucht Ansible nach Konfiguration?
+					<ol>
+						<li>die $ANSIBLE_CONFIG Variable, die sich auf eine Datei bezieht</li>
+						<li>./ansible.cfg (im jetztig Verzeichnis). Sehr praktisch wenn ein Playbook wird durch Git geteilt</li>
+						<li>~/.ansible.cfg</li>
+						<li>/etc/ansible/ansible.cfg ; das ist wie eine globale Konfiguration. Sie ist automatisch ergestellt nur wenn wir Ansible durch pip installiert haben.</li>
+					</ol>
+					Diese Optionen sind nicht zusammengesetzt, sondern die erste gefunden Optionen ist benutzt. Falls wir bestimmte Optionen überschreiben wollen, können wir einfach Umgebungsvariablen setzen, mit dem "ANSIBLE" Präfix, z.B. #export ANSIBLE_FORKS=10.
+
+					Diese Variablen sind erst festgestellt und dann wird Ansible die Konfigurationsdatei laden. Die häufigsten benutzt sind
+					<ul>
+						<li>FORKS: Nummer von parallele Operationen, die Ansible ausführen kann. Standardmäßig ist 5; in production 20 ist empfohlen.</li>
+						<li>HOST_KEY_CHECKING: überprüfen, ob das System, das verwaltet werden sollen, ist autorisiert und </li>
+						<li>LOG_PATH: wo sind Informationen über Ansible Ausfgührungen geschrieben</li>
+					</ul>
+					Zusätzliche Informationen finden sie unter <a href="http://docs.ansible.com/intro_configuration.html">docs.ansible.com/intro_configuration.html</a>.
+
+					Jetzt öffnen wir die <i>known_hosts</i> Datei und löschen wir die ganze Inhalte.
+					<code class="mono-box">
+						[acs]$ vi ~/.ssh/known_hosts &ldca; <br>
+					</code>
+					In diesem Fall, der Befehl 
+					<code class="mono-box">
+						[acs]$ ansible web1 -i inventory_prod m ping &ldca; <br>
+					</code>
+					wird fehlschlagen. Öffnen wir nun
+					<code class="mono-box">
+						[acs]$ vi ansible.cfg &ldca; <br>
+
+						// eintippen die folgende Inhalt
+
+						[defaults]
+						host_key_checking=False
+					</code>
+					In diese Weise, wir ignorieren ssh nich, sondern wir automatisch antworten "yes" zur "add fingerprint" Anfrage. Tatsächlich können wir sehen, dass das <i>fingerprint</i> wird zur known_hosts Datei hinzugefügt. Z.B. falls wir auf der ganze Umgebung ausführen (alle Maschinen wird gepingt), dann fügen alle <i>fingerprints</i> hinzu.
+
+					Wenn wir die ganze Inhalte von der known_hosts Datei löschen, und dann
+					<code class="mono-box">
+						[acs]$ export ANSIBLE_HOST_KEY_CHECKING=True &ldca; <br>
+						[acs]$ echo ANSIBLE_HOST_KEY_CHECKING &ldca; <br>
+					</code>
+					dann die Ausführung soll fehlschlagen, weil Umgebungsvariable gegenüber Konfigurationsdateien Vorrang haben.
+				</p>
+
+				<p>
+					<b>Ansible Modules</b> <br>
+					<ul>
+						<li>Sind Befehle, die wir auf die verwaltene Systeme ausführen können</li>
+						<li>Jedes Modul ist für einen spezifisch Zweck aufgebaut und Parameter könenn benutzen werden, um das standarmäßige Verhalten zu ändern</li>
+						<li>462 ca. Module stehen zu Verfügung</li>
+					</ul>
+					Module kann "core", "extras" oder "deprecated" sein.
+					<code class="mono-box">
+						[acs]$ ansible-doc -l &ldca; # Module auflisten<br>    
+						[acs]$ ansible-doc <i>name</i> &ldca; # dok fürs <i>name</i> Modul <br>
+						[acs]$ ansible-doc -s &ldca; # gibt zurück ein <i>Playbook snippet</i> <br>
+					</code>
+					Es gibt unzählige Module, für viele Zwecken
+					<ul>
+						<li>Server verwalten</li>
+						<li>Konfigurationen einspielen</li>
+						<li>Netzwerksgeräte konfigurieren (z.B. Juniper)</li>
+						<li><i>Virtual Servers</i> warten</li>
+						<li>Datenbanken und Tabellen verwalten (z.B. Benutzer, Berechtigungen)</li>
+						<li>Konfigurationen von Load-Balancers einspielen</li>
+					</ul>
+					Oft benutzt Module sind:
+					<ul>
+						<li><b>Copy</b> Sehr nutzlich um Konfigurationen (z.B. deploy) vom ACS zu verwaltete Systemen zu kopieren</li>
+						<li><b>Fetch</b> Zieht eine Datei von einem Server to ACS (kann auch md5 zur Validierung nutzen)</li>
+						<li><b>Apt, Yum</b> Auf debian-basierte (red-hat-basierte), um Pakete zu installieren, aktualisieren, löschen (z.B. Sicherheit patches)</li>
+						<li><b>Service</b> start, stop, restart Services </li>
+					</ul>
+				</p>
+				<p>
+					Demo: mit dem gleiche Inventory Datei, lass uns installieren Apache auf "webservers".
+					<code class="mono-box">
+						[acs]$ ansible webservers -i inventory -m yum -a "name=httpd state=present" --sudo &ldca;  <br>						
+						<br>
+						// Ergebnis war<br>
+						<br>
+						web1 | success >> { <br>
+							"changed": true, <br>
+							... <br>
+						} <br>
+					</code>
+					Wenn wir führen es nochmal ein, bekommen wir wieder "erfolg" aber "changed": false (Idempotenz). <br>
+					Mit dem Service Modul, ist der "name" Feld erforderlich. Der "state" Feld kann einen von started/stopped/restarted/reloaded sein.
+
+					<code class="mono-box">
+						[acs]$ ansible webservers -i inventory -m service -a "name=httpd enabled=yes state=started" --sudo &ldca; <br>
+						[acs]$ ansible  dbservers -i inventory -m yum -a "name=mysql-server state=present" --sudo &ldca; <br>
+						[acs]$ ansible  dbservers -i inventory -m service -a "name=mysqld state=started" --sudo &ldca; <br>
+					</code>
+
+					Zum Check, stoppen wir den "iptables" auf allen Maschinen.
+
+					<code class="mono-box">
+						[acs]$ ansible webservers:dbservers -i inventory -m service -a "name=iptables state=stopped" --sudo &ldca; <br>
+					</code>
+
+					Was bedeutet das ":" eigentlich?
+
+					<table>
+						<tr>
+							<th>
+								Operator
+							</th>
+							<th>
+								Syntax Beispiel
+							</th>
+							<th>
+								Erklärung
+							</th>
+						</tr>
+						<tr>
+							<td>OR</td>
+							<td>group1:group2</td>
+							<td>ein Host, das in group1 oder in group2 stattfindet</td>
+						</tr>
+						<tr>
+							<td>AND</td>
+							<td>group1:&group2</td>
+							<td>ein Host, das gehört beide Gruppen, group1 und group2</td>
+						</tr>
+						<tr>
+							<td>WILDCARD</td>
+							<td>web*.ex.com</td>
+							<td>ein Host, das gleicht den Ausdruck ab</td>
+						</tr>
+						<tr>
+							<td>REGEX</td>
+							<td>~web[0-9]+</td>
+							<td>ein Host, das gleicht den Ausdruck ab (beginnt mit "web" und dann Zahlen)</td>
+						</tr>
+					</table>
+					Es ist auch möglich, Daten über die verwaltete Systemen zu sammeln.
+					
+					<code class="mono-box">
+						[acs]$ ansible web1 -i inventory -m setup &ldca; <br>
+					</code>
+					
+					und auch bestimmte Felder filtern#
+					
+					<code class="mono-box">
+						[acs]$ ansible web1 -i inventory -m setup -a "filter=ansible_eth*" &ldca; <br>
+					</code>
+
+					Der letzte Befehl wird nur Eigenschaften um ethernet Schnittstellen zurückgeben.
+				</p>
+			</section>
+			
+			<section>
+				<p>
+					<b>Playbooks</b> <br>
+					ein Playbook ist eine Sammlung von Plays.
+					Ein Play, verbindet ein Host zu einem Task. Eventuell auch mehrere Tasks und Hostsgruppe.
+
+					Hier ist ein Beispiel eines Playbooks.
+
+					<pre>
+						<code class="language-yaml">
+							---
+							- hosts: webservers  # erste Play
+							  remote_user: root
+							  tasks:
+							  - name: Install Apache  # nur ein Name
+							    yum: name=httpd state=present
+							  - name: Start Apache
+							    service: name=httpd state=started enabled=yes
+
+							- hosts: dbservers  # zweite Play
+							  remote_user: root
+							  tasks:
+							  - name: Install MySQL
+							    yum: name=mysql-server state=present
+							  - name: Start MySQL
+							    service: name=mysqld state=started
+						</code>
+					</pre>
+					Ein Play muss mindestens die hosts und die tasks Deklarationen. <br>
+					Deklarationen müssen immer vor "tasks". Andere Beispiel:
+					<pre>
+						<code class="language-yaml">
+							---
+							- hosts: webservers  # erste Play
+							  vars:
+							     git_repo: ...
+							     http_port: 8080
+							     db_name: wordpress
+							  sudo: yes
+							  sudo_user: wordpress_user
+							  gather_facts: no
+							  
+							  tasks:
+							   ... 
+						</code>
+					</pre>
+					Pass auf, dass die gather_facts Option ist standardmäßig schon aktiviert aber es ist kostspielig. Deshalb es ist eine gute Idee, wenn sie nicht notwendig ist, sie zu deaktivieren.
+					Beachten:
+					<ul>
+						<li>Tasks nutzen Module</li>
+						<li>Tasks sind in Ordnung ausgeführt (erste bis letzte)</li>
+						<li>Tasksnamen wird während der Ausführung gezeigt</li>
+					</ul>
+					Um ein Playbook auszuführen, man muss nur einfach
+					<code class="mono-box">
+						<b>[acs]$ ansible-playbook playbook.yml &ldca;</b> <br>
+					</code>
+					Wenn der Inventory Datei ist nich in der Konfiguration angegeben, dann man muss die -i Option ausdrücklich verwenden. <br>
+					<b>WICHTIG</b> Wenn es ein Fehler bei einem Host gibt, dann keine andere Tasks wird auf solchem Host ausgeführt. Das Host ist zu eine Retry-Datei, sodass wir können nochmal das Playbook mit der folgende Option ausführen.
+					<code class="mono-box">
+						[acs]$ -- limit @/home/vagrant/ping.retry &ldca; <br>
+					</code>
+
+					In der ansible.cfg Datei, stellen wir
+					
+					<code class="mono-box">
+						[defaults]
+						hostfile = inventory
+					</code>
+					Auf diese Weise müssen wir nicht mehr die -i Option ausdrücklich nutzen.
+				</p>
+
+				<p>
+					Es ist oft nutzlich, verschiedene Dateien zu verwenden, sodass
+					<ul>
+						<li>lange Playbooks besser organisieren</li>
+						<li>externe Dateien zu nutzen</li>
+						<li>andere Playbooks wiederverwenden</li>
+					</ul>
+					Beispiel:
+					<pre>
+						<code class="language-yaml">
+							tasks:
+							 - inlcude: wordpress.yml
+							   vars:
+							     sitename: My awesome site
+
+							 - include: loadbalancer.yml
+
+							 - inlcude_vars: variables.yml
+						</code>
+					</pre>
+
+					Es ist auch möglich die Ergebnisse eines Task zu verzeichen
+					<pre>
+						<code class="language-yaml">
+							tasks:
+							 - shell: /usr/bin/whoami
+							   register: username
+
+							 - file: path=/home/myfile.txt owner={{username}}
+						</code>
+					</pre>
+
+					Man kann auch ein Debugsmodul nutzen
+
+					<pre>
+						<code class="language-yaml">
+							tasks:
+							 - debug: msg="host is {{inventory_hostname}} debug exec"
+							 - shell: /usr/bin/whoami
+							   register: username
+
+							 - debug: var=username
+						</code>
+					</pre>
+
+					und für Input warten
+
+					<pre>
+						<code class="language-yaml">
+						- hosts: web1
+							vars_prompt:
+							 - name: "sitename"
+							   prompt: "what is your site name?"
+
+							tasks:
+							 - debug: msg="host is {{inventory_hostname}} debug exec"
+						</code>
+					</pre>
+
+					Ein andere wichtige Möglichkeit, die man hat, ist Handlers zu nutzen. Handlers sind nur einfach Tasks, die werden asynchron ausgeführt.
+
+					<pre>
+						<code class="language-yaml">
+							tasks:
+							 - copy: src=files/httpd.conf dest=/etc/httpd/conf
+							   notify:
+							    - Apache Restart
+							 # when copy returns "state=changed" then the handler ist triggered
+
+							handlers:
+							 - name: Apache Restart
+							   service: name=httpd state=restarted
+						</code>
+					</pre>
+
+					Alle Handlers sind nur am Ende ausgeführt. <br>
+
+					Kontrollstrukturen:
+					<pre>
+						<code class="language-yaml">
+							tasks:
+
+							 - yum: name=httpd state=present
+							   when: ansible_os_family == "RedHat"
+
+							 - apt: name=apache2 state=present
+							   when: ansible_os_family == "Debian"
+						</code>
+					</pre>
+					Man kann das Ergebnis eines vorherige Tasks nutzen
+					<pre>
+						<code class="language-yaml">
+							tasks:
+
+							 - command: ls /path/doesnt/exist
+							   register: result
+							   ignore_errors: yes
+
+							 - debug: msg="Failure!"
+							   when: result|failed
+						</code>
+					</pre>
+
+					Templates auch stehen zu Verfügung, durch die JINJA2 Engine.
+					<pre>
+						<code class="language-yaml">
+							tasks:
+
+							 - template: src=templates/httpd.j2
+							   dest=/etc/httpd/conf/httpd.conf
+							   owner=httpd
+						</code>
+					</pre>
+
+					Die voll Playbook wird
+
+					<pre>
+						<code class="language-yaml">
+							---
+							- hosts: webservers
+							  sudo: yes
+							  vars:
+							    http_port: 80
+							    doc_dir: /ansible/
+							    doc_root: /var/www/html/ansible/
+							    max_clients: 5
+
+							  vars_prompt:
+							    - name: username
+							      prompt: "what is your name?"
+
+							  tasks:
+							   - name: Ensure Apache is installed
+							     yum: name=httpd state=present
+							     when: ansible_os_family == "RedHat"
+
+							   - name: Start Apache services
+							     service: name=httpd enabled=yes state=started
+
+							   - name: Deploy configuration file
+							     template: src=templates/httpd.j2 dest=/etc/httpd/conf/httpd.conf
+							     notify:
+							      - Restart Apache
+
+							   - name: Copy Site Files
+							     template: src=templates/index.j2 dest={{doc_root}}/index.html
+
+							 handlers:
+							   - name: Restart Apache
+							     service: name=httpd state=restarted
+
+						</code>
+					</pre>
+				</p>
+			</section>
+
+			<section>
+				<p>
+					<b>Roles</b> <br>
+					Roles ist ein Mechanismus, die ähnlich wie Typerweiterung verhäst sich. Wir können tatsächlich Roles definieren, in verbindung mit einer Konfiguration, und dann alle Systeme, die solche Role haben, bekommen die Konfiguration.
+					<pre>
+						<code class="language-yaml">
+							ROLE: Builder
+							- tasks:
+							 - name: install gcc
+							 - name: install jdk
+							 - name: setup git
+						</code>
+					</pre>
+
+					Die Verzeichnisstruktur, wie die folgende:
+
+					<code class="mono-box">
+						. <br>
+						| <br>
+						 -- roles <br>
+						     | <br>
+							 |-- builders	 <br>
+						     | <br>
+							 |-- server-common <br>
+						     |      |-- defaults <br>
+						     |      |-- files <br>
+						     |      |-- handlers <br>
+						     |      |-- meta <br>
+						     |	 	|-- tasks <br>
+						     |	 	|-- templates <br>
+						     |	 	 -- vars <br>
+						     |       <br>
+							  -- webservers <br>
+					</code>
+					Ein Role ist nur einfach eines Unterverzeichnis vom roles/ Ordner (z.B. builders, webservers, ...).
+					Im Besonderen, die Detaile ein paar Verzeichnisse:
+					<code class="mono-box">
+						 . <br>
+					     | <br>
+						 |-- handlers	 <br>
+					     |      | <br>
+					     |       -- main.yml <br>
+					     | <br>
+						 |-- tasks <br>
+					     |      | <br>
+					     |	 	 -- main.yml <br>
+					     |       <br>
+						 |-- template <br>
+						 | <br>
+						  -- vars <br>
+					</code>
+					In jedes Verzeichnis, Ansible sucht überhaupt nach eine main.yml Datei. Dadurch sind lange Dateien in verschiedene kurzere Dateien verteilt. 
+					Darüber hinaus, die tasks/main.yml kann den "include" Mechanismus verwenden, damit die nicht zu lang wird. Zusätzlich könenn Etiketten (tags) benutzt werden.
+					<pre>
+						<code class="language-yaml">
+							---
+							 - include: webservers.yml tags=web
+							 - include: dbservers.yml tags=db
+
+							 # don't do it for "vars"!!
+						</code>
+					</pre>
+					Zu merken, dass Etiketten können direkt zum Task angewandt werden:
+					<pre>
+						<code class="language-yaml">
+							...
+							tasks:
+							debug: msg="..."
+							tags:
+							 - web
+							 - db
+						</code>
+					</pre>
+					Dann in der Hauptdatei, können wir einfach
+					<pre>
+						<code class="language-yaml">
+							---
+							 - hosts: code-dev
+							   roles:
+							    - server-common
+							    - builders
+
+							   tasks:
+							    # extra tasks here, if not inherited from roles
+						</code>
+					</pre>
+					Die zusätzliche Tasks können als <i>pre_tasks</i> oder <i>post_tasks</i> etikettiert werden. Typischerweise ist pre für einige Aufgaben (z.B. ein server von Load Balancer löschen) und post für andere (z.B. ein Server zur Load Balancer hinzufügen).
+					<pre>
+						<code class="language-yaml">
+							---
+							 - hosts: webservers
+							 	post_task:
+							      # remove from load balancer
+							   roles:
+							    - server-common
+							    - jboss
+
+							   post_task:
+							      # add to load balancer
+							   gather_facts: no
+						</code>
+					</pre>
+					und dann mit dem folgende Befehl ausführen:
+					<code>
+						[acs]$ ansible-playbook site.yml -tags "web"
+					</code>
+					Auch die "limit" Option können wir nutzen, um die die Ausführung nur zum Teil der Inventory Detei begrenzen.
+
+					Ein Beispiel (???)
+					<pre>
+						<code class="language-yaml">
+							---
+							 - hosts: webservers
+							   sudo: yes
+							   gather_facts: no
+							   roles:
+							    - webserver
+						</code>
+					</pre>
+					Mit der folgende Verzeichnisstruktur
+					<code class="mono-box">
+						. <br>
+						|-- ansible.cfg <br>
+						|-- inventory <br>
+						|-- roles <br>
+						|     | <br>
+						|	  |-- webserver	 <br>
+						|     |      | <br>
+						|     |      |-- handlers <br>
+						|     |      |		|-- main.yml <br>
+						|     |      | <br>
+						|     |      |-- tasks <br>
+						|     |      |	    |-- main.yml <br>
+						|     |      | <br>
+						|     |      |-- templates <br>
+						|     |      |		|-- httpd.j2 <br>
+						|     |      |		|-- index.j2 <br>
+						|     |      | <br>
+						|     |      |-- vars <br>
+						|     |      		|-- main.yml <br>
+						|     | <br>
+						|     | <br> 
+						|	   -- dbserver <br>
+						|			 | <br>
+						|			 |-- tasks <br>
+						|					|-- main.yml <br>
+						| <br>
+						|-- webserver.yml <br>
+						| <br>
+						 -- dbserver.yml <br>
+					</code>
+					Dann in der webserver.yml wir haben
+					<pre>
+						<code class="language-yaml">
+							# webserver.yml
+							---
+							 - hosts: webservers
+							   sudo: yes
+							   gather_facts: no
+							   roles:
+							    - webserver   # will automatically go in the webserver/ folder for files!
+						</code>
+					</pre>
+					Die verschiedene main.yml Dateien brauchen nicht die grundsätzliche Deklarationen (d.h. "task", "handler", ...) weil der Dateiname deutet diese Informationen an.
+				</p>
+				<p>
+					Man muss aufpassen wenn man "hosts: all" nutzt. Das zielt jedes System, das in der Inventory Datei genannt ist.
+
+					<pre>
+						<code class="language-yaml">
+							# handlers/main.yml
+							---
+							 - name: Restart Apache
+							   service: name=httpd state=restarted
+
+							# vars/main.yml
+							---
+							http_port: 80
+							doc_dir: /ansible/
+							# and so on
+						</code>
+					</pre>
+
+					Dann ist ein Playbook, das alle andere Dateien umfasst.
+					<pre>
+						<code class="language-yaml">
+							---
+							 - hosts: webservers:dbservers
+							   sudo: yes
+							   gather_facts: no
+							   roles:
+							    - server-common
+
+							 - include: webserver.yml
+							 - include: dbserver.yml
+						</code>
+					</pre>
+				</p>
+				<p>
+					Roles kann von uns aufgebaut werden oder nur einfach auf <i>Galaxy</i> gefunden.
+
+					<code class="mono-box">
+						[acs]$ ansible-galaxy install <i>username.role</i> &ldca; <br>
+					</code>
+				</p>
+			</section>
+		</article>
+	</body>
+</html>

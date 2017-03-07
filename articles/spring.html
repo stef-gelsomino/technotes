@@ -1,0 +1,455 @@
+<html>
+	<head>
+		<title> Mein persoenlich Wiki auf Deutsch! </title>
+		<link rel="stylesheet" type="text/css" href="../prism_2.css">
+		<link rel="stylesheet" type="text/css" href="../style.css">
+	</head>
+	<body>
+		<script type="text/javascript" src="../prism_2.js"></script>
+		<h1><a href="../index.html">Architektur und Entwicklung</a></h1>
+		<nav>
+		    <a href="microservices.html"> Microservices </a> &nbsp;
+		    <a href="mongodb.html"> MongoDB </a> &nbsp;
+		    <a href="http.html"> HTTP </a> &nbsp;
+		    <a href="docker.html"> Docker </a> &nbsp;
+		    <a href="git.html"> Git </a> &nbsp;
+		    <a href="ansible.html"> Ansible </a> &nbsp;
+		    <a href="jenkins.html"> Jenkins </a> &nbsp;
+
+		    <a href="java8.html"> Java 8 </a> &nbsp;
+		    <a href="go.html"> Go </a> &nbsp;
+		    <a href="bash.html"> Bash </a> &nbsp;
+		    <a href="hibernate.html"> Hibernate </a> &nbsp;
+		    <a href="maven.html"> Maven </a> &nbsp;
+		    <a href="spring.html"> Spring </a> &nbsp;
+		    <a href="spring_data.html"> Spring Data </a> &nbsp;
+		    <a href="tdd.html"> TDD </a> &nbsp;
+		    <a href="python.html"> Python </a> &nbsp;
+		</nav>
+
+		<article>
+			<header>
+				<h2>
+					Spring Boot
+				</h2>
+				<p>
+					<hr>
+				</p>
+			</header>
+
+			<section>
+				<h3>
+					Einstieg zu Spring Boot
+				</h3>
+				<p>
+					Wir fangen mit einem Maven Projekt an: es gibt ein Artifact von Maven, der "maven-archetype-quickstart" genannt ist. Deshalb können wir ein SpringBoot Projekt einfach wie ein macktes Maven Projekt erstellen!
+					Spring empfhielt, zumindest Java 1.8 zu nutzen!
+				</p>
+				<p>
+					Was ist dann notwendig, um dieses Projekt in ein SpringBoot Projekt richtig zu verwandeln?
+					Zuerst, in die pom.xml Datei brauchen wir den SpringBoot "parent pom" zu setzen. So müssen wir
+					den folgende Code in unsere pom hinzufügen:
+					<pre>
+						<code class="language-xml">
+							&lt;parent&gt;
+								&lt;groupId&gt;
+									org.springframework.boot
+								&lt;/groupId&gt;
+								&lt;artifactId&gt;
+									spring-boot-starter-parent
+								&lt;/artifactId&gt;
+								&lt;version&gt;
+									1.3.1.RELEASE
+								&lt;/version&gt;
+							&lt;/parent&gt;
+						</code>
+					</pre>
+					Außerdem können wir auswälen, die Teile von dem Framework, dass wir benutzen wollen.
+					Zum Beispiel, wir wahrscheinlich brauchen Komponenten um eine Webanwendung zu aufbauen.
+					In diesem Fall, wir muss einfach nur ein "starter dependency" im unsere POM hinzufügen:
+					<pre>
+						<code class="language-xml">
+							&lt;dependency&gt;
+							    &lt;groupId&gt;
+							    	org.springframework.boot
+							    &lt;/groupId&gt;
+							    &lt;artifactId&gt;
+							    	spring-boot-starter-web
+							    &lt;/artifactId&gt;
+							&lt;/dependency&gt;
+						</code>
+					</pre>
+					Dann sollen wir in unsere "App" Klasse, die Maven hat automatisch für uns generiert.
+					Dort befindet sich die "main" Methode; Hier müssen wir etwas hinzufügen:
+					<ol>
+						<li>
+							Direkt auf die Klasse-Deklaration, die @SpringBootApplication Annotation. Wegen dieser Annotation, Spring sucht unsere Projekt ab für Spring Komponenten, die sind automatisch "autowired".</li>
+						<li>
+							In der "main" Methode, wir ersetzen den generierte Inhalt mit:
+							SpringApplication.run(App.class, args);
+							Mit die letzte <i>Instruktion</i> wir eigentlich starten unsere Anwendung (und auch einen eingebettete Server, wie z.B Tomcat).
+						</li>
+					</ol>
+					Um unsere Anwendung am besten organisieren, sollen wir mehr Packages erzeugen. Weil die autoscan Prozess fängt von dem Verzeichnis, die die main Methode enthält an, es ist besser wenn wir einen hierarchische Struktur benutzen.
+					Zum Beispiel:
+					<ul>
+						<li>com.example // enthält App.class</li>
+						<li>com.example.customers  // enthält Spring Komponenten (z.B. @Controller, @Repository und so weiter), die sollen von autoscan entdeckt werden.</li>
+					</ul>
+					Nachdem wir die entsprechende Packages ergestellt haben, möchten wir natürlich einen Controller haben, damit unsere Anwndung kann Abrufen verwalten.
+					Zu diesem Zweck, erreicht es, eine Controller Klasse zu kreiren mit den entsprechenden Annotationen.
+
+						<pre>
+							<code class="language-java">
+								@RestController
+								public class CustomerController {
+
+									@RequestMapping("/")
+									public String home(){
+										return "Hello Controller";
+									}
+								}
+							</code>
+						</pre>
+
+					Jetzt unsere Anwendung kann wie eine reguläre Java Anwendung ausgeführt werden, weil wir ein "main" Methode als Einstiegpunkt haben. Usere RestController wird <i>unter</i> http://localhost:8080/ erreichbar sein.
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					Verwaltung von Abhängigkiten in Spring Boot
+				</h3>
+				<p>
+					In Spring Boot finden wir schon gesammelt und bereits Versionen von Bibliotheken, die gut zusammenarbeiten: die so genannte BOM (Bill Of Materials). Es ist durch die frühere "parent" Deklaration erreicht. Tatsächlich haben wir keine Version deklariert an unsere "starter-web" Abhängigkeit, weil Versionen sind von "parent" BOM verwaltet.
+					<br>
+					Es gibt viele andere so genannten Spring Boot Initializers (man kann einmal http://start.spring.io checken). Durch die Nutzung von den obige Initializers (oder Starters) es ist möglich viele Bibliotheken zum Projekt hinzuzufügen.
+					<br>
+					Man kann auch eine CLI Schnittstelle (Spring Boot CLI) an statt des Websites. Sie aber teilen das eigentlich gleiche Backend. Darüberhinaus, muss man den CLI richtig installieren (mehr Informationen in der Dokumentation).
+
+					Der Hauptbefehl ist "spring" un wir können es probieren wie:
+
+					<pre>
+						<code class="language-bash">
+							$ ./spring --version
+							$ ./spring init --dependencies=web myApp
+						</code>
+					</pre>
+
+					Auch viele Beispielanwendungen können von http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples heruntergeladen werden.
+
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					Wie Spring Boot funktioniert
+				</h3>
+				<p>
+					Drei wichtige Punkte:
+					<ul>
+						<li>Regläre main Methode als Einstiegpunkt</li>
+						<li>Automatische Spring Context Initialisierung</li>
+						<li>Eingebettete Server</li>
+					</ul>
+					Die @SpringBootApplication ist gleichwertig wie diese folgende:
+					<ul>
+						<li>@Configuration: markiert diese Klasse als eine Konfigurationsklasse</li>
+						<li>@EnableAutoConfiguration: markiert diese Anwendung als "AutoConfigurtion", das heißt die Annotation auslöst die Beladung der "starter"-Abhängigkeiten  </li>
+						<li>@ComponentScan: verursacht die Durchsuchung von Sping Komponenten in dieses Verzeichnis und Unterverzeichnisse</li>
+					</ul>
+					Einige Vorteile von eingebettete Servers sind, dass wir nur brauchen einen JRE und auch die Anwendung treibt das Verhalten des Servers.
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					Webanwendungen aufbauen
+				</h3>
+				<p>
+					Wir werden einen AngularJS Frontend nutzen. Von Spring Perspektive, das ist nur statisch Stoff.
+					Spring wird automatisch die Verzeichnisse "static", "public" oder "resources" nutzen, um statische Inhälte zur Verfügung stellen.
+					Wir müssen die die Inhalte des "dist" oder "www" Verzeichnis in die obige Verzeichnis kopieren.
+
+					Wir müssen natürlich darauf achten, dass das src/main/resources/public existiert.
+
+					Auf diesem Wege, das Frontend ist in dem gleichem Artefakt wie das Backend. Deshalb müssen wir nicht CORS aufsetzen, damit das FE mit dem BE mitteilen kann.
+
+					Auf der Controller Klasse, stellen wir die folgende Annotationen:
+
+					<pre>
+						<code class="language-java">
+						@RestController
+						@RequestMapping("api/v1/")
+						</code>
+					</pre>
+
+					Und auf jede Methode, stellen wir:
+					<pre>
+						<code class="language-java">
+						@RequestMapping(value="oranges", RequestMethod.GET)
+						public list&lt;Orange&gt; getOranges(){ ... }
+						</code>
+					</pre>
+
+					Wir können ebenso nutzen alle Funktionalitaten, die in Spring MVC verfügbar sind. Z.B. wir können  Parameter von POST Methoden mit der @RequestBody Annotation annotieren, damit sie sind automatisch in JSON umgesetzt. Ähnlich ist für @ResponseBody, dadürch sind "return" Parameter in JSON auch automatisch umgesetzt.
+					Schließlich können wir auch in die Parametersliste Variabel haben, die sind mit Parameter in der URL in Verbindung gebracht.
+					<pre>
+						<code class="language-java">
+						@RequestMapping("oranges/{howMany}")
+						public list&lt;Orange&gt; getOranges(@PathVariable Integer howMany){ ... }
+						</code>
+					</pre>
+					Außer die Beladung von JAR im Classpath, unsere automatiche Konfiguration hat auch ViewResolvers geladen (ContentNegotiationViewResolver) durch die Jackson JSON Bibliotheke. Auch einige HttpMessageConverter sind von Spring Boot im Voraus vorbereitet.
+					String Umsetzung ist standardmäßig UTF-8.
+
+					Es kann natürlich sein, dass wir brauchen etwas, dass ist ganz anders als in Spring standardmäßig konfiguriert ist.
+
+					Zu diesem Zweck, nutzen wir einen application.properties Detei, die in der Classpath root befindlich sein muss. Diese Datei kann eine reguläre properties Datei sein, oder eine YAML Datei.
+					Die properties kann aber für verschiedene Umgebungen anders sein: in diesem Fall, man kann einfach mehr Dateien nutze, jede mit ein eigenem Profilsname angegeben.
+					<code class="mono-box">
+						application-test.yml
+						application-prod.yml
+					</code>
+
+					Da ist ein Beispiel von ein application.properties Datei.
+					<code class="mono-box">
+						logging.level.org.springframework.web=DEBUG
+						server.port=8181
+					</code>
+
+					Falls wir unterschiedliche properties Dateien nutzen, wir müssen dieses "profile" am Start angeben, als VM Arguments:
+					<code class="mono-box">
+						-Dspring.profiles.active=<i>test</i>
+					</code>
+					Dann application-test.properties ist geladen.
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					DataSourcen konfigurieren und zugreifen
+				</h3>
+				<p>
+					Was brauchen wir zur Integrazion? Wir brauchen JPA un Spring Data JPA, soddas wir zu eine Datenbank verbinden können.
+					Um es einfach zu halten, wir werden oft eine eingebettete H2 Datenbank nutzen. Dazu werden wir auch ein Framework nutzen, um Migrationen von DB ausführen (FlyWay DB).
+
+					Um die Datenbank zu versorgen, wir müssen ein paar Abhängigkeiten zur pom Datei hinzufügen:
+					<ul>
+						<li>
+							groupId: org.springframework.boot
+							artifactId: spring-boot-starter-jpa
+						</li>
+						<li>
+							groupId: com.h2database
+							artifactId: h2
+						</li>
+					</ul>
+
+					Damit wir unsere Datenbank verwalten können, wir können ein paar Properties in unsere application.properties stellen:
+
+					<code class="mono-box">
+						spring.h2.console.enabled=true
+						spring.h2.console.path=/h2
+					</code>
+					Auf diese Weise, wir können die Konsole der Datenbank unter localhost:8080/h2 zugreifen. Ebenfalls in echte Anwendungen, müssen wir JDBC benutzen, um eine separate (nicht eingebettete) Datenbank zuzugreifen. Wenn wir den eingebetteten Tomcat nutzen, dann Spring Boot lädt direkt tomcat-jdbc als pooling Strategie.
+					Noch Einmal, brauchen wir nur einfach ein paar Properties:
+					<code class="mono-box">
+						spring.datasource.url=jdbc:h2:file:~/myapp  # Datenbank in einer Datei speichern.
+						spring.datasource.username=sa
+						spring.datasource.password=
+						spring.datasource.driver-class-name=org.h2.Driver
+					</code>
+					Zusätzliche Properties, die wir angeben können, sind für Pooling.
+					<code class="mono-box">
+						spring.datasource.max-active=10
+						spring.datasource.max-idle=8
+						spring.datasource.max-wait=10000
+						spring.datasource.min-evictable-idle-time-millis=1000
+						spring.datasource.min-idle=8
+						spring.datasource.time-between-eviction-runs-millis=1
+					</code>
+
+					Um Flyway zu nutzen, wir müssen wie gewöhnlich die Abhängigkeit hinzufügen und das Flyway Datasource konfigurieren.
+					Deutlich müssen wir auch die Migrationsskript vorbereiten und ausführen, wenn die Anwendung startet.
+					<code class="mono-box">
+						groupId: org.flywaydb
+						artifactId: flyway-core
+					</code>
+					Außerdem, müssen die Skripten im Classpath sein, nämlich unter src/main/resources/db/migration. Wir heißen unseres Skript
+					V2_create_mytable.slq (Achtung: V2 meint Version 2, weil die "base" Versionsnummer von Flyway ist 1). In dieser Datei stellen wir unsere
+					SQL Befehle z.B. CREATE TABLE MYTABLE (...); Man muss beachten, dass unsere SQL hängt von die Vendor ab!
+
+					Schließlich um das ganze Prozess zu auslösen, wir brauchen nur ein paar Property in unsere Datei:
+					<code class="mono-box">
+						flyway.baseline-on-migrate=true
+						spring.jpa.hibernate.ddl-auto=false # ansonsten es gibt Konflikte mit Hibernate
+					</code>
+
+					Außer der Property Dateien, es ist auch möglich Spring Bean in Programmform, durch die Nutzung der @Configuration und
+					@Bean Annotationen. Diese Ansatz braucht ein bisschen mehr Engagement aber es ist etwas mehr flexibel. Zum Beispiel, wir nutzen es,
+					um mehrere DataSources zu unterstützen.
+
+					<pre>
+						<code class="language-java">
+						@Configuration
+						public class DatabaseConfiguration {
+
+							@Bean
+							@ConfigurationProperties(prefix="spring.datasource")
+							@Primary
+							public DataSource dataSource(){
+								return DataSourceBuilder.create().build();
+							}
+
+						}
+						</code>
+					</pre>
+
+					<b>Sehr Wichtig:</b> die prefix Attribute, treibt den DataSourceBuilder, damit es das DataSource generiert durch
+					die Properties von der Properties Datei, die mit "spring.datasource" beginnen!
+
+					Weil wir mehrere DataSource verwenden werden, müssen wir auch markieren mit der @Primary Annotation, welche DataSource ist
+					das DataSource standardmäßig zu nutzen.
+
+					Um zu unterscheiden, man kann dann das andere DataSource mit prefix="datasource.flyway" annotieren. Natürlich auch hier wir
+					können H2 nutzen:
+					<code class="mono-box">
+						datasource.flyway.url=jdbc:h2:file:~/myapp
+						datasource.flyway.username=sa
+						datasource.flyway.password=
+						datasource.flyway.driver-class-name=org.h2.Driver
+					</code>
+
+					Spring stellt einen einfach Annotation um ein Flyway DataSource zu markieren zu Vefügung.
+					<pre>
+						<code class="language-java">
+						@Bean
+						@FlywayDataSource
+						@ConfigurationProperties(prefix="datasource.flyway")
+						public DataSource flywayDataSource(){
+							return DataSourceBuilder.create().build();
+						}
+						</code>
+					</pre>
+					Nach wir alle Entities abgebildet haben, wir nutzen Spring Data JPA um ein Repository zu aufsetzen.
+					<pre>
+						<code class="language-java">
+						public interface OrangeRepository extends JpaRepository&lt;Orange, Long&gt; {
+
+						}
+						</code>
+					</pre>
+					Und dann in die Controller Klasse, nachdem wir es mit @Autowired annotiert haben, wir können echt die Methoden implementieren.
+					<pre>
+						<code class="language-java">
+						@Autowired
+						OrangeRepository repo;
+
+						@RequestMapping(value="oranges/{id}", RequestMethod.GET)
+						public Orange get(@PathVariable Integer id){
+							return repo.findOne(id);
+						}
+
+						@RequestMapping(value="oranges/{id}", RequestMethod.PUT)
+						public Orange update(@PathVariable Integer id, @RequestBody Orange newOrange){
+							Orange existingOrange = repo.findOne(id);
+							BeanUtils.copyProperties(newOrange, existingOrange);
+							return repo.saveAndFlush(existingOrange);
+						}
+
+						</code>
+					</pre>
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					SpringBoot Anwendungen testen
+				</h3>
+				<p>
+					Zuerst man muss spring-boot-starter-test in die pom Datei hinzufügen. Es enthält schon auch JUnit, Hamcrest, Mockito und Spring Test tools. (Wir müssen auch aufpassen, dass das "scope" für diese Abhängigkeit "test" sein soll).
+
+					Der standard Test, der war von Maven generiert, ist aber nicht entsprechend unsere Spring Boot Anwendung.
+
+					Auf Testmethode -> @Test
+
+					Natürlich, wir können auch Tests von CLI ausführen durch den "mvn test" Befehl. Auch können wir alle die Werzeuge des Mockito Frameworks, wie @Mock und @InjectMocks. Man muss bemerken in die @Before setup() Methode, die folgende code zu einstellen:
+					<pre>
+						<code class="language-java">
+							MockitoAnnotations.initMocks(this);
+						</code>
+					</pre>
+				</p>
+				<p>
+					<b>Integrationstest</b> <br>
+					Wenn wir etwas Integrationstests machen wollen, müssen wir ein paar Sache tun:
+					<ol>
+						<li>
+							Am Beginn der Klasse, müssen wir diese Annotation einsetzen:
+							<pre>
+								<code class="language-java">
+									@RunWith(SpringJUnit4ClassRunner.class)
+								</code>
+							</pre>
+						</li>
+						<li>
+							Noch am Beginn der Klasse, müssen wir diese andere Annotation stellen:
+							<code> @SpringApplicationConfiguration </code>
+							Diese Annotation treibt Spring um unsere ganze Anwendung laden, dass ist deutlich notwendig damit wir einen Integrationsten ausführen kann. Die Teste sind noch wie in Unit Tests weitergetragt, da sind Komponenten immer wie Objekte überprüft (z.B. nicht wie REST Services). Wir laden aber den ganze Anwendung an statt einzige Komponenten.
+							<pre>
+								<code class="language-java">
+									@RunWith(SpringJUnit4ClassRunner.class)
+									@SpringApplicationConfiguration(App.class)
+									public class OrangeIntegrationTest {
+
+										@Autowired
+										private OrangeRepository repo;
+
+										@Test
+										public void test_findAll_succedes(){
+											List&lt;Oranges&gt; oranges = repo.findAll();
+											assertThat(oranges.size(), is(greaterThanOrEqualTo(0)))
+										}
+
+									}
+								</code>
+							</pre>
+						</li>
+					</ol>
+				</p>
+
+				<p>
+					<b>Web Integrationstest</b> <br>
+					Diese sind Tests, die unsere Anwendung echt black-box testen (z.B. Die ganze Anwendung wird geladen und dann echt REST Abrufen ausgeführt werden). Es gibt hier ein einfach Beispiel:
+					<pre>
+						<code class="language-java">
+							@RunWith(SpringJUnitRunnerClassRunner.class)
+							@SpringApplicationConfiguration(App.class)
+							@WebIntegrationTest
+							public class OrangeWebIntegrationTest {
+
+								@Test
+								public void test_listAll_succeeds(){
+
+									RestTemplate restTemplate = new RestTemplate();
+									ResponseEntity&lt;String&gt; response = restTemplate.getForEntity("some_URL", String.class);
+
+									assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+
+									ObjectMapper mapper = new ObjectMapper();
+									JsonNode responseJson = mapper.readTree(response.getBody());
+
+									assertThat(responseJson.isMissingNode(), is(false));
+									assertThat(responseJson.toString(), equalTo("[]"));
+
+								}
+
+							}
+						</code>
+					</pre>
+				</p>
+			</section>
+		</article>
+	</body>
+</html>

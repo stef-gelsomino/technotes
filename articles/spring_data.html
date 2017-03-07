@@ -1,0 +1,1027 @@
+<html>
+	<head>
+		<title> Mein persoenlich Wiki auf Deutsch! </title>
+		<link rel="stylesheet" type="text/css" href="../prism_2.css">
+		<link rel="stylesheet" type="text/css" href="../style.css">
+	</head>
+	<body>
+		<script type="text/javascript" src="../prism_2.js"></script>
+		<h1><a href="../index.html">Architektur und Entwicklung</a></h1>
+		<nav>
+		    <a href="microservices.html"> Microservices </a> &nbsp;
+		    <a href="mongodb.html"> MongoDB </a> &nbsp;
+		    <a href="http.html"> HTTP </a> &nbsp;
+
+		    <a href="docker.html"> Docker </a> &nbsp;
+		    <a href="git.html"> Git </a> &nbsp;
+		    <a href="ansible.html"> Ansible </a> &nbsp;
+		    <a href="jenkins.html"> Jenkins </a> &nbsp;
+
+		    <a href="java8.html"> Java 8 </a> &nbsp;
+		    <a href="go.html"> Go </a> &nbsp;
+		    <a href="bash.html"> Bash </a> &nbsp;
+		    <a href="hibernate.html"> Hibernate </a> &nbsp;
+		    <a href="maven.html"> Maven </a> &nbsp;
+		    <a href="spring.html"> Spring </a> &nbsp;
+		    <a href="spring_data.html"> Spring Data </a> &nbsp;
+		    <a href="tdd.html"> TDD </a> &nbsp;
+		    <a href="python.html"> Python </a> &nbsp;
+		</nav>
+
+		<article>
+			<header>
+				<h2>
+					Spring Data JPA
+				</h2>
+				<p>
+					<hr>
+				</p>
+			</header>
+
+			<section id="introduction">
+				<h3>
+					Einstieg zu Spring Data
+				</h3>
+				<p>
+					Spring Data automatisch stellt dein Repository zu Verfügung: man muss nur eine Schnittstelle schreiben, die <span class="to-translate">extends</span> die JpaRepository&lt;MyObject, Long&gt; Schnittstelle. Eine Query DSL ist dann benutzt um die Abfrage zu ausdrücken.
+				</p>
+				<p>
+					Es gibt verschiedene Frameworks um mit Daten zu arbeiten. Und sie sind all unterschiedlich passend zu bestimmten Zwecke.
+					<table>
+						<tr>
+							<th>Zweck</th>
+							<th>Framework</th>
+						</tr>
+						<tr>
+							<td>Bedürfnis nach SQL pur; Einfach DB</td>
+							<td>Spring JDBC</td>
+						</tr>
+						<tr>
+							<td>Große Aktualisierungsmenge oder komplizierte Beziehungen</td>
+							<td>JEE 7 Batch; Spring Batch; Hadoop</td>
+						</tr>
+						<tr>
+							<td>Daten ohne gigantische Beziehungsmenge</td>
+							<td>ORM: JPA; Hibernate; Spring Data JPA</td>
+						</tr>
+					</table>
+
+					Spring Data eigentlich enthält viele anderes Projekte, z.B. Spring Data Redis, Spring Data MongoDB oder <a class="to-do" href="#">Spring Data REST</a>. Um Spring Data zu installieren, man muss nur einfach die Abhängigkeit in der pom einfügen.
+					<pre>
+						<code class="language-xml">
+							&lt;dependency&gt;
+							    &lt;groupId&gt;
+							    	org.springframework.data
+							    &lt;/groupId&gt;
+							    &lt;artifactId&gt;
+							    	spring-data-jpa
+							    &lt;/artifactId&gt;
+							    &lt;!-- falls wir nicht Boot nutzen --&gt;
+							    &lt;version&gt;
+							    	1.7.1.RELEASE
+							    &lt;/version&gt;
+							&lt;/dependency&gt;
+						</code>
+					</pre>
+					Dann letzte Schritt, die @EnableJpaRepositories Annotation in unsere Konfigurationsklasse hinzufügen, wo wir normalerweise stellen andere Datenbanksbezogene Konfiguration (z.B. Datasource, Transaction Manager und so weiter).
+
+					Dadurch bekommen wir automatisch verschiedene Methode, wie z.B. findAll(), findOne(), delete() und so weiter.
+				</p>
+			</section>
+			<section id="repositories">
+				<h3>
+					Spring Data JPA Repositories
+				</h3>
+				<p>
+					Ein Spring Repository (@Repository) kann (muss aber nicht) Schnittstellen sein, sodass mann kann verschiedene Implementationen wechseln, ohne den "client" Code zu ändern. Mann kann so auch einen "hybrid data layer" implementieren. <br>
+					Architektur Übersicht: <br>
+					<code class="mono-box">
+						Controller --> Service --> (Repository <<>> Entity) --> DB Table <br>
+						<<>> "one-to-one" <br>
+						--> "accesses any" <br>
+					</code>
+					Ein JPA Repository:
+					<ul>
+						<li>ist eine Schnittstelle, keine Klasse</li>
+						<li>ist mit nur ein Entity verbunden</li>
+						<li>ist spezifisch zu einen DAO Vetrag</li>
+					</ul>
+					So wir können ein Repository wie dies
+					<pre>
+						<code class="language-java">
+							@Repository
+							public class MyRepository {
+								@PersistentceContext
+								private EntityManager entityManager;
+
+								public MyObject create(MyObject object){
+									entityManager.persist(object);
+									entityManager.flush();
+									return object;
+								}
+
+								public MyObject update(MyObject object){
+									object = entityManager.merge(object);
+									entityManager.flush();
+									return object;
+								}
+							}
+						</code>
+					</pre>
+					in dies Repository verwandeln
+					<pre>
+						<code class="language-java">
+							public interface MyRepository extends JpaRepository&lt;MyObject, IdType&gt; {
+								/*
+								 * implicitly provided:
+								 * save(MyObject)
+								 * findOne(IdType)
+								 * delete(MyObject)
+								 */
+							}
+						</code>
+					</pre>
+					Die standardmäßige Repository stellt nur die CRUD Operationen zu Verfügung. Außerdem, kriegen wir einige zusätzliche Funktionalitaten:
+					<ul>
+						<li>Query DSL</li>
+						<li>Paging/sorting</li>
+						<li>
+							Helpers <br>
+							<ul>
+								<li>count() (Nummer von DB Tabelle)</li>
+								<li>exists(Long id) (Ob einen Rekord ist in der DB oder nicht)</li>
+								<li>flush() (flush deine Änderungen vom PersistenceContext zur Datenbank, vor dem Ende der Transaktion)</li>
+								<li>deleteInBatch(Iterable entities)</li>
+							</ul>
+						</li>
+					</ul>
+					Man kann auch eine Entity Superclass nutzen, um Felder zu einlegen, die gehören alle "Data" Klassen (z.B. Audit Informationen). Diese hierarchische Struktur kann in beide Dao und Entities Schichten eingeleitet werden. <br>
+					Tippen zur alten Repositories Refaktorisierung:<br>
+					<ol>
+						<li>
+							Erreichenden Tests gegen Daos/Entities existieren
+						</li>
+						<li>
+							Eine Schnittstelle kreieren, mit einem entsprechende unterschiedliche Name (MyRepository -> MyJpaRepository)
+						</li>
+						<li>
+							Mann kann alle die client Code direkt refaktorizieren oder proxy <br>
+							Client Code --> MyOldRepository --> MyJpaRepository
+						</li>
+					</ol>
+					Wenn wir die "Proxy" Ansatz nutzen, müssen wir nicht die client Code sofort ändern, weil beide Schnittstellen zu Verfügung stehen.
+				</p>
+				<p>
+					<b>Erfolgsmodell</b>
+					<ul>
+						<li>entsprechenden Namen für Packages</li>
+						<li>-Repository Suffix zu jede Repository Klasse</li>
+						<li>@Repository Annotation ist nicht pflichtig, die @EnableJpaRepositories ist schon genug. Wir können auch die genaue base-package angeben, um Leistungen der Durchsuchung zu verbessern. <br>
+							Allerdings, können wir um folgerichtig zu bleiben, auch solche Annotation einlegen. Das soll kein Problem erzeugen.</li>
+					</ul>
+				</p>
+			</section>
+
+			<section id="dsl-query-language">
+				<h3>
+					DSL für Abfragen von Spring Data
+				</h3>
+				<p>
+					Typische Vorteile sind Wartbarkeit Erhöhung wegen der Reduzierung vom Code und Überprüfung der Abfragen am <i>Startup</i> anstatt der Laufzeit.
+					Was ist das eigentlich? Es ist eine Darstellung von eine Abfrage in einer Methodenname. Anders ausgedrückt, können wir unsere gewünschte Abfrage direkt in der Methodenname, wie im folgende Beispiel.
+					<pre>
+						<code class="language-java">
+							// Andere Quelltext
+							public class MyObject {
+								String name;
+							}
+
+							// Im Repository Quelltext
+							public interface MyRepository extends JpaRepository&lt;MyObject, IdType&gt; {
+								List&lt;MyObject&gt; findByNameLike(String aName);
+							}
+						</code>
+					</pre>
+					Das ist gleich äquivalent zu diese SQL Abgfrage:
+					<code class="mono-box">
+						SELECT * <br>
+						FROM MyObject <br>
+						WHERE name like 'aName'; <br>
+					</code>
+					Achtung: falls wir es brauchen, müssen wir selbst die '%' Zeichen fürs like einfügen.
+				</p>
+				<p>
+					Die Syntax von DSL-basierte Abfragen (so genannten <i>Query methods</i>) braucht eine besondere Struktur:
+					<ul>
+						<li>
+							Name der Methode muss die folgende Struktur entsprechen:
+							<ul>
+								<li>find ... By</li>
+								<li>query ... By</li>
+								<li>read ... By</li>
+								<li>count ... By</li>
+								<li>get ... By</li>
+							</ul>
+							wo man muss Felder von Entities nach dem "By" eingeben. Man kann auch mehrere Kombinationen machen mit "And" und "Or". <br>
+							Der Rückgabetyp ist vom deklarierte Typ genommen und kann entweder das Objekt oder einen Collection von dieser Objekte sein (z.B. MyObject oder List&lt;MyObject&gt;).
+							Im anderen Kontekte kann es anders sein, z.B. eine "count" Operation wird Long als Rückgabetyp haben.
+						</li>
+					</ul>
+				</p>
+				<p>
+					Kombinationen mit Logische Operatoren: <br>
+					And und Or (Achtung: <u>keine Erwartungen auf die Anwendungsordnung von "Or" und "And"</u>).
+					<pre>
+						<code class="language-java">
+							findByNameAndAge(String name, Integer age);
+							findByNameOrSurname(String name, String surname);
+						</code>
+					</pre>
+					Is, Equals, Not <br>
+					<pre>
+						<code class="language-java">
+							findByNameIs("John");
+							findByNameEquals("John");
+							findByName("John"); // same as Is and Equals
+
+							findByNameNot("John");
+						</code>
+					</pre>
+					Like, NotLike <br>
+					<pre>
+						<code class="language-java">
+							findByNameLike("John%");
+							findByNameNotLike("John%");
+						</code>
+					</pre>
+					StartingWith, EndingWith, Containing <br>
+					<pre>
+						<code class="language-java">
+							findByNameStartingWith("John"); // John%
+							findByNameEndingWith("John");   // %John
+							findByNameContaining("John");   // %John%
+						</code>
+					</pre>
+					StartingWith, EndingWith, Containing <br>
+					<pre>
+						<code class="language-java">
+							findByAgeLessThan(18);
+							findByAgeLessThanEqual(18);
+							findByAgeGreaterThan(18);
+							findByAgeGreaterThanEqual(18);
+							findByAgeGreaterThanAndWeightLessThanEqual(18, 60);
+						</code>
+					</pre>
+					Daten mit Before, After, Between <br>
+					<pre>
+						<code class="language-java">
+							findByDateBefore(date);
+							findByDateAfter(date);
+							findByDateBetween(startDate, endDate);
+						</code>
+					</pre>
+					Booleanische Felder <br>
+					<pre>
+						<code class="language-java">
+							findByFlagTrue();
+							findByFlagFalse();
+						</code>
+					</pre>
+					Null verwalten <br>
+					<pre>
+						<code class="language-java">
+							findByAddressIsNull();
+
+							findByAddressNotNull();
+							findByAddressIsNotNull();	// same as NotNull
+						</code>
+					</pre>
+					In, NotIn <br>
+					<pre>
+						<code class="language-java">
+							findByAddressIn(Collection&lt;Address&gt; addresses);
+							findByAddressNotIn(Collection&lt;Address&gt; addresses);
+						</code>
+					</pre>
+					Beachten, dass wir können auch nur ein Feld von der Adresse nutzen, z.B.
+					<pre>
+						<code class="language-java">
+							/*
+							 * Person (0..*)  ----  (1) Address
+							 *
+							 * AddressStreet -> matching parameter addressNames
+							 * with actual street attribute from Address object.
+							 */
+							List&lt;Person&gt; findByAddressStreetIn(Collection&lt;String&gt; addressNames);
+						</code>
+					</pre>
+					Wir können die IgnoreCase Schlüsselwort in Kombination mit jede andere String Schlüsselwort benutzen.
+					<pre>
+						<code class="language-java">
+							findByNameIgnoreCase("John");
+							findByAddressEndingWithIgnoreCase("Platz");
+						</code>
+					</pre>
+					OrderBy
+					<pre>
+						<code class="language-java">
+							findByNameOrderByCityAsc();
+							findByNameOrderByCityDesc();
+						</code>
+					</pre>
+					Abfragenergebnisse begrenzen: First, Top und Distinct
+					<pre>
+						<code class="language-java">
+							findFirstByName("Al");
+							findTop5ByLastname("White");
+							findDistinctPersonByAddressLike("Platz");
+						</code>
+					</pre>
+				</p>
+			</section>
+
+			<section id="jpql-queries">
+				<h3>
+					Nutzung von JPQL Abfragen.
+				</h3>
+				<p>
+					Man kann noch JPQL Abfragen nutzen, aber in Kombination mit Spring Data, bedeutet, dass das Framework wird die Implementierung für uns generieren.
+					Das ist der Fall, wenn eine Abfrage ziemlich kompliziert ist oder wenn einen zu lang Methodenname würde generiert werden. Auch sehr nutzlich, während Refaktorisierungen, falls es gibt viel JPQL schon verfügbar.
+
+					<b>Die Query Annotation</b><br>
+					Der erste Ansatz ist mit der @Query Annotation. Wenn wir diese Annotation nutzen, Spring wird den Methodenname ignorieren, d.h. Spring wird die Methode nicht als eine DSL Abfrage behandeln.
+
+					<pre>
+						<code class="language-java">
+							@Query("select c from Car c where c.price >= :low and c.price >= :high and c.fuelType like :fuel")
+							List&lt;Car&gt; queryByPriceRangeAndFuelType(@Param("low") BigDecimal low, @Param("high") BigDecimal high, @Param("fuel") String fuel);
+						</code>
+					</pre>
+
+					<b>@Query Annotation</b> <br>
+					Warum?
+					<ol>
+						<li>Wiederverwendung von bestehendem Code</li>
+						<li>Nutzung von fortgeschrittene Fuktionalitaten (viele "and" oder "or")</li>
+						<li>"Eager loading" verwalten, mit JPQL "fetch" Schlüsselwort</li>
+					</ol>
+					@Query Optionen:
+					<ol>
+						<li>
+							benannten Parameter (":name" anstatt "?1")
+						</li>
+						<li>
+							Verbessert JPQL Syntax <br> z.B. @Query("select c from Car c where c.name like %?1").
+						</li>
+						<li>
+							Native SQL Abfrage <br>
+							z.B. @Query("select * from Car where name = ?0", nativeQuery = true).
+						</li>
+						<li>
+							"Modifying" Abfragen <br>
+							@Modifying <br>
+							@Query("update Car c set c.name = ?1") <br>
+							int updateByName(String name)
+						</li>
+					</ol>
+
+					<b>JPA "Named Queries" und "Native Named Queries"</b> <br>
+					Verwendung von JPA NamedQueries ist auch unterstützt
+					<pre>
+						<code class="language-java">
+							@Entity
+							@NamedQuery(name = "Car.namedFindAllModelsByType"
+										query = "select c from Car c where c.modelType = :type")
+							public class Car {
+								...
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="language-java">
+							public interface CarJpaRepository extends JpaRepository&lt;Car, Long&gt; {
+								List&lt;Car&gt; namedFindAllModelsByType(@Param("type") String type);
+							}
+						</code>
+					</pre>
+					Der Methodenname muss gleich das @NamedQuery.name Feld sein und Parameter müssen auch passen (:type ins NamedQuery und @Param("type") in der Methode).
+					Ersatzweise, kann man die @Query ausdrücklich durch den Name verbinden:
+					<pre>
+						<code class="language-java">
+							@Query(name = "Car.namedFindAllModelsByType")
+							List&lt;Car&gt; findAllCarsByType(@Param("name") String type)
+						</code>
+					</pre>
+					In diesem fall, müssen die Namen nicht pflichtig gleich sein. <br>
+					Außerdem, ein NamedNativeQuery kann auf die Entity Klasse eingefügt werden:
+					<pre>
+						<code class="language-java">
+							@Entity
+							@NamedNativeQuery(name = "Car.getAllSedan",
+											 query = "..."
+											 resultClass = Car.class)
+							public class Car {
+								...
+							}
+						</code>
+					</pre>
+					Die Parameter (die sind "?" in der SQL) sind automatisch mit der Dao Methode verbunden.
+				</p>
+
+				<p>
+					Wo soll man die Abfragen eigentlich stellen?
+					<ul>
+						<li> Normalerweise in der Dao Klasse (weil Abfragen können mehrere Entity umfassen). </li>
+						<li>Kleine und einfache Abfragen, könnten als NamedQuery geschrieben werden (aber man muss auf der Konsistenz passen!)</li>
+					</ul>
+				</p>
+				<p>
+					Es gibt eine besondere Ordnung, die Spring verwendet um Methoden zu nutzen. <br>
+					<ol>
+						<li>
+							Methoden mit @Query Annotation (auch wenn sie hat einen DSL Name, er ist ignoriert).
+						</li>
+						<li>
+							Methoden, die haben einen Name gleich wie der Name einer NamedQuery oder einer NativeNamedQuery.
+						</li>
+						<li>
+							Methoden, die folgen die DSL Namenstruktur.
+						</li>
+					</ol>
+				</p>
+			</section>
+
+			<section id="advanced-features">
+				<h3>
+					Fortgeschrittene Funktionalitaten
+				</h3>
+				<p>
+					<b>Paging und Sorting</b><br>
+					Die Superclass von JpaRepository heißt eigentlich PagingAndSortingRepository die stellt die folgende zwei Methoden zu Verfügung:
+					<pre>
+						<code class="language-java">
+							Iterable&lt;T&gt; findAll(Sort sort);
+							Page&lt;T&gt; findAll(Pageable pageable);
+						</code>
+					</pre>
+					Zum Beispiel, die obige Code wird:
+					<pre>
+						<code class="language-java">
+							@Query("select c from Car c where c.price >= :low and c.price >= :high and c.fuelType like :fuel")
+							Page&lt;Car&gt; queryByPriceRangeAndFuelType(@Param("low") BigDecimal low, @Param("high") BigDecimal high, @Param("fuel") String fuel, Pageable page);
+						</code>
+					</pre>
+					der client Code muss ein Pageable Objekt eingeben. Solches Objekt can in diese Weise kreiert werden:
+					<pre>
+						<code class="language-java">
+							int pageNumber = 0;
+							int pageSize = 20;
+							Pageable page = new PageRequest(pageNumber, pageSize);
+							repository.queryByPriceRangeAndFuelType(low, high, fuel, page);
+						</code>
+					</pre>
+					Dann wir können das Page Objekt nutzen, das viele Methoden hat (z.B. getContent(), getSize() und so weiter). <br>
+					Wir können nur ein von Page und Sort zum gleichem Zeit verwenden. Wenn wir beides brauchen, müssen wir die Sort von dem Page Objekt aufsetzen. <br>
+					Es gibt auch ein Konstruktor von Page, die wird ein Sort Objekt annehmen.
+					<pre>
+						<code class="language-java">
+							Sort sort = new Sort(Sort.Direction.ASC, "name");
+							int pageNumber = 0;
+							int pageSize = 20;
+							Pageable page = new PageRequest(pageNumber, pageSize, sort);
+							repository.queryByPriceRangeAndFuelType(low, high, fuel, page);
+						</code>
+					</pre>
+
+				</p>
+				<p>
+					<b>Custom Repositories</b><br>
+					Falls wir wollen die standarmäßige Implementierung ersetzen, müssen wir
+					<ol>
+						<li>eine Schnittstelle (z.B. MyJpaRepositoryCustom) für unsere custom Repository erstellen.</li>
+						<li>normalerweise eine (z.B. MyJpaRepository) Schnittstelle schreiben. Diese muss auch die Schnittstelle am Punk 1. <span class="to-translate">extend</span></li>
+						<li>die Klasse die enthalt die Implementierung (z.B. MyJpaRepositoryImpl) muss die 2. implementieren und der Name muss wie in 1. sein, plus der Impl Suffix</li>
+					</ol>
+					Spring erkennt den "Impl" Suffix für custom Repositories. Wir können dies durch Konfiguration ändern,
+				</p>
+				<p>
+					<b>Auditing Unterstützung</b><br>
+					Spring Data JPA stellt spezielle Annotationen um Auditing zu unterstützen: @CreatedBy, @CreatedDate, @LastModifiedBy, @LastModifiedDate. <br>
+					Sie müssen die genaue Felder in der Entity passen:
+					<pre>
+						<code class="language-java">
+							@Entity
+							public class Car {
+								@CreatedBy
+								User user;
+
+								@CreatedDate
+								private DateTime createdDate;
+							}
+						</code>
+					</pre>
+					Für "By" Annotationen es geht auch um Sicherheit: man kann die AuditorAware&lt;User&gt; Schnittstelle implementieren, um die korrekt User zu zugreifen. <br>
+					Um zu Auditing aktivieren:
+					<pre>
+						<code class="language-java">
+							public class SecurityAuditorAware implements AuditorAware&lt;User&gt; {
+								public User getCurrentAuditor(){
+									// ...
+									return user;
+								}
+							}
+
+							@Configuration
+							@EnableJpaAuditing
+							public class Config {
+								@Bean
+								public AuditorAware&lt;User&gt; auditorProvider(){
+									return new SecurityAuditorAware();
+								}
+							}
+						</code>
+					</pre>
+				</p>
+				<p>
+					<b>Locking</b><br>
+					Man kann zwischen Optimistic und Pessimistic Lock auswählen. Wir brauchen nur ein extra Feld in unsere Entity
+					<pre>
+						<code class="language-java">
+							@Entity
+							public class Car {
+								@Version
+								private int version;
+							}
+						</code>
+					</pre>
+					und eine zusätzliche Annotation auf unsere Querymethode
+					<pre>
+						<code class="language-java">
+							@Lock(LockModeType.PESSIMISTIC_WRITE)
+							List&lt;Car&gt; findByModelTypeIn(List&lt;String&gt; types);
+						</code>
+					</pre>
+					Mit optimistic Locking wir müssen die mögliche Exceptions verwalten, aber es geht schneller. Zum Gegenteil, wenn wir pessimistic Locking verwenden, wir kriegen weniger Sorgen im client Code aber es gibt das Risiko um Engpäße zu erstellen. <br>
+					Auf jedem Fall:
+					<ul>
+						<li>Methoden, die sind mit @Lock annotiert, müssen in einer Transaktion ausgeführt werden.</li>
+						<li>Wir können die Spring Data default Methoden übergehen, um die Lock Strategie zu ändern.</li>
+					</ul>
+				</p>
+			</section>
+
+		</article>
+
+		<article>
+			<header>
+				<h2>
+					Spring Data REST
+				</h2>
+				<p>
+					<hr>
+				</p>
+			</header>
+
+			<section>
+				<h3>
+					Einstieg zu Spring Data REST
+				</h3>
+				<p>
+					Mit Spring Data REST man kann die Funktionalitaten wie REST Services veröffentlichen, die sind mit Spring Data implementiert. <br>
+					Um dieses Teil des Frameworks zu aktivieren, man muss nur einfach die entsprechende Abhängigkeit hinzufügen.
+					<pre>
+						<code class="language-xml">
+							&lt;dependency&gt;
+							    &lt;groupId&gt;
+							    	org.springframework.boot
+							    &lt;/groupId&gt;
+							    &lt;artifactId&gt;
+							    	spring-boot-starter-data-rest
+							    &lt;/artifactId&gt;
+							&lt;/dependency&gt;
+						</code>
+					</pre>
+					oder, nur falls wir verwenden Spring Boot nicht, wir müssen zwei Sachen tun.
+					<ol>
+						<li>
+							Abhängigkeit:
+							<pre>
+								<code class="language-xml">
+									&lt;dependency&gt;
+									    &lt;groupId&gt;
+									    	org.springframework.data
+									    &lt;/groupId&gt;
+									    &lt;artifactId&gt;
+									    	spring-data-rest-webmvc
+									    &lt;/artifactId&gt;
+									    &lt;version&gt;
+									    	2.3.0.RELEASE
+									    &lt;/version&gt;
+									&lt;/dependency&gt;
+								</code>
+							</pre>
+						</li>
+						<li>
+							Konfiguration:
+							<pre>
+								<code class="language-java">
+									@Configuration
+									public class CustomeRESTConfig extends RepositoryRestMvcConfiguration {
+										@Override
+										public RepositoryRestConfiguration config(){
+											RepositoryRestConfiguration config = super.config();
+											config.setBasePath("/api");
+											return config;
+										}
+									}
+								</code>
+							</pre>
+						</li>
+					</ol>
+					Wenn wir Boot eigentlich verwenden und wollen die API unter /api zugreifen, wir müssen nur in der application.properties Datei:
+					<code class="mono-box">
+						spring.data.rest.baseUri=/api
+					</code>
+					Wenn wir die baseUri zugreifen (z.B. cUrl oder Postman) wir bekommen eine Antwort die enthält weitere Informationen und Linken (entsprechende HATEOAS). <br>
+					Viele von die Spring Data Technologie sind untestützt, z.B. Spring Data MongoDB, Spring Data Cassandra und so weiter. Grundsätzlich sind unterstützt, alle die "Spring Data Commons" basiert sind. Zum Beispiel, Spring Data JDBC Extensions ist im Moment nicht unterstützt.
+				</p>
+				<p>
+					<b>RESTful Repositories</b> <br>
+					Spring Data REST einfach produziert endpoints von Repositories. Wir bekommen alle die HTTP Verben für unsere Repository mit <a href="http://stateless.co/hal_specification.html">HAL</a> Informationen und <a href="http://alps.io/">ALPS</a> metadata. <br>
+					Spring Data erstellt ein endpoint jede Repository und der URL ist die Plural des Ressource Entity Names. Z.B. für ein Customer Entity, es stellt /customers zu Verfügung.
+					Außerdem, bekommen wir ein endpoint für jede DSQ-Query Methode in unsere Repository, unter den /search URL. <br>
+					Der REST Ressource Pattern: jede Entity ist eine Ressource, deshalb einen URL ist dafür ergestellt unter die restBaseUri, der wir gewählt haben. <br>
+					<code class="mono-box">
+						http(s)://server:port/restBaseUri/<i class="background-color: ##228b22">&lt;pluralized_lowercase_entity_name&gt;</i>
+					</code>
+					Falls wir wollen die path individualisieren (d.h. der grüne Teil im obige URL), dann stellen wir eine entsprechende Annotation in unserem Repository Schnittstelle.
+					<pre>
+						<code class="language-java">
+							@RepositoryRestResource(path = "clients")
+							public interface CustomerRepository extends JpaRepository&lt;Customer, Long&gt; {
+								// ...
+							}
+						</code>
+					</pre>
+					so dann bekommen wir http://localhost:8080/api/<b>clients</b> anstatt http://localhost:8080/api/<b>customers</b> <br>
+					Hier ist wie Spring Data REST verbindet Methoden zu passenden HTTP Verben: <br>
+					<table>
+						<tr><th>HTTP Verb</th><th>URL</th><th>Backing Method</th></tr>
+						<tr><td>GET</td><td>/api/customers</td><td>findAll(...)</td></tr>
+						<tr><td>GET</td><td>/api/customers/{id}</td><td>findOne(...)</td></tr>
+						<tr><td>POST</td><td>/api/customers</td><td>save(...)</td></tr>
+						<tr><td>PUT</td><td>/api/customers/{id}</td><td>save(...)</td></tr>
+						<tr><td>PATCH</td><td>/api/customers/{id}</td><td>save(...)</td></tr>
+						<tr><td>DELETE</td><td>/api/customers/{id}</td><td>delete(...)</td></tr>
+					</table>
+					Mit PATCH man kann nur einen Teil von Felder von einer Ressource übersenden. Z.B. um die Alter der Kunde mit ID 123:
+					PATCH http://localhost:8080/api/customers/123 <br>
+					<pre>
+						<code class="language-json">
+							{
+								age: 36
+							}
+						</code>
+					</pre>
+					Wir bekommen 204 No Content Antwort, die ist genau richtig für PUT, PATCH und DELETE Anfragen.
+					Um unsere Services zu individualisieren, steht die schon genannten Annotation zu Verfügung: @RepositoryRestResource <br>
+					Diese Annotation hat viele Felder, die sehr nutzlich für uns sein können.
+					<ul>
+						<li>
+							path <br>
+							Manchmal, wir wollen ein angepasst Plural, z.B. /people anstatt /persons
+						</li>
+						<li>
+							collectionResourceRel <br>
+							Wenn wir findAll aufrufen, dann die Collection ist so genannt (z.B. auch "people").
+						</li>
+						<li>
+							exported<br>
+							Um ein Repository nicht zu veröffentichen (z.B. exported = false).
+						</li>
+					</ul>
+					Verbindungen zwischen Entity Klassen. In jede JSON Antwort, gibt es ein _link Feld wo verschiedene link sind sammelt. Jede von diesen Linken übereinstimmt mit eine andere Ressource (z.B. @ManyToOne) die .
+					Durch ein PUT zum Link, wir können den Link verändern (das heißt, wir können den Wert ändern, nicht den Link selbst).
+					Ein Beispiel: um der Firma einer Person zu verändern (zur Firma mit ID=4), wir machen ein PUT zu /people mit diesem Payload:
+					<pre>
+						<code class="language-json">
+							{
+								"_links": {
+										"firma": {
+											"href": "http://localhost:8080/api/firma/4",
+											"rel": "firma"
+										}
+								}
+							}
+						</code>
+					</pre>
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					Payload individualisieren
+				</h3>
+				<p>
+					<b>das standardmäßige Payload Springs</b><br>
+					Wenn wir wollen eine bestimmte Ressource abrufen, manchmal wollen wir nicht mehrere Aufrufen machen.
+					Um dieses Ziel zu erreichen, nutzen wir s.g. Projections, d.h. wir können mit der @Projection Annotation weniger oder mehr Felder in unsere JSON zusammenfassen. Damit es funktionieren kann, man muss diese Regeln folgen:
+					<ul>
+						<li>
+							Das Projection muss in dem gleiche Verzeichnis legen (oder Unterverzeichnis), wo schon die andere "Model" Klassen befinden sich. z.B. myproject.model.projections.
+						</li>
+					</ul>
+
+					Wir erstellen eine Schnittstelle z.B.
+					<pre>
+						<code class="language-java">
+							@Projection(name = "customerDetail", types = {Customer.class})
+							public class CustomerDetail {
+								String getFirstName();
+								String getLastName();
+								String getNationality();
+								Address address;
+							}
+						</code>
+					</pre>
+					Die Methoden in CustomerDetail entsprechen die Methoden in der Customer Schnittstelle. Wir werden noch durch die /customers endpoint nutzen, aber mit dem zusätzliche Parameter "projection", z.B.
+					<code class="mono-box">
+						http://localhost:8080/api/customers?projection=customerDetail
+					</code>
+					Zusätzliche Objekte sind automatisch als eingebettete JSON genommen (z.B. Address). <br>
+					Wenn man im Client direkt am Anfang Projections nutzt, kann man Problemen mit Namenänderungen vermeiden. Zu diesem Zweck, nutzt man die so genannten View Projections:
+					<pre>
+						<code class="language-java">
+							@Projection(name = "customerDetail", types = {Customer.class})
+							public class CustomerDetail {
+								@Value("#{target.name}")
+								String getFirstName();	// doesn't need to match
+								String getLastName();
+								String getNationality();
+								Address address;
+							}
+						</code>
+					</pre>
+					Wo "target" beziehet auf usere Customer Klasse. Dadurch die Kopplung zum Name der Felder ist weg.
+					Mit SPEL (Spring Expression Language) wir können auch Kombinationen von verschiedene Felder generieren. Z.B. einen "full name"
+					<pre>
+						<code class="language-java">
+							@Value("#{target.firstName.split(' ')[0]} #{taget.lastName}")
+							String getFullName();
+						</code>
+					</pre>
+					Mit SPEL wir können auch die Objecktsgraph durchsuchen. <br>
+					Was wenn wir wollen ein Projection als default für eines unseres Endpoints? Projection Excerpts! <br>
+					Wir müssen nur einfach eine Annotation auf der entsprechende Repository Schnittstelle stellen.
+					<pre>
+						<code class="language-java">
+							@RepositoryRestResource(excerptProjection = CustomerDetail.class)
+							public interface CustomerRepository extends JpaRepository&lt;Customer, Long&gt; {
+								// ...
+							}
+						</code>
+					</pre>
+					Allerdings, dieses Projection gilt nur für Collections, nicht wenn man ein einziger Customer abruft. Wenn es sich um ein einzige Ressource handelt, wir müssen noch den projection parameter im URL nutzen.
+					Vor- und Nachteile von Projection:
+					<table>
+						<tr>
+							<th>
+								Nachteile
+							</th>
+							<th>
+								Vorteile
+							</th>
+						</tr>
+						<tr>
+							<td>
+								Read only
+							</td>
+							<td>
+								Customizing payload
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Clients can ignore them
+							</td>
+							<td>
+								Buffer entity changes (decoupling)
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Not a service layer
+							</td>
+							<td>
+								Minimal coding
+							</td>
+						</tr>
+					</table>
+					Um das Payload zu verändern, man kann direkt die Einstellungen von Jackson setzen. Jackson stellt ein paar nutzliche Annotationen zu Verfügung, z.B. @JsonIgnore (z.B. @JsonIgnore private String passaword).
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					Fortgeschrittene Funktionalitäten
+				</h3>
+				<p>
+					<b>die REST API sichern</b> <br>
+					Eine REST API ist von verschiedenen Client zugegriffen: Handys, Browser, andere API und so weiter. Außerdem, sind beides Client und Server <i>stateless</i>, das heißt, die wir können in diesem Kontext Cookies other ähnlichen Zeugen verwenden. <br>
+					Darüberhinaus, hat unsere REST API keine Benutzeroberfläche, wo man soll Anmeldedaten hinzufügen. <br>
+					Deswegen ist einen Token-basierte Authorization benutzt, wo der Client - egal wenn es eine Benutzeroberfläche oder andere Service ist - beilegt einen zusätzliche Nachrichtenkopf mit der Anfrage, die einen so genannte Token enthält. <br>
+					Zuerst, fügen wir die Abhängigkeit ein in unsere Pom Datei.
+					<pre>
+						<code class="language-xml">
+							&lt;dependency&gt;
+							    &lt;groupId&gt;
+							    	org.springframework.boot
+							    &lt;/groupId&gt;
+							    &lt;artifactId&gt;
+							    	spring-boot-starter-security
+							    &lt;/artifactId&gt;
+							&lt;/dependency&gt;
+						</code>
+					</pre>
+					Dann müssen wir, etwas für Authentifikation aufsetzen:
+					<pre>
+						<code class="language-java">
+							@Configuration
+							@EnableWebSecurity
+							@EnableGlobalMethodSecurity(prePostEnabled = true)
+							public class SecurityConfig extends WebSecurityConfigurerAdapter {
+								@Autowired
+								public void configureGlobal(AuthenticationManagerBuilder authBuilder) throws Exception {
+									authBuilder.inMemoryAuthentication()
+												.withUser("John").password("1234").roles("USER")
+												.and()
+												.withUser("admin").password("admin").roles("USER", "ADMIN");
+								}
+							}
+						</code>
+					</pre>
+					und schließlich, in der Anfrage des Clients, den entsprechenden Nachrichtenkopf hinzufügen:
+					<code>
+						GET http://localhost:8080/api/customers
+						Authorization: Basic <i>base64(username:password)</i>
+					</code>
+
+				Erklärung der Annotationen:
+				<ul>
+					<li>
+						@Configuration - um diese Klasse von Spring zu geladen werden
+					</li>
+					<li>
+						@EnableWebSecurity - damit alle die sicherheitsbezogen Funktionalitäten aktiviert werden.
+					</li>
+					<li>
+						@EnableGlobalMethodSecurity - damit wir per-Methode Sicherheit nutzen können (hier es handelt sich um Authorization eigentlich).
+					</li>
+				</ul>
+				Sprin unterstützt auch einen Mechanismus gegen CSRF, das heißt normalerweise der Client sendet einen CSRF Token mit der Anfrage als <i>hidden</i> Feld. Falls diese API ist nicht von einen Frontend zugegriffen, sollen wir die CSRF deaktivieren.
+				Zu diesem Zweck, fügen wir ein andere Methode ein.
+				<pre>
+					<code class="language-java">
+
+						@Override
+						public void configure(HttpSecurity http) throws Exception {
+							super.configure(http);
+							http.csrf().disable();
+						}
+
+					</code>
+				</pre>
+				Grundsätzlich, man nutzt diese Http Konfiguration, die HTTP Sicherheitsschist zu stellen. Nämlich die Benutzer, die mit dem "Basic base64(username:password)" Nachrichtenkopf authentifizieren können.
+				</p>
+				Wegen der @EnableGlobalMethodSecurity Annotation, können wir jede Methode separat sichern: z.B. mit @PreAuthorize Annotation
+				<code class="mono-box">
+					@PreAuthorize("hasRole('ROLE_ADMIN')")
+				</code>
+				Da kann man SPEL nutzen oder individualisierte <i>Security Expressions</i> aufsetzen. Man könntet auch  einfach die @Secured Annotation verwenden, aber sie unterstützt nicht die obige genannten Funktionalitäten, sondern kann nur festcodierten <i>Roles</i> akzeptieren.
+				Die @PreAuthorize Annotation stellen wir auf die Repository Schnittstelle, damit alle die Methoden gesichert werden. Außerdem müssen wir aufpassen, dass wir alle die "default" Methoden ausdrücklich in unsere Schnittstelle deklarieren. Es ist absolut wichtig, denn sie sind ansonsten nicht gesichert! Darüberhinaus müssen auf jeder Methode, auch ausdrücklich die @PreAuthorize Annotation stellen.
+				<p>
+					<b>Validation</b> <br>
+					Es gibt viele Möglichkeiten:
+					<ul>
+						<li>
+							JPA <i>Constraint</i> Validierung <br>
+							<code class="mono-box">
+								@NotNull
+								@Min(10)
+								@Max(100)
+								@Size(min=2, max=20)
+								...
+							</code>
+						</li>
+						<li>
+							Spring Event Validierung <br>
+							BeforeCreateEvent <br>
+							BeforeDeleteEvent <br>
+							BeforeSaveEvent <br>
+							Diese kann für Sicherheit und Auditing benutzt werden.
+						</li>
+					</ul>
+
+					Um am besten Exceptionen zu verwalten, können wir einfach einen Exception <i>Advice</i> erstellen
+					<pre>
+						<code class="language-java">
+							@ControllerAdvice
+							public class ControllerConfiguration {
+
+								@ExceptionHandler(ConstraintValidationException.class)
+								@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Invalid data sent from the client!")
+								public void notValid(){
+									/*
+									 * code to be executed when this error occurs
+									 */
+								}
+
+							}
+						</code>
+					</pre>
+
+					oder für Event Handlers
+
+					<pre>
+						<code class="language-java">
+							@Component
+							@RepositoryEventHandler(Customer.class)		// refer the Entity
+							public class CustomerEventHandler {
+
+								@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+								@HandleBeforeCreate
+								public void handleBeforeCreate(Customer c) {
+
+									// Auditing code here!
+
+									if(c.isActive()){
+										throw new SomeException("Oh hell, no!");
+									}
+								}
+
+							}
+						</code>
+					</pre>
+
+					Wegen diese Funktionalitat, können wir DELETE, SAVE und UPDATE Vorgänge einfach sichern, ohne die business Methoden berühren.
+				</p>
+
+				<p>
+					<b>Hypermedia</b> <br>
+					Mittels des Hypermedias, sollen wir eine unbekannte API browsen können. Das heißt, die API soll <i>self-describing</i> sein. <br>
+					Es gibt drei mögliche Formate:
+					<ol>
+						<li>
+							<b>HAL - Hypertext Application Language</b> <br>
+							Spring Data REST standardmäßig verwendet application/hal+json, das heißt HAL in einem JSON umwickelt. Mann kann über Content-Type "application/hal+json" sprechen. Die JSON enthält Linken für andere verbunden Ressourcen.
+						</li>
+						<li>
+							<b>ALPS - Application Level Profile Semantics </b> <br>
+							Es gibt Informationen über die Funktionalitäten, z.B. welche Methode ist <i>safe</i> oder <i>idempotent</i> und so weiter. Wenn wir einen ALPS Antwort bekommen, kriegen wir einen Content-Type "application/alps+json". Es gibt <i>Descriptors</i> für die Darstellung von Entities und
+						</li>
+						<li>
+							<b>JSON Schema</b><br>
+							<ul>
+								<li>Model Info</li>
+								<li>Felder</li>
+								<li>Datentypen</li>
+								<li>Linken</li>
+							</ul>
+							hier es handelt von Content-Type "application/schema+json"
+						</li>
+					</ol>
+
+					In Spring, die <i>default</i> Format ist application/hal+json, das ist genug um die API durchzubahnen. Es ist aber nicht genug, um andere Methoden (z.B. POST, DELETE) zu entdecken. Dann müssen wir ALPS und JSON Schema benutzen. Nämlich wenn wir die bareUri zugreifen, bekommen wir ein "<i>profile</i>" Feld in unsere JSON, unter "<i>_links</i>". Es soll etwas wie die folgende sein:
+					<pre>
+						<code class="language-json">
+							{
+								"_links": {
+									"profile": {
+										"href": "http://localhost:8080/api/alps"
+									}
+								}
+							}
+						</code>
+					</pre>
+					Wenn wir den /alps Link zugreifen, kriegen wir <i>descriptors</i>. Dort finden wir Informationen über verschiedene Methoden
+					<code>
+						"id": "delete-customer",
+						"name": "customer",
+						"type": "IDEMPOTENT",
+						"rt": "#customer-representation"
+					</code>
+					Es gibt leider nicht erreichenden Informationen, um das Prozess 100% automatisch aufzusetzen. Es fehlt z.B. die URL um diese Vorgänge zu stellen, die genaue HTTP Methode und eventuell erforderliche Nachrichtenköpfen. <br>
+					Um die JSON Schema zuzugreifen, muss man
+					<ol>
+						<li>nach unsere Ressource /schema stellen (z.B. /customers/schema)</li>
+						<li>den Accept Nachrichtenkopf einstellen zu application/schema+json</li>
+					</ol>
+					Dadurch bekommen wir Informationen über <i>Data Types</i>.
+				</p>
+			</section>
+		</article>
+
+	</body>
+</html>
+
+

@@ -1,0 +1,425 @@
+<html>
+	<head>
+		<title> Mein persoenlich Wiki auf Deutsch! </title>
+		<link rel="stylesheet" type="text/css" href="../style.css">
+	</head>
+	<body>
+		<h1><a href="../index.html">Architektur und Entwicklung</a></h1>
+		<nav>
+		    <a href="microservices.html"> Microservices </a> &nbsp;
+		    <a href="mongodb.html"> MongoDB </a> &nbsp;
+		    <a href="http.html"> HTTP </a> &nbsp;
+
+		    <a href="docker.html"> Docker </a> &nbsp;
+		    <a href="git.html"> Git </a> &nbsp;
+		    <a href="ansible.html"> Ansible </a> &nbsp;
+		    <a href="jenkins.html"> Jenkins </a> &nbsp;
+
+		    <a href="java8.html"> Java 8 </a> &nbsp;
+		    <a href="go.html"> Go </a> &nbsp;
+		    <a href="bash.html"> Bash </a> &nbsp;
+		    <a href="hibernate.html"> Hibernate </a> &nbsp;
+		    <a href="maven.html"> Maven </a> &nbsp;
+		    <a href="spring.html"> Spring </a> &nbsp;
+		    <a href="spring_data.html"> Spring Data </a> &nbsp;
+		    <a href="tdd.html"> TDD </a> &nbsp;
+		    <a href="python.html"> Python </a> &nbsp;
+		</nav>
+
+		<article>
+			<header>
+				<h2>
+					HTTP (Hyper-Text Transfer Protocol)
+				</h2>
+				<p>
+					<hr>
+				</p>
+			</header>
+
+			<section>
+				<h3>
+					Ressources
+				</h3>
+				<p>
+					Wenn man an HTTP denkt, denkt natürlich sofort an die HTTP Adresse. Z.B. http://www.<b>food.com</b> <br>
+					Das ist ein URL - Uniform Resource Locator. Eine Ressource ist etwas damit wir wechselwirken können, wie z.B. HTML Seite, Bilder und so weiter. <br>
+
+					Drei Teile:
+					<ul>
+						<li>
+							URL scheme ( http, https, mailto, ftp)
+						</li>
+						<li>
+							Host (food.com)
+						</li>
+						<li>
+							URL Pfad (images/logo.jpg) <br>
+							Es kann auch sein, dass der Pfad bezieht sich nicht auf statische Ressource, sondern mit einer Anwendung die irgendwie stellt eine Ressource zu Verfügung.
+						</li>
+					</ul>
+					Oft, sind in einer HTML Seite verschiedene Ressourcen eingebettet. Man kann ein Host pingen:
+					<code class="mono-box">$ ping localhost</code>
+					Oder durch den Browser eine Ressource (die kann auch einfach eine Text Datei sein) abrufen:
+					<code  class="mono-box">http://localhost/test.txt</code>
+					Ein URL kann auch andere freiwillige Teile enthalten:
+					<ul>
+						<li>
+							Port (es geht automatisch auf port 80, deshalb es oft nicht gezeigt wird).
+						</li>
+						<li>
+							Query (das heißt, eine Abfrage, die hilft die Webseite zu entscheiden was Ressource zu zurücksenden. Z.B. http://website.com/search?name=Scott&lastName=Allen)
+						</li>
+						<li>Fragment z.B. http://website.com#fragmentID <br> (das wird nicht vom Server bearbeitet, sondern vom Client. <br> Sein Ziel ist es, einen Teil der Ressource zu identifizieren. Normalerweise das Browser wird dieses Fragment am Top der Seite automatisch zeigen. Es muss in das HTML Element sein: id="fragmentID") </li>
+					</ul>
+				</p>
+				<p>
+					<b>Umsetzung</b><br>
+					URL Umsetzung soll einfach zu erinnern und soll "unsafe" Zeichen vermeiden (z.B. Leerzeichen, # und so weiter).
+					<div class="warning">
+						<div class="warning-title"> Safe Zeichen </div>
+						Nur a-z, A-Z, 0-9 und Zeichen in $-_.+*'() sind "safe" berücksichtigt. <br>
+						Um "unsafe" Zeichen zu übersenden, man muss sie %-umsetzen.
+					</div>
+					<br> Die %-Umsetzung muss nach die folgende Tabelle sein:
+					<table>
+						<tr><th>Zeichen</th><th>Umsetzung</th></tr>
+						<tr><td>space</td><td>%20</td></tr>
+						<tr><td>!</td><td>%21</td></tr>
+						<tr><td>"</td><td>%22</td></tr>
+						<tr><td>#</td><td>%23</td></tr>
+						<tr><td>$</td><td>%24</td></tr>
+						<tr><td>%</td><td>%25</td></tr>
+						<tr><td>&</td><td>%26</td></tr>
+					</table>
+				</p>
+				<p>
+					<b>Content Types</b><br>
+					Wenn der Server einen Anfrage antwortet, er kann ein Content Type angeben. Dadurch kann der Client die Inhalte interpretieren (z.B. "image/jpeg").
+					Die nachfolgende sind die gültige MIME Typen:
+					<table>
+						<tr><th>Content-Type Header Wert</th><th>Typ</th></tr>
+						<tr><td>application/atom+xml</td><td>Atom feed</td></tr>
+						<tr><td>application/json</td><td>JSON data</td></tr>
+						<tr><td>application/pdf</td><td>PDF document</td></tr>
+						<tr><td>image/gif</td><td>GIF image</td></tr>
+						<tr><td>image/png</td><td>PNG image</td></tr>
+						<tr><td>video/mp4</td><td>MP4 video</td></tr>
+						<tr><td>text/xml</td><td>XML</td></tr>
+						<tr><td>text/html</td><td>HTML</td></tr>
+						<tr><td>text/plain</td><td>Just simple text</td></tr>
+					</table>
+					<div class="warning">
+						<div class="warning-title">Content Type richtig setzen</div>
+						Falls wir ein falsch Nachrichtenkopf einsetzen (z.B. "text/html" für eine PDF Datei) der Browser wird die Detei für HTML halten, auch wenn die Deteinamenerweiterung ".pdf" lautet.
+					</div>
+				</p>
+				<p>
+					<b>Inhaltsvereinbarung</b><br>
+					Wenn ein Client eine Anfrage sendet, es kann die gewünschte Inhaltstyp und Sprache angeben (z.B. "Italienisch" und "HTML").  Browsers normalerweise stellt diese Nachrichtenkopf automatisch nach unsere Einstellungen ein. Wir können natürlich es in der Browsereinstellungen verändern.
+				</p>
+			</section>
+
+
+			<section>
+				<h3>
+					Messages
+				</h3>
+				<p>
+					Zwei wichtige Nachritentypen:
+					<ul>
+						<li>Anfrage  (HTTP Request)</li>
+						<li>Antwort (HTTP Response)</li>
+					</ul>
+					Sie werden in einem einzige HTTP Trasaktion gewechselt.
+				</p>
+				<p>
+					Man kann mit dem Server verbinden:
+					<code  class="mono-box">
+						$ telnet mysite.com 80
+						<br> --- <br>
+						GET /mypic.jpg HTTP/1.1
+						Host: www.mysite.com
+					</code>
+					<b>Anfrage (HTTP Request)</b> <br>
+					Jede Anfrage muss eine Methodentyp enthalten. Ein Beispiel ist die obige GET.
+					Eine GET Anfrage fragt eine Ressource an. Die andere unterstützte Methoden sind
+					<table>
+						<tr><th>HTTP Methode</th><th>Bedeutung</th></tr>
+						<tr><td>GET</td><td>eine Ressource anfragen (eine "Lesung" Operation)</td></tr>
+						<tr><td>POST</td><td>eine neue Ressource erstellen</td></tr> 
+						<tr><td>PUT</td><td>eine Ressource aktualisieren</td></tr>
+						<tr><td>DELETE</td><td>eine Ressource löschen</td></tr>
+						<tr><td>HEAD</td><td>den Nachrichtenkopf einer Ressource abrufen</td></tr>
+					</table>
+					Einige Methoden sind "safe", anderen "unsafe". GET ist z.B. safe aber POST ist es nicht (es gibt Nebenwirkungen auf dem Server).
+					Normalerweise wir haben Form mit POST, aber es gibt auch Form mit GET (z.B. ein Suchform).
+					Die Struktur einer Anfrage ist gleich:
+					<code  class="mono-box">
+						[method] [URL] [version] <br>
+						[headers] <br>
+						[body] <br>
+					</code>
+	
+
+					Ein Beispiel
+					<code  class="mono-box">
+						GET http://mysite.com HTTP/1.1 <br>
+						Host: mysite.com <br>
+						Accept-Language: fr-FR <br>
+						Date: Fri, 29 Apr 2016 14:59:51 CET <br>
+					</code>
+
+					oder
+					<code  class="mono-box">
+						POST http://mysite.com/login.html HTTP/1.1 <br>
+						Host: mysite.com <br>
+						Content-Type: application/x-www-form-urlencoded <br>
+
+						vorname=Gabriele&nachname=Falace
+					</code>
+
+					Häufige Nachrichtenköpfe sind
+
+					<table>
+						<tr><th>Nachrichtenkopf (Header)</th><th>Beschreibung</th></tr>
+						<tr> <td>Referer</td> <td>Das URL der Seite, die hat der Benutzer hier aufverwiesen</td> </tr>
+						<tr> <td>User-Agent</td> <td>Informtionen um der UserAgent (z.B. Browser)</td> </tr>
+						<tr> <td>Accept</td> <td>Lieblingsmediatyp</td> </tr>
+						<tr> <td>Accept-Language</td> <td>Lieblingssprache</td> </tr>
+						<tr> <td>Cookie</td> <td>Informationen zur Cookies</td> </tr>
+						<tr> <td>If-Modified-Since</td> <td>Um dem Server zu informieren, wenn hat das Client letztes mal diese Ressource abgerufen</td> </tr>
+						<tr> <td>Date</td> <td></td> </tr>
+					</table>
+
+					Manche Header können eine Priorität angeben, z.B.
+					<code  class="mono-box">
+						Accept-Charset: ISO-8859-1, utf-8;q=0.7, *;q=0.3
+					</code>
+					das bedeutet: ISO-8859-1 100% Vorzug, utf-8 70% Vorzug und * 30%. Das gilt auch für "Accept" und "Accept-Language".
+
+					<b>Antwort (HTTP Response)</b> <br>
+					Eine Antwort hat die folgende Struktur:
+
+					[version] [status] [reason]
+					[headers]
+					[body]
+
+					Ein Beispiel:
+					<code  class="mono-box">
+						HTTP/1.1 200 OK
+						Cache-Control: private
+						Content-Type: text/html
+						Content-Length: 12334 <br> <br>
+
+						&lt;html&gt;
+						    ... etwas hier ...
+						&lt;/html&gt;
+					</code>
+
+					Cache-control bedeutet, dass sie eine private Antwort für ein bestimmtes Client ist. Deshalb kann der Client sie im Cache sichern aber andere Systeme sollten es nicht tun.
+
+					Status Code Kategorien
+					<table>
+						<tr><th>Statuscode</th><th>Bedeutung</th></tr>
+						<tr> <td>100-199</td><td>Informationen</td> </tr>
+						<tr> <td>200-299</td><td>Erfolgreiche Operation</td> </tr>
+						<tr> <td>300-309</td><td>Umleitung</td> </tr>
+						<tr> <td>400-499</td><td>Fehler beim Client</td> </tr>
+						<tr> <td>500-599</td><td>Fehler beim Server </td> </tr>
+					</table>
+				</p>
+			</section>
+
+
+			<section>
+				<h3>
+					Verbindungen
+				</h3>
+				<p>
+					HTTP nutzt Funktionalitaten von anderen Schichte in der Netzwerk <i>Protokolsstapel (?)</i>. Nämlich TCP/IP. Mit einige Anwendungen (z.B. WireShark für Windows un Mac) kann man alle TCP/IP Kommunikationen beobachten.
+				</p>
+				<p>
+					Mit den "Capture Options" wir können spezifizieren, was WireShark beobachten soll (z.B. host mysite.com). Man kann das "Capture" starten und stoppen, sowie Anfragen ausführen. Wenn das Capture eigentlich läuft, WireShark wird alle HTTP Anfrage, HTTP Antworten und TCP/IP Datenverkehr zeigen.
+					Man muss beachten, dass es einen Three-way Handshake an der TCP Stufe gibt, das etwas Overhead einleitet.
+				</p>
+				<p>
+					Am Anfang, gab es separate Paare Anfrage-Antwort, weil der Benutzer würdet wahrscheinlich nicht weitere Ressource Anfragen, oder zumindest nicht sofort nach die erste. Heutzutage es ist total anders und Benutzer fragen häufig viele Ressource an. <br>
+					Die meistens User-Agents (Web Browsers) öffnen meherere Verbindungen, um meherere Ressourcen parallel zu anfragen. Die Nummer von unterschiedlichen parallele Verbindungen war früher am 2 begrenzt. Heute es ist aber höher, normalerweise 6.
+				</p>
+				<p>
+					Am Anfang, User-Agents verwandt eine separat Verbindung jede Anfrage-Antwort Paar. Das heißt, eine separat Socket nutzen und ein separat Handshake machen. Das Overhead dazugehörend war aber zu groß. Deshalb sind dauerhafte Verbindungen in Spezifikation HTTP 1.1 eingeleitet worden. In diesem Kontext, benutzt das User-Agent das gleich Socket für verschiedene Anfrage/Antworten, sodass ein einziges Handshake genug ist. <br>
+					Der Nachtail von diese Ansatz ist, dass es gibt höhere Ladung auf dem Server. Darüber hinaus können Hackers auch diese persistente Verbindungen benutzen, um eine (D)DOS Angreife auszuführen. <br>
+					Normarerweise Server haben ein Timeout und wenn es vorbei ist, schließen sie die dauerhafte Verbindung.
+					Ein Server könntet auch daurhafte Verbindungen verweigern, obwohl sie standardmäßig benutzt in HTTP/1.1 sind. Auf diesen Fall, muss der Server einen entsprechender Nachrichtenkopf hizufügen (nämlich "Connection: close"). <br>
+					Ein andere Verbindungstyp, die mit HTTP/1.1 auch möglich ist, ist die "Pipeline" Verbindung, obwohl sind diese Verbindungen nicht von alle Server unterstützt. Diese erlaubt Clients mehrere Anfrage zu schicken ohne die Antworte zu warten. Die Clients erhalten dann mehrere aufeinanderfolgenden Antworten.
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					Architektur
+				</h3>
+				<p>
+					<b> Resources Redux </b><br>
+					HTTP URLs sollen nur von Ressource handeln. Welche Operation ist z.B. in der Methode angegeben. Was wir für eine Inhaltstyp bekommen möchten, ist in einem Header angegeben.
+					Außerdem, eine Ressource muss nicht ein notwendig eine physische Datei sein: manchmal wird sie eigentlich eine Datei sein (z.B. style.css), aber oft werden komplexere Seiten dynamisch zusammengesetzt. Dazu kann der Server zusätzliche Funktionalitaten hinzufügen: Datenkompression, Logging und so weiter.
+				</p>
+				<p>
+					<b> Proxies </b><br>
+					Ein Proxy ist ein andere Server, der zwischen dem Client und dem echt Server steht. Die Rolle des Proxys ist überwiegend um Nachrichten zu analysieren un etwas infolgedessen zu tun. Ein Beispiel: ein Netzwer von einer Firma könntet die ganzen Datenverkehr nach Facebook oder Twitter wegschmeißen wollen. Oder vielleicht könnte er den "Referer" Nachrichtenkopf entfernen. <br>
+					Es gibt unterschiedliche Typen von Proxies: <br>
+					<ul>
+						<li>
+							<b> Forward Proxy </b> <br>
+							Es steht näher zur Clients als zur Servers und normalerweise es ist seine Aufgabe, nur einfach Anfragen weiterzuleiten. Es ist benutzt, um besondere Services zu einer Clientsgruppe zu geben.
+						</li>
+						<li>
+							<b> Reverse Proxy </b> <br>
+							Es steht näher zur Servers als Clients. Normalerweise gibt einen Reverse Proxy Vorteile zu eine Servergruppe. Z.B. Datenkompression kann dann nur ins Reverse Proxy implementiert werden, anstatt in jede Server.
+						</li>
+					</ul>
+					Dienste die werden von Proxies zu Verfügung gestellt, fassen die folgende um:
+					<ul>
+						<li>
+							<b>Load Balancing</b> <br>
+							Das heißt, die Anfragen, die bearbeiten werden müssen, unter den Server verteilen.
+						</li>
+						<li>
+							<b>SSL acceleration</b> <br>
+							Der Proxy führt die Verschlüsselung (encryption) und Entschlüsselung (decryption) von HTTP Nachrichten. Auf diese Weise, die Ladung ist von echt Server entfernt.
+						</li>
+					</ul>
+					Darüber hinaus, können Proxies zusätzlich Sichereit hinzufügen, weil sie potentiell gefährlich Nachrichten auswählen können.
+					So genannten <i>Caching Proxies</i> sind normalerweise benutzt, um häufige Kopie von Ressourcen speichern und dann liefern, um Leistungen zu verbessern.
+					Ein Proxy muss nicht Hardware sein, sondern kann auch ein Software sein: z.B. Fiddler umleitet den ganzen Datenverkehr durch localhost:8888 und dann weiterleitet alle Anfrage, nachdem es sie gezeigt hat. <br>
+					Einen Caching Proxy kann die Zeit und Bandwitdh reduzieren, die man braucht einen komplett Anfrage-Antwort zu schließen. Außerdem verhindert er auch Engpässe zu erzeugen.
+				</p>
+				<p>
+					<b> Caches </b><br>
+					Es gibt zwei Cachetypen:
+					<ol>
+						<li>
+							Public Chache <br>
+							<ul>
+								<li>Forward Proxy: Inhalte, die sind beliebte für eine Gruppe von Benutzer.</li>
+								<li>Reverse Proxy: beliebte Inhalte eines Websites (z.B. beliebte Bilder auf Amazon.com).</li>
+							</ul>
+						</li>
+						<li>
+							Private Cache <br>
+							Es ist für eine einzige Benutzer (z.B. im Chorme Browser chrome://cache).
+						</li>
+					</ol>
+					Normalerweise, sind im Cache nur "200 OK" Antworte zu einer GET Anfrage gespeichert. PUT, POST und DELETE sind zum Gegenteil nicht gespeichert. Eine Anwendung kann das Speichern beeinflussen, durch die Nutzung von entsprechende Headers.
+					Die wichtigsten Nachrichtenkopf ist Cache-Control; Die "Expires" und "Pragma" Nachrichtenköpfe sind eigentlich in HTTP/1.1 veraltet.
+					Cache-Control Header kann die folgenden Werten haben:
+					<table>
+						<tr> <th>Cache-Control mögliche Werte</th><th>Beschreibung</th> </tr>
+						<tr> <td> public </td><td> public proxies können die Antwort speichern </td> </tr>
+						<tr> <td> private </td><td> die Antwort ist für einen einzigen bestimmten Benutzer </td> </tr>
+						<tr> <td> no-cache </td><td> die Antwort soll nie gespeichert werden </td> </tr>
+						<tr> <td> no-store </td><td> die Antwort enthält private Informationen und muss nicht nirgendwie persistiert werden (noch auch in DB)</td> </tr>
+					</table>
+					Es gibt auch einen max-age Feld, das stellt die maximale dauer des Speicherns dar (Sekunden).
+					<code  class="mono-box">
+						Cache-Control: private, <br>
+						max-age=56564555
+					</code>
+					Der Browser kann auch den Last-Modified Nachrichtenkopf nutzen um die Gültigkeit seinem Cache zu überprüfen. Wenn Cache noch gültig ist, dann der Server wird "304 NOT MODIFIED" antworten. Auch den ETag kann man verwenden, um Gültigkeit des Caches zu überprüfen (es ist wie ein Identifier für eine Ressource).
+				</p>
+			</section>
+
+			<section>
+				<h3>
+					Sicherheit und Cookies
+				</h3>
+				<p>
+					HTTP ist ein stateless Protokoll. Anwendungen sind aber sehr oft stateful!
+					Normalerweise den Zustand eines Sessions ist durch Cookies verwaltet. Cookies sind vom Server eingesetzt, durch die Nutzung eines Nachrichtenkopfs:
+					<code class="mono-box">
+						<b>Set-Cookie:</b> fname=Gabriele&lname=Falace; <br>
+						&nbsp;&nbsp;&nbsp;domain=.mysite.com; <br>
+						&nbsp;&nbsp;&nbsp;path=/; <br>
+						&nbsp;&nbsp;&nbsp;HttpOnly
+					</code>
+					Die meisten Webanwendungen wird ebenfalls nur ein GUID in der Cookies einfügen. Zwei Gründen dafür:
+					<ol>
+						<li>Sie sind ins Client gespeichert, deshalb sie nicht so sicher sind</li>
+						<li>Sie haben eine begrenzt Größe</li>
+					</ol>
+					Das Client wird in alle folgende Anfrage diese Inhalte in der "Cookie" Nachrichtenkopf hinzufügen.
+					Das HttpOnly Flag bedeutet, dass die Cookie is nicht für JavaScript lesbar und kann nur zwischen Client und Server hin- und hergehen. Dadurch können wir CSRF Angriffe vermeiden.
+					Diese Cookie sind "Session Cookies" benannten, da sie nicht persistiert sind. Um dauerhafte Cookies zu erstellen, man muss auch einen zusätzlichen Feld einfügen:
+					<code class="mono-box">
+						<b>Set-Cookie:</b> fname=Gabriele&lname=Falace; <br>
+						&nbsp;&nbsp;&nbsp;domain=.mysite.com; <br>
+						&nbsp;&nbsp;&nbsp;path=/;  <br>
+						&nbsp;&nbsp;&nbsp;<b>expires=Thursday, 28-April-2016 14:17:00 GMT</b>;
+					</code>
+					Dadurch wird diese Cookie an der Festplatte gesichert.
+					Die gültigkeit einer Cookie ist nur zu einem Domain beschränkt. Der Punk vor dem Domainname bedeutet "alle Subdomain von dem genannte Domain".
+				</p>
+				<p>
+					<b>Authentifikationsmechanismen</b> <br>
+					Es gibt verschiedene unterstützt Mechanismen:
+					<ol>
+						<li>
+							Basic <i>(offiziell)</i> <br>
+							Das Client fragt eine Ressource an und der Server antwortet mit:
+							<code class="mono-box">
+								HTTP/1.1 401 Unauthorized
+								WWW-Authenticate: Basic realm="Your Site"
+							</code>
+							Das "realm" Feld ist nur eine Beschreibung des geschütztes Bereiches. Die meisten Browser öffnen eines Pop-up Fenster, wo der Benutzer kann seine Anmeldedaten einfügen. Danach der Browser übersendet eine weiter Anfrage mit
+							<code class="mono-box">
+								GET /account HTTP/1.1 <br>
+								Host: mybank.com <br>
+								Authorization: Basic <b>Zu2VudDrtgBVewR3k</b> <br>
+							</code>
+							wo die Zu2VudDrtgBVewR3k ist einfach die Base64 Umstetzung von <i>username:password</i>. Das heißt, Basic Authentifikation ist gar nicht sicher, weil die Anmeldedaten kann einfach gestolen und gelesen werden.
+						</li>
+						<li>
+							Digest <i>(offiziell)</i> <br>
+							In diesem Mechanismus, der Server fragt nach ein <i>Digest</i> die aus dem Passwort ergestellt wird.
+							<code class="mono-box">
+								WWW-Authenticate: Digest realm="Your Site" <br>
+								&nbsp;&nbsp;&nbsp;qop="auth,auth-int", <br>
+								&nbsp;&nbsp;&nbsp;nonce="dcd5484g...354jggi", <br>
+								&nbsp;&nbsp;&nbsp;opaque="fgt3t4...r445tt", <br>
+							</code>
+							Das Client wird ein Hash rechnen, durch Nutzung von einem MD5 Algorithmus und die "nonce" als Input.
+							Ebenfalls, verschiedene Angriffensorten existieren, um dieser Mechanismus zu täuschen. Deshalb es ist noch nicht perfekt, obwohl besser als Basic Authentifikation.
+						</li>
+						<li>
+							Windows <br>
+							Es ist einen Authentifikationsmechanismus sehr ähnlich wie Digest, speziell für Windows Systeme.
+							Er hat eine besondere Wert für WWW-Authentication: Negotiate.
+						</li>
+						<li>
+							Forms <br>
+							Heutzutage, er ist der beliebsten Authentifikationstyp im Internet. Er nutzt nicht den WWW-Authenticate oder Authorization Nachrichtenköpfen. Wenn das Client fragt einen Ressource an, es ist umgeleitet nach einer Login Seite.
+							<code class="mono-box">
+								HTTP/1.1 302 Found
+								Location: /login?return_to=/welcomePage
+							</code>
+							Die Anmeldedaten sind ähnlicherweise wie mit Basic Authentifikation in Klartext übergesendet. Deshalb ist auch Forms Authentifikation nicht sicher. Falls Authentifikation erfolgreich ist, der Server umleitet nochmal zum erste URL (return_to, im obige Beispiel) und setzt einen Cookie ein, das lautet, dass der Benutzer authentifiziert ist.
+						</li>
+						<li>
+							OpenID <br>
+							Wenn wir wollen nicht Benutzerspasswörter in unserer Datenbank speichern und außerdem die Benutzer wollen wahrscheinlich nicht zu jede Webseite separat authentifizieren, wir können OpenID verwenden.
+							Mit diesem Mechanismus, kann unsere Webanwendung die Authentifizierungsdienst von einen Identity Provider nutzen. Das heißt, ich kann mich authentifizieren lassen, durch die Nutzung der Anmeldedaten von Google oder von Facebook. Mehr Informationen über diesem Thema in der <a class="to-do" href="#">OAuth 2.0</a> Seite.
+						</li>
+					</ol>
+				</p>
+				<p>
+					<b>HTTPS (Secure HTTP)</b> <br>
+					Es nutzt eine ganz unterschiedliche Schema im URL, anstatt der normale HTTP Schema. Das standarmäßige Port für HTTPS ist 443, anstatt von Port 80. Bessere sicherheit ist erreicht, wegen eine zusätzliche Schicht (früher SSL, jetzt TLS) die liegt zwischen die "Application" Schicht und die "Transport" Schicht. In dieser Schicht, werden die Nachrichten verschlüsselt/entschlüsselt sein.
+					Während des HTTPS Setup, der Server sendet einen Zertifikat zum Client, so dass der Client kann überprüfen (durch einen CA) dass er wirklich mit dem beabsichtigte Server spricht.
+					So man muss diesen Zertifikaten kaufen und installieren, damit der Mechanismus funktionieren kann. Außer des Hostnames, die ganze Anfrage ist verschlüsselt, auch Nachrichtenköpfe und Cookies.
+					Weil auch der Client das Zertifikat überprüfen kann, dann auch den Server ist authentifiziert. Der Client ist aber nicht automatisch authentifiziert, deshalb mussen wir eine entsprechende Mechanismus nutzen, wahrscheinlich Forms Authentifikation. <br>
+					Die Nachteile von HTTPS sind am meistens Leistungen (inbesonders das Handshake) und dass es ist nicht möglich eine "public cache" zu nutzen.
+				</p>
+			</section>
+		</article>
+	</body>
+</html>
