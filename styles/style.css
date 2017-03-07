@@ -1,0 +1,144 @@
+@font-face {
+	font-family: Mostra;
+	src: url('mostra.ttf');
+}
+
+@font-face {
+	font-family: Sanser;
+	src: url('helvetica.otf');
+}
+
+body {
+	margin-left: 50px;
+	margin-right: 50px;
+	margin-top: 10px;
+	font-family: PT Serif, serif;
+	font-size: 17px;
+}
+
+article {
+	font-family: 'Lora', Times, serif;
+	margin-left: 30px;
+	width: 60%
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+h1 {
+	font-family: Mostra;
+	font-size: 56px;
+	font-weight: 200;
+	margin: 5px;
+	padding: 5px;
+	color: black;
+}
+
+h3 {
+	font-family: Sanser;
+}
+
+h2, nav {
+	font-family: Sanser;
+	color: #058f91;
+	font-weight: bold;
+	font-size: 40px;
+}
+
+nav>a {
+	font-family: Mostra;
+	color: #454343;
+	font-weight: bold;
+	font-size: 15px;
+	color: black;
+}
+
+nav>a:hover {
+	color: #a8ef4a;
+	font-weight: bold;
+}
+
+th {
+    background-color: #454343;
+    color: white;
+}
+tr:nth-child(even) {
+	background-color: #f2f2f2
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+.mono-box {
+	display: block;
+	width: 40%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-style: dotted;
+	border-width: 1px;
+	border-color: #454343;
+	padding: 20px;
+	font-family: Menlo, Monaco, Consolas, Monospaced;
+	font-size: 13px;
+}
+
+pre {
+	width: 80%;
+	margin-left: 80px;
+	margin-right: 80px;
+}
+
+.comment {
+	color: #228b22;
+}
+.to-do {
+	font-weight: bold;
+	color: #DF0174;
+}
+
+.to-translate {
+	color: #5FB404;
+}
+
+.info {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 15px; 
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.info-title {
+  font-family: Sans-serif;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #73AD21;
+}
+
+.warning {
+    border-radius: 25px;
+    border: 2px solid #cc0000;
+    padding: 15px; 
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.warning-title {
+  font-family: Sans-serif;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #cc0000;
+}
+
+.top {
+	font-weight: bold;
+	color: #058f91;
+}
+
+#top > ol {
+	font-family: Sanser;
+}
