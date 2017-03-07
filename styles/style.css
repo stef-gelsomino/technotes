@@ -8,14 +8,6 @@
 	src: url('../fonts/helvetica.otf');
 }
 
-body {
-	margin-left: 50px;
-	margin-right: 50px;
-	margin-top: 10px;
-	font-family: PT Serif, serif;
-	font-size: 17px;
-}
-
 article {
 	font-family: 'Lora', Times, serif;
 	margin-left: 30px;
@@ -27,13 +19,28 @@ a {
 	text-decoration: none;
 }
 
+body {
+	margin: 0px;
+}
+
+#header {
+	background-color: orange;
+	padding-bottom: 5px;
+}
+
 h1 {
 	font-family: Mostra;
 	font-size: 56px;
 	font-weight: 200;
-	margin: 5px;
+	margin-top: 0px;
+	margin-bottom: -15px;
 	padding: 5px;
+	text-align: center;
 	color: black;
+}
+
+nav {
+	text-align: center;
 }
 
 h3 {
@@ -56,8 +63,7 @@ nav>a {
 }
 
 nav>a:hover {
-	color: #a8ef4a;
-	font-weight: bold;
+	font-size: 20px;
 }
 
 th {
