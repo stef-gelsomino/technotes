@@ -148,3 +148,23 @@ pre {
 #top > ol {
 	font-family: Sanser;
 }
+
+footer {
+	background-color: orange;
+}
+#fool {
+	float: left;
+	display: inline;
+}
+
+#fool > h3 {
+	float: left;
+	display: inline;
+	margin-left: 5px;
+	margin-right: 30px;
+}
+
+#foor {
+	float: right;
+	margin-right: 5px;
+}
