@@ -1,292 +1,287 @@
 <html>
-	<head>
-		<title> Mein persoenlich Wiki auf Deutsch! </title>
-		<link rel="stylesheet" type="text/css" href="../style.css">
-	</head>
-	<body>
-		<h1><a href="../index.html">Architektur und Entwicklung</a></h1>
-		<nav>
-		    <a href="microservices.html"> Microservices </a> &nbsp;
-		    <a href="mongodb.html"> MongoDB </a> &nbsp;
-		    <a href="http.html"> HTTP </a> &nbsp;
-		    <a href="docker.html"> Docker </a> &nbsp;
-		    <a href="git.html"> Git </a> &nbsp;
-		    <a href="ansible.html"> Ansible </a> &nbsp;
-		    <a href="jenkins.html"> Jenkins </a> &nbsp;
+<head>
+    <title> Mein persoenlich Wiki auf Deutsch! </title>
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lora:i' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="../prism/prism_2.css">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+</head>
+<body>
+<script type="text/javascript" src="../prism/prism_2.js"></script>
+<h1><a href="../index.html">Architektur und Entwicklung</a></h1>
+<nav>
+    <a href="http.html"> HTTP </a> &nbsp;
+    <a href="ansible.html"> Ansible </a> &nbsp;
+    <a href="go.html"> Go </a> &nbsp;
+    <a href="spring.html"> Spring </a> &nbsp;
+    <a href="spring_data.html"> Spring Data </a> &nbsp;
+    <a href="tdd.html"> TDD </a> &nbsp;
+    <a href="python.html"> Python </a> &nbsp;
+</nav>
 
-		    <a href="java8.html"> Java 8 </a> &nbsp;
-		    <a href="go.html"> Go </a> &nbsp;
-		    <a href="bash.html"> Bash </a> &nbsp;
-		    <a href="hibernate.html"> Hibernate </a> &nbsp;
-		    <a href="maven.html"> Maven </a> &nbsp;
-		    <a href="spring.html"> Spring </a> &nbsp;
-		    <a href="spring_data.html"> Spring Data </a> &nbsp;
-		    <a href="tdd.html"> TDD </a> &nbsp;
-		    <a href="python.html"> Python </a> &nbsp;
-		</nav>
+<article>
+    <header>
+        <h2>
+            ::: Noch zu arbeiten ::: Python
+        </h2>
+        <p>
+        <hr>
+        </p>
+    </header>
 
-		<article>
-			<header>
-				<h2>
-					::: Noch zu arbeiten ::: Python
-				</h2>
-				<p>
-					<hr>
-				</p>
-			</header>
+    <section>
+        <h3>
+            Operatoren
+        </h3>
+        <p>
+            <code>
+                +, -, *, /, **, % <span class="comment"> # Arithmetische Operatore </span> <br>
+                ==, != <span class="comment"> # Vergleich von Objekte </span><br>
+                and, or, not <span class="comment"> # Boolesche Operatore </span><br>
+                is, is not <span class="comment"># Identität Operatore </span><br>
+                in, not in <span class="comment"># Mitgliedschaft Operatore </span> <br>
+            </code>
+        </p>
+    </section>
 
-			<section>
-				<h3>
-					Operatoren
-				</h3>
-				<p>
-					<code>
-						+, -, *, /, **, %  <span class="comment"> # Arithmetische Operatore </span> <br>
-						==, !=  <span class="comment"> # Vergleich von Objekte </span><br>
-						and, or, not <span class="comment"> # Boolesche Operatore </span><br>
-						is, is not  <span class="comment"># Identität Operatore </span><br>
-						in, not in  <span class="comment"># Mitgliedschaft Operatore </span> <br>
-					</code>
-				</p>
-			</section>
+    <section>
+        <h3>
+            Steuerung des Programs
+        </h3>
+        <p>
+            if -condition- :
+            # etwas Code
+            elif ... :
+            # mehr Code
+            else:
+            # ansonsten Code
+        </p>
+        <p>
+            while -condition- :
+            # Code
+            else:
+            # was zu tun, wenn -condition- nicht mehr gültig ist.
+        </p>
+        <p>
+            for i in range(1,5):
+            # Code
+            else:
+            # was zu tun am Ende
+        </p>
+        <p>
+            Ein Beispiel (Lesung einer Datei):
 
-			<section>
-				<h3>
-					Steuerung des Programs
-				</h3>
-				<p>
-					if -condition- :
-					    # etwas Code
-					elif ... :
-					    # mehr Code
-					else:
-					    # ansonsten Code
-				</p>
-				<p>
-					while -condition- :
-					    # Code
-					else:
-					    # was zu tun, wenn -condition- nicht mehr gültig ist.
-				</p>
-				<p>
-					for i in range(1,5):
-					    # Code
-					else:
-						# was zu tun am Ende
-				</p>
-				<p>
-					Ein Beispiel (Lesung einer Datei):
+            while True:
+            s = raw_input('bitte etwas eintippen...')
+            if s=='ende':
+            break
+            else:
+            # Code hier
 
-					while True:
-					    s = raw_input('bitte etwas eintippen...')
-					    if s=='ende':
-					        break
-					    else:
-					        # Code hier
+            print('Tschüss!')
+        </p>
+    </section>
 
-					print('Tschüss!')
-				</p>
-			</section>
+    <section>
+        <h3>
+            Datentruktur
+        </h3>
+        <p>
+            <b>List</b><br>
+        <pre>
+                <code class="language-python">
+                list = ['a', 'b', 'c']
+                len(list) # length {translate}
+                list.append('d') # am Ende hinzufügen
+                print list
+                item = list[0]
+                del list[0]
+                list.sort()
 
-			<section>
-				<h3>
-					Datentruktur
-				</h3>
-				<p>
-					<b>List</b><br>
-					<code>
-						list = ['a', 'b', 'c']
-						len(list) # length {translate}
-						list.append('d') # am Ende hinzufügen
-						print list
-						item = list[0]
-						del list[0]
-						list.sort()
+                for item in list:
+                print item
+            </code>
+        </pre>
 
-						for item in list:
-						    print item
-					</code>
-				</p>
+        <p>
+            <b>Tuple</b><br>
+            Es ist genau wie eine Liste, außer das es unveränderlich ist.
+            <code>
+                tuple = ('a', 'b', 'c')
+                tuple = ()
+                tuple = (1,) # singleton
+            </code>
+        </p>
 
-				<p>
-					<b>Tuple</b><br>
-					Es ist genau wie eine Liste, außer das es unveränderlich ist.
-					<code>
-						tuple = ('a', 'b', 'c')
-						tuple = ()
-						tuple = (1,) # singleton
-					</code>
-				</p>
+        <p>
+            <b>Dictionary</b><br>
+            <code>
+                d = {key1:val1, ... key_n: val_n}
+                d[key1] = 'value'
+                del d[k]
 
-				<p>
-					<b>Dictionary</b><br>
-					<code>
-						d = {key1:val1, ... key_n: val_n}
-						d[key1] = 'value'
-						del d[k]
+                for key,val in d.items()
+                print (key, val)
+            </code>
+        </p>
 
-						for key,val in d.items()
-						    print (key, val)
-					</code>
-				</p>
+        <p>
+            <b>Sequence</b><br>
 
-				<p>
-					<b>Sequence</b><br>
+            Indexing
+            <code>
+                s[0] # erstes Element
+                s[-1] # letztes Element
+            </code>
+            Slicing
+            <code>
+                s[:] # die ganze Liste
+                s[i,j] # Elemente in der Spanne [i,j)
+                s[:-1] # ganze Liste, ohne letzt Element
+            </code>
+            Kopieren
+            <code>
+                list1 = list2 # shallow copy
+                list1 = list2[:] # deep copy
+            </code>
+        </p>
+    </section>
 
-					Indexing
-					<code>
-						s[0] # erstes Element
-						s[-1] # letztes Element
-					</code>
-					Slicing
-					<code>
-						s[:] # die ganze Liste
-						s[i,j] # Elemente in der Spanne [i,j)
-						s[:-1] # ganze Liste, ohne letzt Element
-					</code>
-					Kopieren
-					<code>
-						list1 = list2    # shallow copy
-						list1 = list2[:] # deep copy
-					</code>
-				</p>
-			</section>
+    <section>
+        <h3>
+            Funktionen
+        </h3>
+        <p>
+            Funktionen
+            <code>
+                def powerSum(power, *args)
+                '''args ist eine Liste''' # diese ist eine DocString
+                for i in args
+                # etwas tun
+            </code>
+            Wenn man doppelt Stern nutzt, wie z.B. **args, dann args ist ein Dictionary.
+            Das erste Parameter "power" ist wie ein einzige Nummer interpretiert und alle die folgende als key-value Paare.
+        </p>
+    </section>
 
-			<section>
-				<h3>
-					Funktionen
-				</h3>
-				<p>
-					Funktionen
-					<code>
-					def powerSum(power, *args)
-					    '''args ist eine Liste''' # diese ist eine DocString
-					    for i in args
-					        # etwas tun
-					</code>
-					Wenn man doppelt Stern nutzt, wie z.B. **args, dann args ist ein Dictionary.
-					Das erste Parameter "power" ist wie ein einzige Nummer interpretiert und alle die folgende als key-value Paare.
-				</p>
-			</section>
+    <section>
+        <h3>
+            Objekte
+        </h3>
+        <p>
+            Eine Klasse ist mit dem "class" keyword definiert (festgelegt?).
+            Ihre Methoden sind wie
+            <code>
+                def myMethod(self, other_arguments)
+            </code>
+            Beachten: das erste Parameter muss immer "self" sein.
 
-			<section>
-				<h3>
-					Objekte
-				</h3>
-				<p>
-					Eine Klasse ist mit dem "class" keyword definiert (festgelegt?).
-					Ihre Methoden sind wie
-					<code>
-						def myMethod(self, other_arguments)
-					</code>
-					Beachten: das erste Parameter muss immer "self" sein.
+            Konstruktor (die Parameter sind genug, um die Felder eines Objektes zu festlegen:
+            __init__(self, param_1, ...m param_n)
 
-					Konstruktor (die Parameter sind genug, um die Felder eines Objektes zu festlegen:
-					__init__(self, param_1, ...m param_n)
+            Destruktor (z.B. un die Felder dieses Objektes sauber machen):
+            __del__(self)
 
-					Destruktor (z.B. un die Felder dieses Objektes sauber machen):
-					__del__(self)
+            Private Felder sind mit doppelt underscore vorangestellt:
+            <code>
+                class Person:
+                __init__(self, name, accountNumber):
+                self.name = name
+                self.__accountNumber = 345
+            </code>
+        </p>
+    </section>
 
-					Private Felder sind mit doppelt underscore vorangestellt:
-					<code>
-						class Person:
-						    __init__(self, name, accountNumber):
-						        self.name = name
-						        self.__accountNumber = 345
-					</code>
-				</p>
-			</section>
+    <section>
+        <h3>
+            Input/Output verwalten
+        </h3>
+        <p>
+            Wir nutzen die "file" Klasse, die drei wichtige Funktionen uns zu Verfügung stellt:
+        <ul>
+            <li>read()</li>
+            <li>readline() # man muss auch close() nutzen</li>
+            <li>write()</li>
+        </ul>
+        Ein Beispiel:
+        <code>
+            f = file('save.txt', 'w') # wir möchten auf der Datei schreiben -> w
+            f.write('Hund')
+            f.close()
 
-			<section>
-				<h3>
-					Input/Output verwalten
-				</h3>
-				<p>
-					Wir nutzen die "file" Klasse, die drei wichtige Funktionen uns zu Verfügung stellt:
-					<ul>
-						<li>read()</li>
-						<li>readline() # man muss auch close() nutzen</li>
-						<li>write()</li>
-					</ul>
-					Ein Beispiel:
-					<code>
-						f = file('save.txt', 'w')    # wir möchten auf der Datei schreiben -> w
-						f.write('Hund')
-						f.close()
+            f = file('save.txt')
+            while True:
+            line = f.readline()
+            if len(line)==0:
+            break
+            print line
+            f.close()
+        </code>
 
-						f = file('save.txt')
-						while True:
-						    line = f.readline()
-						    if len(line)==0:
-						        break
-						    print line
-						f.close()
-					</code>
+        Man kann auch mit cPickle I/O machen (es ist in C geschrieben, so es ist schneller)
+        <code>
+            import cPickle as p
 
-					Man kann auch mit cPickle I/O machen (es ist in C geschrieben, so es ist schneller)
-					<code>
-						import cPickle as p
+            # Liste kreieren und speichern
+            list = ['a', 'b', 'c']
+            f = file('data.dat', 'w')
+            p.dump(list, f)
+            f.close()
 
-						# Liste kreieren und speichern
-						list = ['a', 'b', 'c']
-						f = file('data.dat', 'w')
-						p.dump(list, f)
-						f.close()
+            del list
 
-						del list
+            # Liste aus die Datei nehmen
+            f = file('data.dat')
+            storedlist = p.load(f)
+            pring(storedlist)
+        </code>
+        </p>
+    </section>
 
-						# Liste aus die Datei nehmen
-						f = file('data.dat')
-						storedlist = p.load(f)
-						pring(storedlist)
-					</code>
-				</p>
-			</section>
+    <section>
+        <h3>
+            Nützliches OS Funktionen
+        </h3>
+        <p>
+            Eine List von nützliche OS Funktionalitaten
+        <ul>
+            <li>os.listdir(dir) <br> dir Inhalte auflisten</li>
+            <li>os.remove(dir) <br> ein Verzeichnis entfernen</li>
+            <li>os.system(some_command) <br> einen OS Befehl ausführen</li>
+            <li>os.linesep() <br> das "line separator" z.B. (newline oder carriage return und so weiter)</li>
+            <li>os.path.split() <br> der filepath separator: slash oder back-slash</li>
+            <li>os.path.isfile(path) <br> ist path ein File?</li>
+            <li>os.path.isdir(path) <br> ist path ein Ordner?</li>
+            <li>os.path.exists(path) <br> existiert path?</li>
+        </ul>
+        </p>
+    </section>
 
-			<section>
-				<h3>
-					Nützliches OS Funktionen
-				</h3>
-				<p>
-					Eine List von nützliche OS Funktionalitaten
-					<ul>
-						<li>os.listdir(dir) <br> dir Inhalte auflisten</li>
-						<li>os.remove(dir) <br> ein Verzeichnis entfernen</li>
-						<li>os.system(some_command) <br> einen OS Befehl ausführen</li>
-						<li>os.linesep() <br> das "line separator" z.B. (newline oder carriage return und so weiter) </li>
-						<li>os.path.split() <br> der filepath separator: slash oder back-slash</li>
-						<li>os.path.isfile(path) <br> ist path ein File? </li>
-						<li>os.path.isdir(path) <br> ist path ein Ordner? </li>
-						<li>os.path.exists(path) <br> existiert path? </li>
-					</ul>
-				</p>
-			</section>
+    <section>
+        <h3>
+            Besondere Methoden
+        </h3>
+        <p>
+        <ul>
+            <li>
+                __str__(self) <br>
+                es ist benutzt, wenn wir die print Methode aufrufen. Es soll unsere Objecte wie eine String darstellen.
+            </li>
+            <li>
+                __lt__(self, other) <br>
+                wie compareTo in Java, es ist aufgerufen wenn wir "<" nutzen. Auch können wir irgendwie die "overloading" von +, > und so weiter machen.
 
-			<section>
-				<h3>
-					Besondere Methoden
-				</h3>
-				<p>
-					<ul>
-						<li>
-							__str__(self) <br>
-							es ist benutzt, wenn wir die print Methode aufrufen. Es soll unsere Objecte wie eine String darstellen.
-						</li>
-						<li>
-							__lt__(self, other) <br>
-							wie compareTo in Java, es ist aufgerufen wenn wir "<" nutzen. Auch können wir irgendwie die "overloading" von +, > und so weiter machen.
-
-						</li>
-						<li>
-							__getItem__(self, key) <br>
-							wenn wir nutzen someStructure[key]
-						</li>
-						<li>
-							__len__(self) <br>
-							Einen "length" für dieses Objekt.
-						</li>
-					</ul>
-				</p>
-		</article>
-	</body>
+            </li>
+            <li>
+                __getItem__(self, key) <br>
+                wenn wir nutzen someStructure[key]
+            </li>
+            <li>
+                __len__(self) <br>
+                Einen "length" für dieses Objekt.
+            </li>
+        </ul>
+        </p>
+</article>
+</body>
 </html>

@@ -1,11 +1,11 @@
 @font-face {
 	font-family: Mostra;
-	src: url('mostra.ttf');
+	src: url('../fonts/mostra.ttf');
 }
 
 @font-face {
 	font-family: Sanser;
-	src: url('helvetica.otf');
+	src: url('../fonts/helvetica.otf');
 }
 
 body {
