@@ -26,6 +26,8 @@ body {
 #header {
 	background-color: orange;
 	padding-bottom: 5px;
+	position: fixed;
+	width: 100%;
 }
 
 h1 {
@@ -149,9 +151,13 @@ pre {
 	font-family: Sanser;
 }
 
-footer {
+#footer {
 	background-color: orange;
+	position: fixed;
+	margin-top: none;
+	width: 100%;
 }
+
 #fool {
 	float: left;
 	display: inline;
