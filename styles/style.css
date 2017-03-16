@@ -14,7 +14,7 @@ article {
 	width: 60%
 }
 #header {
-	background-color: orange;
+	background-color: darkorange;
 	padding-bottom: 5px;
 	position: fixed;
 	width: 100%;
@@ -25,7 +25,7 @@ a {
 }
 
 body {
-	margin: 0px;
+	margin: 0;
 	background-color: grey;
 }
 
@@ -151,14 +151,10 @@ pre {
 	font-family: Sanser;
 }
 
-#popo {
-	background-color: orange;
-	width: 100%;
-}
-
 #fool {
 	float: left;
 	display: inline;
+	margin-top: -6px;
 }
 
 #fool > h3 {
@@ -170,5 +166,38 @@ pre {
 
 #foor {
 	float: right;
-	margin-right: 5px;
+	margin-top: 1px;
+	font-size: small;
+}
+#follow {
+	margin-top: 3px;
+	margin-left: -28px;
+	width: 36px;
+	float: left;
+}
+
+.footer {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 40px;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	background-color: darkorange;
+	text-align: center;
+}
+
+img {
+	width: 100%;
+}
+
+.footer h3 {
+	font-family: Mostra;
+}
+.footer span:nth-of-type(1) {
+	font-size: small;
+}
+.footer span:nth-of-type(2) {
+	font-style: bold;
 }
