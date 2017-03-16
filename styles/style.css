@@ -29,7 +29,7 @@ a {
 
 body {
 	margin: 0;
-	/*background-color: grey;*/
+	background-color: grey;
 }
 
 
@@ -218,3 +218,72 @@ img {
 	margin-top: 8%;
 	margin-bottom: 3%;
 }
+#header h1 a:hover {
+	color: #e60000;
+}
+
+
+
+
+/*Dropdownmenu CSS*/
+
+
+nav ul li>a {
+	font-family: Mostra;
+	color: #454343;
+	font-weight: bold;
+	font-size: 15px;
+	color: black;
+}
+
+nav ul li>a:hover {
+	font-size: 20px;
+	color: #e60000;
+}
+nav ul {
+  display: inline;
+  margin: 0;
+}
+nav ul li {display: inline-block;}
+nav ul li>a:hover {color: #e60000;}
+nav ul li:hover ul {display: block;}
+nav ul li ul {
+  position: absolute;
+  width: 70px;
+  display: none;
+}
+nav ul li ul li { 
+  /* background: darkorange; */
+  display: block; 
+}
+nav ul li ul li a {display:block !important;} 
+nav ul li:nth-of-type(1) ul {
+  margin-left: -23px;
+  padding: 6;
+}
+nav ul li:nth-of-type(2) ul {
+  margin-left: -13px;
+  padding: 6;
+}
+nav ul li:nth-of-type(3) ul {
+  margin-left: -24px;
+  padding: 6;
+}
+nav ul li:nth-of-type(4) ul {
+  margin-left: -12px;
+  padding: 6;
+}
+nav ul li:nth-of-type(5) ul {
+  margin-left: 3px;
+  padding: 6;
+}
+nav ul li:nth-of-type(6) ul {
+  margin-left: -25px;
+  padding: 6;
+}
+nav ul li:nth-of-type(7) ul {
+  margin-left: -12px;
+  padding: 6;
+}
+
+/*  */
