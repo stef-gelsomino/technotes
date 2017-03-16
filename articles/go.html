@@ -1,85 +1,86 @@
 <html>
 <head>
-	<title> Mein persoenlich Wiki auf Deutsch! </title>
-	<link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
-	<link href='https://fonts.googleapis.com/css?family=Lora:i' rel='stylesheet'>
-	<link rel="stylesheet" type="text/css" href="../prism/prism_2.css">
-	<link rel="stylesheet" type="text/css" href="../styles/style.css">
+    <title> Mein persoenlich Wiki auf Deutsch! </title>
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lora:i' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="../prism/prism_2.css">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
 </head>
 <body>
 <script type="text/javascript" src="../prism/prism_2.js"></script>
-		<div id="header">
-		<h1><a href="../index.html">Architektur und Entwicklung</a></h1>
-		<nav>
-			<a href="http.html"> HTTP </a> &nbsp;
-			<a href="ansible.html"> Ansible </a> &nbsp;
-			<a href="go.html"> Go </a> &nbsp;
-			<a href="spring.html"> Spring </a> &nbsp;
-			<a href="spring_data.html"> Spring Data </a> &nbsp;
-			<a href="tdd.html"> TDD </a> &nbsp;
-			<a href="python.html"> Python </a> &nbsp;
-		</nav>
-		</div>
+<div id="header">
+    <h1><a href="../index.html">Architektur und Entwicklung</a></h1>
+    <nav>
+        <a href="http.html"> HTTP </a> &nbsp;
+        <a href="ansible.html"> Ansible </a> &nbsp;
+        <a href="go.html"> Go </a> &nbsp;
+        <a href="spring.html"> Spring </a> &nbsp;
+        <a href="spring_data.html"> Spring Data </a> &nbsp;
+        <a href="tdd.html"> TDD </a> &nbsp;
+        <a href="python.html"> Python </a> &nbsp;
+    </nav>
+</div>
 
-		<article>
-			<header id="top">
-				<h2>
-					Die Go (golang) Programmiersprache
-				</h2>
-				<ol>
-					<li><a href="#intro">Einführung</a></li>
-					<li><a href="#first_steps">Erste Schritte</a></li>
-					<li><a href="#func_syntax">Syntax von Funktionen</a></li>
-					<li><a href="#control_structures">Kontrollstrukturen</a></li>
-					<li><a href="#loops">Schleifen</a></li>
-					<li><a href="#array_slice">Arrays und Slices</a></li>
-					<li><a href="#maps">Maps</a></li>
-					<li><a href="#structs">Structs</a></li>
-					<li><a href="#concurrency">Concurrency</a></li>
-				</ol>				
-			</header>
+<article>
+    <header id="top">
+        <h2>
+            Die Go (golang) Programmiersprache
+        </h2>
+        <ol>
+            <li><a href="#intro">Einführung</a></li>
+            <li><a href="#first_steps">Erste Schritte</a></li>
+            <li><a href="#func_syntax">Syntax von Funktionen</a></li>
+            <li><a href="#control_structures">Kontrollstrukturen</a></li>
+            <li><a href="#loops">Schleifen</a></li>
+            <li><a href="#array_slice">Arrays und Slices</a></li>
+            <li><a href="#maps">Maps</a></li>
+            <li><a href="#structs">Structs</a></li>
+            <li><a href="#concurrency">Concurrency</a></li>
+        </ol>
+    </header>
 
-			<section id="intro">
-				<h3>
-					Einführung <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					Go ist eine neue Programmiersprache, die besonders geeignet für <i>system programming</i> ist. 
+    <section id="intro">
+        <h3>
+            Einführung <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+            Go ist eine neue Programmiersprache, die besonders geeignet für <i>system programming</i> ist.
 
-					<ul>
-						<li>wie C, aber einfacher</li>
-						<li>nur ca. 25 Schlüsselwörter</li>
-						<li>cross-platform</li>
-						<li>sie ist eine kompilierte sprache. Deswegen bekommen wir direkt OS Code.</li>
-						<li>sie ist stark typisiert</li>
-						<li>sie hat Typinferenz</li>
-					</ul>
+        <ul>
+            <li>wie C, aber einfacher</li>
+            <li>nur ca. 25 Schlüsselwörter</li>
+            <li>cross-platform</li>
+            <li>sie ist eine kompilierte sprache. Deswegen bekommen wir direkt OS Code.</li>
+            <li>sie ist stark typisiert</li>
+            <li>sie hat Typinferenz</li>
+        </ul>
 
-					Um einen <i>Workspace</i> zu aufsetzen, müssen wir eine bestimmte Verzeichnisstruktur auflegen. <br>
-					<i>root</i> <br>
-					&nbsp;|__ src <br>
-					&nbsp;|__ pkg <br>
-					&nbsp;|__ bin <br>
-					Und eine zusätzliche GOPATH Umgebungsvariable um das <i>Workspace</i> festzustellen. <br>
-					Der "go env" Befehl wird der Wert von aller Variablen zeigen.
-				</p>
-			</section>
-			<section id="first_steps">
-				<h3>
-					Erste Schritte im Quelltext <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					Ganz oben, stellen wir unsere "package main" Deklaration. Das eigentlich heißt, dass dieser Quelltext wie einen <i>executable</i> kompiliert werden muss, nicht wie eine Bibliotheke. <br>
-					Die "main" Funktion ist der Einstiegpunkt der Anwendung. Generell haben Funktionen die folgende Struktur: <br>
-					<pre>
+        Um einen <i>Workspace</i> zu aufsetzen, müssen wir eine bestimmte Verzeichnisstruktur auflegen. <br>
+        <i>root</i> <br>
+        &nbsp;|__ src <br>
+        &nbsp;|__ pkg <br>
+        &nbsp;|__ bin <br>
+        Und eine zusätzliche GOPATH Umgebungsvariable um das <i>Workspace</i> festzustellen. <br>
+        Der "go env" Befehl wird der Wert von aller Variablen zeigen.
+        </p>
+    </section>
+    <section id="first_steps">
+        <h3>
+            Erste Schritte im Quelltext <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+            Ganz oben, stellen wir unsere "package main" Deklaration. Das eigentlich heißt, dass dieser Quelltext wie einen
+            <i>executable</i> kompiliert werden muss, nicht wie eine Bibliotheke. <br>
+            Die "main" Funktion ist der Einstiegpunkt der Anwendung. Generell haben Funktionen die folgende Struktur: <br>
+        <pre>
 						<code class="language-go">
 							func &lt;name&gt; ( &lt;arguments&gt; ) &lt;return types&gt; {
 								&lt;code&gt;
 							}
 						</code>
 					</pre>
-					Im Besonderen die main Funktion hat keine Parameter und keine <i>return types</i>, wie im folgende Beispiel.
-					<pre>
+        Im Besonderen die main Funktion hat keine Parameter und keine <i>return types</i>, wie im folgende Beispiel.
+        <pre>
 						<code class="language-go">
 							package main
 							import ("fmt"
@@ -90,14 +91,15 @@
 							}
 						</code>
 					</pre>
-					Dann wir können dieses Programm ausführen mit: <br>
-					<code class="mono-box">
-						$ run hello-world.go
-					</code>
-					Merkwürdig, dass die große Zeichen (z.B. Println) bedeutet, dass die Funktion exportiert wird und auch für andere Software sichtbar ist.
-					Alle Variablen sind stark typisiert. Sie können neben der Package Deklaration eingefügt werden. In diesem Fall, der Typ muss ausdrücklich erklärt sein.
-					Es gibt <i>default values</i> für jeden Typ, z.B. 0 für Nummern und "" für String. Es steht zu Verfügung ein bequemer Befehl in der "reflect" Package, dadurch wir können der Typ innerhalb der Laufzeit checken.
-					<pre>
+        Dann wir können dieses Programm ausführen mit: <br>
+        <code class="mono-box">
+            $ run hello-world.go
+        </code>
+        Merkwürdig, dass die große Zeichen (z.B. Println) bedeutet, dass die Funktion exportiert wird und auch für andere Software sichtbar ist.
+        Alle Variablen sind stark typisiert. Sie können neben der Package Deklaration eingefügt werden. In diesem Fall, der Typ muss ausdrücklich erklärt sein.
+        Es gibt
+        <i>default values</i> für jeden Typ, z.B. 0 für Nummern und "" für String. Es steht zu Verfügung ein bequemer Befehl in der "reflect" Package, dadurch wir können der Typ innerhalb der Laufzeit checken.
+        <pre>
 						<code class="language-go">
 							reflect.TypeOf(name)
 
@@ -106,9 +108,10 @@
 							c := int(a) + b 
 						</code>
 					</pre>
-					Der := bedeutet, dass die Variable mit Typinferenz zugewiesen wird. Wenn wir eine Variable in einer Funktion deklarieren, dann wir müssen obligatorisch solche Variable verwenden. Parameter sind normalerweise immer Wertparameter, das heißt, dass nur Werte sind übergegeben. <br>
-					Es ist auch möglich, <i>Pointers</i> zu nutzen, um eine geteilte Variable zu referenzieren.
-					<pre>
+        Der := bedeutet, dass die Variable mit Typinferenz zugewiesen wird. Wenn wir eine Variable in einer Funktion deklarieren, dann wir müssen obligatorisch solche Variable verwenden. Parameter sind normalerweise immer Wertparameter, das heißt, dass nur Werte sind übergegeben.
+        <br>
+        Es ist auch möglich, <i>Pointers</i> zu nutzen, um eine geteilte Variable zu referenzieren.
+        <pre>
 						<code class="language-go">
 							// & references a pointer
 							// * dereferences a pointer
@@ -121,8 +124,8 @@
 							fmt.Println(" ... ", *ptr)
 						</code>
 					</pre>
-					Ein anderes Beispiel:
-					<pre>
+        Ein anderes Beispiel:
+        <pre>
 						<code class="language-go">
 							// changes the local variable
 
@@ -143,8 +146,8 @@
 							changeCourse(&course)
 						</code>
 					</pre>
-					Wir können auch Konstanten ausdrücklich nutzen, so wie eine reiche OS Pakete.
-					<pre>
+        Wir können auch Konstanten ausdrücklich nutzen, so wie eine reiche OS Pakete.
+        <pre>
 						<code class="language-go">
 							import "os"
 
@@ -157,16 +160,16 @@
 							os.Getenv("USERNAME")
 						</code>
 					</pre>
-				</p>
-			</section>
-			<section id="func_syntax">
-				<h3>
-					Syntax von Funktionen <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					In Go es ist verboten, die { auf eine neue Reihe zu stellen. Das muss immer in der gleiche Reihe wie die Deklaration sein.
+        </p>
+    </section>
+    <section id="func_syntax">
+        <h3>
+            Syntax von Funktionen <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+            In Go es ist verboten, die { auf eine neue Reihe zu stellen. Das muss immer in der gleiche Reihe wie die Deklaration sein.
 
-					<pre>
+        <pre>
 						<code class="language-go">
 							function converter(module, author string) (s1, s2 string) {
 								module = strings.Title(module)
@@ -176,8 +179,8 @@
 						</code>
 					</pre>
 
-					Auch <i>variadic</i> Funktionen stehen zu Verfügung, die sind Funktionen, die ein unbestimmt Nummer von Parameter bekommen können.
-					<pre>
+        Auch <i>variadic</i> Funktionen stehen zu Verfügung, die sind Funktionen, die ein unbestimmt Nummer von Parameter bekommen können.
+        <pre>
 						<code class="language-go">
 							bestFinish := bestLeagueFinishes(13, 10, 13, 17, 14)
 
@@ -192,15 +195,15 @@
 							}
 						</code>
 					</pre>
-				</p>
-			</section>
-			<section id="control_structures">
-				<h3>
-					Kontrollstrukturen <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					Grundsätzlich es gibt if und switch Anweisungen. Zwei Beispiele folgen:
-					<pre>
+        </p>
+    </section>
+    <section id="control_structures">
+        <h3>
+            Kontrollstrukturen <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+            Grundsätzlich es gibt if und switch Anweisungen. Zwei Beispiele folgen:
+        <pre>
 						<code class="language-go">
 							if <i>init_statement</i>; <i>boolean_expression</i> {
 
@@ -211,9 +214,9 @@
 							}
 						</code>
 					</pre>
-					in der <i>if</i> Anweisung es ist möglich eine freiwillige Initialisierung am Anfang einlegen. 
-					Der switch Anweisung:
-					<pre>
+        in der <i>if</i> Anweisung es ist möglich eine freiwillige Initialisierung am Anfang einlegen.
+        Der switch Anweisung:
+        <pre>
 						<code class="language-go">
 							switch <i>init_statement</i>; <i>expression</i> {
 								case <i>expression</i> : // some code
@@ -222,8 +225,11 @@
 							}
 						</code>
 					</pre>
-					<b>Sehr wichtig:</b> es gibt kein <i>fall-through</i> Mechanismus, deshalb die Kontrollstruktur schließt wenn einen entsprechende <i>expression</i> gefunden ist. <br> Wenn man will das <i>fall-through</i> Verhalten, dann man muss die <span class="mono-box">fallthrough</span> Schlüsselwort ausdrücklich verwenden. Auf diese Weise Kontroll geht zum nächste <i>case</i> aber nicht weiter. Das heißt, ein einzige <span class="mono-box">fallthrough</span> gilt nicht für alle <i>case</i> in der switch.
-					<pre>
+        <b>Sehr wichtig:</b> es gibt kein <i>fall-through</i> Mechanismus, deshalb die Kontrollstruktur schließt wenn einen entsprechende <i>expression</i> gefunden ist.
+        <br> Wenn man will das <i>fall-through</i> Verhalten, dann man muss die
+        <span class="mono-box">fallthrough</span> Schlüsselwort ausdrücklich verwenden. Auf diese Weise Kontroll geht zum nächste
+        <i>case</i> aber nicht weiter. Das heißt, ein einzige <span class="mono-box">fallthrough</span> gilt nicht für alle <i>case</i> in der switch.
+        <pre>
 						<code class="language-go">
 							package main
 							import ("fmt"
@@ -246,14 +252,14 @@
 							}
 						</code>
 					</pre>
-					Die if Anweisung ist seht wichtig in der Fehlerbehandlung. Im Besondere gibt es eine Idiomatische Ausdrück: eine Go Funktion immer gibt die Fehler als letzte Variable zurück. z.B.
-					<pre>
+        Die if Anweisung ist seht wichtig in der Fehlerbehandlung. Im Besondere gibt es eine Idiomatische Ausdrück: eine Go Funktion immer gibt die Fehler als letzte Variable zurück. z.B.
+        <pre>
 						<code class="language-go">
 							func testConnect(target string) (time float64 err error)
 						</code>
 					</pre>
-					Falls die Ausführung war OK, dann error ist <span class="mono-box">nil</span>.
-					<pre>
+        Falls die Ausführung war OK, dann error ist <span class="mono-box">nil</span>.
+        <pre>
 						<code class="language-go">
 							_, err := os.Open("/directory/file.txt")
 							if err != nil {
@@ -261,21 +267,23 @@
 							}
 						</code>
 					</pre>
-				</p>
-			</section>
-			<section id="loops">
-				<h3>
-					Schleifen <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					Um eine Schleife aufzusetzen, ham wir nur die <span class="mono-box">for</span> Schlüsselwort zu Verfügung. Auf jeden Fall können alle Typen von Schleifen durch diese Schlüsselwort ergestellt werden. Es hängt davon ab, welche Ausdrück als <i>expression</i> wir nutzen.
-					<ul>
-						<li>leer -> unendliche Schleife</li>
-						<li>boolescher</li>
-						<li>range -> auf eine iterierbare Struktur wiederholen</li>
-					</ul>
-				</p>
-				<pre>
+        </p>
+    </section>
+    <section id="loops">
+        <h3>
+            Schleifen <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+            Um eine Schleife aufzusetzen, ham wir nur die
+            <span class="mono-box">for</span> Schlüsselwort zu Verfügung. Auf jeden Fall können alle Typen von Schleifen durch diese Schlüsselwort ergestellt werden. Es hängt davon ab, welche Ausdrück als
+            <i>expression</i> wir nutzen.
+        <ul>
+            <li>leer -> unendliche Schleife</li>
+            <li>boolescher</li>
+            <li>range -> auf eine iterierbare Struktur wiederholen</li>
+        </ul>
+        </p>
+        <pre>
 					<code class="language-go">
 						for course := range courseList {
 							// ...
@@ -283,8 +291,8 @@
 					</code>
 				</pre>
 
-				Die boolesche Version der Schleife kann "pre" und "post" Anweisungen haben
-				<pre>
+        Die boolesche Version der Schleife kann "pre" und "post" Anweisungen haben
+        <pre>
 					<code class="language-go">
 						for i := 0; i&lt;10; i++ {
 							// ...
@@ -297,20 +305,22 @@
 						}
 					</code>
 				</pre>
-				Ein Paar (index, element) ist eigentlich von die range Operator zurückgegeben. Mit dem Underscore Zeichen wir nur einfach ignorieren es. Auch <span class="mono-box">break</span> und <span class="mono-box">continue</span> Schlüsselwörter stehn bequem zu Verfügung.
-			</section>
-			<section id="array_slice">
-				<h3>
-					Arrays und Slices <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					Arrays und Lists sind einfach indizierte Liste, die enthält Elementen von dem gleichem Typ. Die einzige Unterschied ist, dass ein Array hat eine bestimmte Größe (z.B. N Elementen) anders ein Slice hat keine schon festgesetzte Größe. Merkwürdig, dass Slices sind durch Arrays implementiert. <br>
+        Ein Paar (index, element) ist eigentlich von die range Operator zurückgegeben. Mit dem Underscore Zeichen wir nur einfach ignorieren es. Auch
+        <span class="mono-box">break</span> und <span class="mono-box">continue</span> Schlüsselwörter stehn bequem zu Verfügung.
+    </section>
+    <section id="array_slice">
+        <h3>
+            Arrays und Slices <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+            Arrays und Lists sind einfach indizierte Liste, die enthält Elementen von dem gleichem Typ. Die einzige Unterschied ist, dass ein Array hat eine bestimmte Größe (z.B. N Elementen) anders ein Slice hat keine schon festgesetzte Größe. Merkwürdig, dass Slices sind durch Arrays implementiert.
+            <br>
 
-					Mit Slices, wir verwenden standardmäßig <i>Pointers</i>, nicht <i>Wertparameter</i>.
+            Mit Slices, wir verwenden standardmäßig <i>Pointers</i>, nicht <i>Wertparameter</i>.
 
-					Um ein Slice zu erstellen, wir haben die make Funktion oder einen <i>Initializer</i>:
+            Um ein Slice zu erstellen, wir haben die make Funktion oder einen <i>Initializer</i>:
 
-					<pre>
+        <pre>
 						<code class="language-go">
 							// make
 							myCourses := make(string, 10, 15);	// type, length, capacity
@@ -320,8 +330,8 @@
 						</code>
 					</pre>
 
-					Man kann auch mit den eckigen Klammern eine Sliece ... schneiden!
-					<pre>	
+        Man kann auch mit den eckigen Klammern eine Sliece ... schneiden!
+        <pre>
 						<code class="language-go">
 							mySlice[0] = 0
 							mySlice2 := mySlice[2:5]	// inclusive
@@ -329,9 +339,9 @@
 							mySlice2 := mySlice[2]		// from index 2 to len()-1 
 						</code>
 					</pre>
-					Mit Slices müssen wir nicht * und & ausdrücklich schreiben, auch wenn es ist per Referenz <i>by default</i>. <br>
-					Um eine Slice zu erweitern, nutzt man die <span class="mono-box">append()</span> Funktion.
-					<pre>	
+        Mit Slices müssen wir nicht * und & ausdrücklich schreiben, auch wenn es ist per Referenz <i>by default</i>. <br>
+        Um eine Slice zu erweitern, nutzt man die <span class="mono-box">append()</span> Funktion.
+        <pre>
 						<code class="language-go">
 							mySlice = append(mySlice, 10)
 							fmt.Printf("...", cap(mySlice))
@@ -341,21 +351,21 @@
 							mySlice = append(mySlice, newSlice...)
 						</code>
 					</pre>
-				</p>
-			</section>
-			<section id="maps">
-				<h3>
-					Maps <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					<pre>	
+        </p>
+    </section>
+    <section id="maps">
+        <h3>
+            Maps <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+        <pre>
 						<code class="language-go">
 							map[keyType]valueType
 						</code>
 					</pre>
-				</p>
-				der Schlüssel muss Vergleichbar sein (mit == und !=).
-				<pre>	
+        </p>
+        der Schlüssel muss Vergleichbar sein (mit == und !=).
+        <pre>
 					<code class="language-go">
 						// using make
 						leagueTitles := make(map[string]int)
@@ -376,14 +386,14 @@
 						delete(myMap, "newcastle")
 					</code>
 				</pre>
-			</section>
-			<section id="structs">
-				<h3>
-					Structs <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					Structs sind individualisierte Datenstrukture z.B.
-					<pre>
+    </section>
+    <section id="structs">
+        <h3>
+            Structs <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+            Structs sind individualisierte Datenstrukture z.B.
+        <pre>
 						<code class="language-go">
 							type courseData struct {
 								Author string
@@ -405,26 +415,26 @@
 						</code>
 					</pre>
 
-					In die letzte, falls wir uns die Ordnung erinnern, wir können die Feldnamen weglassen. Beides das Setzen und das Auslesen sind durch den Punkt ausgeführt.
+        In die letzte, falls wir uns die Ordnung erinnern, wir können die Feldnamen weglassen. Beides das Setzen und das Auslesen sind durch den Punkt ausgeführt.
 
-				</p>
-			</section>
-			<section id="concurrency">
-				<h3>
-					Concurrency <a href="#top" class="top">&#10514;</a>
-				</h3>
-				<p>
-					In Go gibt eine spezielle Weise, Concurrency zu tun, die auf <i>goroutines</i> basierte ist. <br>
+        </p>
+    </section>
+    <section id="concurrency">
+        <h3>
+            Concurrency <a href="#top" class="top">&#10514;</a>
+        </h3>
+        <p>
+            In Go gibt eine spezielle Weise, Concurrency zu tun, die auf <i>goroutines</i> basierte ist. <br>
 
-					Goroutines (die sind eigentlich Green Threads) 
-					<ul>
-						<li>sind leichter als OS Threads</li>
-						<li>werden von Go verwatet</li>
-						<li>brauchen weniger Wechselmühe</li>
-						<li>sind schnell am Startup</li>
-						<li>haben sicher kommunicationskanal</li>
-					</ul>
-					<pre>
+            Goroutines (die sind eigentlich Green Threads)
+        <ul>
+            <li>sind leichter als OS Threads</li>
+            <li>werden von Go verwatet</li>
+            <li>brauchen weniger Wechselmühe</li>
+            <li>sind schnell am Startup</li>
+            <li>haben sicher kommunicationskanal</li>
+        </ul>
+        <pre>
 						<code class="language-go">
 							func main(){
 
@@ -443,9 +453,9 @@
 						</code>
 					</pre>
 
-					ein umfassenderes Beispiel.
+        ein umfassenderes Beispiel.
 
-					<pre>
+        <pre>
 						<code class="language-go">
 							import ("fmt"
 									"time"
@@ -476,12 +486,12 @@
 						</code>
 					</pre>
 
-					Die Wait() Funktion am Ende bedeutet, dass die main Funktion wartet bis wenn beides haben ihre Done() Funktion aufgerufen. <br>
-					Mit der <span class="mono-box">defer</span> die Done() Funktion ist nur aufgerufen wenn die Funktion schließt wird.
+        Die Wait() Funktion am Ende bedeutet, dass die main Funktion wartet bis wenn beides haben ihre Done() Funktion aufgerufen. <br>
+        Mit der <span class="mono-box">defer</span> die Done() Funktion ist nur aufgerufen wenn die Funktion schließt wird.
 
-					Goroutines kann durch <i>Channels</i> mitteilen: es gibt <i>buffered</i> und <i>unbuffered</i> Channels.
+        Goroutines kann durch <i>Channels</i> mitteilen: es gibt <i>buffered</i> und <i>unbuffered</i> Channels.
 
-					<pre>
+        <pre>
 						<code class="language-go">
 
 							id := 6
@@ -496,17 +506,19 @@
 
 						</code>
 					</pre>
-				</p>
-			</section>
-		</article>
-		<div id="foot">
-			<div id="fool">
-				<h3><a href="">Contacts</a></h3>
-				<h3><a href="">Linkedin Profile</a></h3>
-			</div>
-			<div id="foor">
-				<h3><i>2017 SGFDM</i></h3>
-			</div>
-		</div>
-	</body>
+        </p>
+    </section>
+</article>
+<div class="footer">
+    <div id="fool">
+        <h3><a target="_blank" href="https://www.linkedin.com/in/stefano-gelsomino-8b0b7913a/"><span>Site by</span> <span>Stefano Gelsomino</span> </a></h3>
+    </div>
+    <a id="follow" target="_blank" href="https://www.linkedin.com/in/stefano-gelsomino-8b0b7913a/">
+        <img src="../img/linkedin.png"/>
+    </a>
+    <div id="foor">
+        <h3>2017</h3>
+    </div>
+</div>
+</body>
 </html>
