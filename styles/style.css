@@ -197,6 +197,10 @@ img {
 	width: 100%;
 }
 
+img.article-img {
+	width: 60%;
+}
+
 .footer h3 {
 	font-family: Mostra;
 }

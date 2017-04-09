@@ -1,0 +1,158 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> Technische Softwareentwicklung Notizen </title>
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lora:i' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="../prism/prism_2.css">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+</head>
+<body>
+<script type="text/javascript" src="../prism/prism_2.js"></script>
+<div id="header">
+    <h1><a href="../index.html">Architektur und Entwicklung</a></h1>
+    <nav>
+        <a href="http.html"> HTTP </a> &nbsp;
+        <a href="ansible.html"> Ansible </a> &nbsp;
+        <a href="go.html"> Go </a> &nbsp;
+        <a href="spring.html"> Spring </a> &nbsp;
+        <a href="spring_data.html"> Spring Data </a> &nbsp;
+        <a href="tdd.html"> TDD </a> &nbsp;
+        <a href="python.html"> Python </a> &nbsp;
+        <a href="jenkins.html"> Jenkins </a> &nbsp;
+
+    </nav>
+</div>
+<div class="main">
+    <article>
+        <header>
+            <h2>
+                Jenkins Continuous Integration
+            </h2>
+        </header>
+
+        <section>
+            <h3>
+                Einleitung
+            </h3>
+            <p>Jenkins ist hauptsächlich einen build Server und kann mit plugins integriert werden. Die Website ist http://jenkins-ci.org</p>
+            <p>Im Besonderen:</p>
+            <ul>
+                <li>Der Entwickler puscht die Änderungen</li>
+                <li>Jenkins kriegt die letzte Source Version und generiert einen Output (z.B. ein Artefakt)</li>
+                <li>Jenkins kann einen report zum Entwickler schicken (z.B. ein E-Mail, SMS ...)</li>                
+            </ul>
+            <img src="img/jenkins.svg" class="article-img" alt="jenkins cycle">              
+
+            
+            <p>Installierung</p>
+            <ul>
+                <li>
+                    <p>Voraussetzung</p>
+                    <ul>
+                        <li>Java mindenstens 1.5 Version</li>
+                        <li>Java in PATH setzen</li>
+                        <li>einen Web Server installieren (z.B. Tomcat, JBoss)</li>
+                    </ul>
+                
+                <li>Heruntenladen das war file vor Jenkins Website ("Download Jenkins" -> "Release" tab) und lauft es von Terminal
+                    <code class="mono-box">
+                        $ java -jar jenkins.war
+                        <br> --- <br>                    
+                        Der Server läuft auf: localhost:8080
+                    </code>
+                    <p>Laufen auf einen andere Port oder mit https</p>
+                    <code class="mono-box">
+                        $ java -jar jenkins.war --httpPort=8081
+                        $ java -jar jenkins.war --httpPort=-1 --httpsPort=8081
+                        <br> --- <br>                    
+                        Der Server läuft auf: localhost:8081
+                    </code>
+                    <p>Oder einen Admin User setzen</p>
+                    <p>Wann der Server läuft, den Arbeitsverzeichnis (working directory) Pfad kann im Log datei gefunden werden:
+                        Jenkins home directory: C:\Users\John\.jenkins
+                    </p>
+                </li>
+            </code>
+            </ul>
+                <img src="red_green.jpg" alt="Red-Green-refactor Diagram">
+                Stichwörter:
+                <ul>
+                    <li>xUnit Testing</li>
+                    <li>Class Under Test</li>
+                    <li>Method Under Test</li>
+                    <li>Test Fixture (Setup von Daten, die im Test verwendet werden)</li>
+                </ul>
+                Mythen (die falsch sind):
+                <ul>
+                    <li>verdoppelte Coding-Effort</li>
+                    <li>
+                        Alle Tests müssen bereits erledigt sein, vor die Funktionalitätscode geschrieben wird:
+                        das ist einfach eine Fehlinterpretation von Test-First-Development! Man soll nur einfach den Red/Green/Refactor Zyklus folgen
+                    </li>
+                </ul>
+                Testing Frameworks (JVM Welt):
+                <ul>
+                    <li>Mokckito: Mocking von Abhängigkeiten</li>
+                    <li>DBUnit: Fixtures von SQL Datenbanken</li>
+                    <li></li>
+                </ul>
+                H2 Datenbank:
+                <ul>
+                    <li>relational Datenbank in Java</li>
+                    <li>in/out-of-process Ausführung (gut für Tests)</li>
+                    <li>das h2 Verzeichnis herunterladen und unzippen in /opt Ordner</li>
+                </ul>
+            </p>
+        </section>
+
+        <section>
+            <h3>
+                JUnit
+            </h3>
+            <p>
+
+            </p>
+        </section>
+
+        <section>
+            <h3>
+                Mockito
+            </h3>
+            <p>
+
+            </p>
+        </section>
+
+        <section>
+            <h3>
+                Powermock
+            </h3>
+            <p>
+
+            </p>
+        </section>
+
+        <section>
+            <h3>
+                Verwaltung von Fixture und Testing von Datenkomponenten
+            </h3>
+            <p>
+
+            </p>
+        </section>
+    </article>
+</div>
+<div class="footer">
+    <div id="fool">
+        <h3><a target="_blank" href="https://www.linkedin.com/in/stefano-gelsomino-8b0b7913a/"><span>Site by</span> <span>Stefano Gelsomino</span> </a></h3>
+    </div>
+    <a id="follow" target="_blank" href="https://www.linkedin.com/in/stefano-gelsomino-8b0b7913a/">
+        <img src="../img/linkedin.png"/>
+    </a>
+    <div id="foor">
+        <h3>2017</h3>
+    </div>
+</div>
+</body>
+</html>
