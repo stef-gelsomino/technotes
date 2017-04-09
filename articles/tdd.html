@@ -208,7 +208,44 @@
                     Mockito.verify(orderDaoMock).findById("id123");
                 </code>
             </pre>
-            
+            Eine vollständiger Beispiel:
+            <pre>
+                <code class="language-java">
+                    @Test
+                    public void test_getOrderSummary_success() {
+                        //setup
+                        orderService target = new OrderService();
+
+                        //preparing fixtures
+                        OrderEntity orderEntityFixture = new OrderEntity();
+                        List&lt;OrderEntity&gt; listFixture = asList(orderEntityFixture);
+                        OrderSummary orderSummaryFixture = new OrderSummary();
+
+                        //inject mocks
+                        OrderDao mockOrderDao = mock(OrderDao.class);
+                        target.setOrderDao(mockOrderDao);
+                        OrderTransformer mockOrderTrans = mock(OrderTransformer.class);
+
+                        //stub interaction with mocks
+                        when(mockOrderDao.findOrderByCustomerId(CUSTOMER_ID))
+                            .thenReturn(listFixture);
+                        when(mockOrderTrans.transform(orderEntityFixture))
+                            .thenReturn(orderSummaryFixture);
+
+                        //execution
+                        List&lt;OrderSummary&gt; result = target.getOrderSummary(CUSTOMER_ID);
+
+                        // verify results
+                        assertNotNull(result);
+                        assertEquals(1, result.size());
+                        assertSame(orderSummaryFixture, result.get(0));
+
+                        // verify interactions
+                        verify(mockOrderDao).findOrdersByCustomer(CUSTOMER_ID);
+                        verify(mockOrderTrans).transform(orderEntityFixture);
+                    }
+                </code>
+            </pre>
         </section>
 
         <section>
