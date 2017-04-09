@@ -53,39 +53,39 @@
             </p>
             <p>
                 Wichtige Vorteile sind:
-                <ul>
-                    <li>gut Gleichgewicht von Testcode und Funktionalitätscode</li>
-                    <li>zuverlässige wiederholbarkeit von Tests (die wiederum leitet zu zuversichtlich Refaktorisierung)</li>
-                    <li>Design Prozess berücksichtigt Test up-front (d.h. Testable Design)</li>
-                </ul>
-                <img src="red_green.jpg" alt="Red-Green-refactor Diagram">
-                Stichwörter:
-                <ul>
-                    <li>xUnit Testing</li>
-                    <li>Class Under Test</li>
-                    <li>Method Under Test</li>
-                    <li>Test Fixture (Setup von Daten, die im Test verwendet werden)</li>
-                </ul>
-                Mythen (die falsch sind):
-                <ul>
-                    <li>verdoppelte Coding-Effort</li>
-                    <li>
-                        Alle Tests müssen bereits erledigt sein, vor die Funktionalitätscode geschrieben wird:
-                        das ist einfach eine Fehlinterpretation von Test-First-Development! Man soll nur einfach den Red/Green/Refactor Zyklus folgen
-                    </li>
-                </ul>
-                Testing Frameworks (JVM Welt):
-                <ul>
-                    <li>Mokckito: Mocking von Abhängigkeiten</li>
-                    <li>DBUnit: Fixtures von SQL Datenbanken</li>
-                    <li></li>
-                </ul>
-                H2 Datenbank:
-                <ul>
-                    <li>relational Datenbank in Java</li>
-                    <li>in/out-of-process Ausführung (gut für Tests)</li>
-                    <li>das h2 Verzeichnis herunterladen und unzippen in /opt Ordner</li>
-                </ul>
+            <ul>
+                <li>gut Gleichgewicht von Testcode und Funktionalitätscode</li>
+                <li>zuverlässige wiederholbarkeit von Tests (die wiederum leitet zu zuversichtlich Refaktorisierung)</li>
+                <li>Design Prozess berücksichtigt Test up-front (d.h. Testable Design)</li>
+            </ul>
+            <img src="red_green.jpg" alt="Red-Green-refactor Diagram">
+            Stichwörter:
+            <ul>
+                <li>xUnit Testing</li>
+                <li>Class Under Test</li>
+                <li>Method Under Test</li>
+                <li>Test Fixture (Setup von Daten, die im Test verwendet werden)</li>
+            </ul>
+            Mythen (die falsch sind):
+            <ul>
+                <li>verdoppelte Coding-Effort</li>
+                <li>
+                    Alle Tests müssen bereits erledigt sein, vor die Funktionalitätscode geschrieben wird:
+                    das ist einfach eine Fehlinterpretation von Test-First-Development! Man soll nur einfach den Red/Green/Refactor Zyklus folgen
+                </li>
+            </ul>
+            Testing Frameworks (JVM Welt):
+            <ul>
+                <li>Mokckito: Mocking von Abhängigkeiten</li>
+                <li>DBUnit: Fixtures von SQL Datenbanken</li>
+                <li></li>
+            </ul>
+            H2 Datenbank:
+            <ul>
+                <li>relational Datenbank in Java</li>
+                <li>in/out-of-process Ausführung (gut für Tests)</li>
+                <li>das h2 Verzeichnis herunterladen und unzippen in /opt Ordner</li>
+            </ul>
             </p>
         </section>
 
@@ -93,18 +93,159 @@
             <h3>
                 JUnit
             </h3>
+            <p>Ein gutes Test besteht aus vier Schritte:</p>
+            <ul>
+                <li>
+                    Setup: <br> man baut hier Daten als Fixtures z.B. Objekte vorbereiten, die als Abhängigkeiten zum Class-Under-Test verbunden werden
+                </li>
+                <li>
+                    Execution: <br> in diesem Schritt ruft man das Method-Under-Test auf.
+                    Aufgepasst: je nach dem Komplexität vom Test, kann man <i>one-test-per-class</i> oder <i>one-test-per-method</i> bauen.
+                </li>
+                <li>
+                    Verification: <br> die Ergebnisse von der Ausführung werden überprüft. Sehr wichtig nicht nur <i>Output</i> zu checken
+                    sondern auch mögliche Änderungen im Zustand von Objekte.
+                </li>
+                <li>
+                    Teardown: <br> Kram entfernen, unlocken und sauber machen, die war im Setup vorbereitet.
+                </li>
+            </ul>
+            <p>Glücklicherweise gibt es in JUnit (Package <b style="font-family:monospace">org.junit</b>) eingebaute Unterstütung für jede Schritt.</p>
             <p>
-
+                Jede Test wird mit der @Test Annotation markiert. Was wir wollen als Setup-Schritt ausführen, wird in eine Methode sein, die
+                mit @Before markiert wird. Analog wird unsere Teardown-Methode mit @After markiert. Die genannte Mothoden werden vor und nach jede
+                Test-Methode ausgeführt werden. Falls wir brauchen eine globale Setup/Teardown (d.h. die ist einmalig vor/nach <i>alle</i> dem Test gelaufen)
+                stehen die @BeforeClass und @AfterClass Annotationen uns zu Verfügung.
             </p>
+            <p>
+                Beim Verification gibt es eine reiche Auswahl von <i>"Assertion"</i> Mechanismen:
+                Nämlich gibt es die statische Methoden in <b style="font-family:monospace">org.junit.Assert.*</b> und die
+                <b style="font-family:monospace">HamcrestMatcherAssert</b> Methoden.
+            </p>
+            <p>Hamcrest ist eine Bibliotheke, die das regelmäßige JUnit Assert-Mechanismus erweitert. Manchmal (eigentlich oft) sind die Assertions von
+            Hamcrest lesbarer als die JUnit, manchmal aber umgekehrt.</p>
+            Ein paar Beispiele:
+            <pre>
+                <code class="language-java">
+                    // JUnit (here looking better)
+                    assertEquals("Brown", actualCustomer.gatName());
+
+                    // Hamcrest
+                    assertThat(actualCustomer.gatName(), equalTo("Brown"));
+                </code>
+            </pre>
+            <pre>
+                <code class="language-java">
+                    // JUnit
+                    assertTrue(actualCustomer.gatName().startsWith("B");
+
+                    // Hamcrest (here looking better)
+                    assertThat(actualCustomer.gatName(), startsWith("B"));
+                </code>
+            </pre>
+            Nun schauen wir uns ein Beispiel von eine Test-Methode:
+            <pre>
+                <code class="language-java">
+                    // test name format test_operationName_expectedResult
+
+                    @Test
+                    public void test_transform_success() {
+                        String orderNumberFixture = UUID.randomUUID().toString();
+                        OrderSummary result = target.transform(null);
+                        assertNotNull(result);
+                        assertEquals(orderNumberFixture, result.getOrderNumber());
+                    }
+                </code>
+            </pre>
+
+            Eine Test-Methode kann mit <b style="font-family:monospace">@Ignore</b> markiert werden, damit der Test-Runner läuft sie nicht.
+
+            Außerdem, können wir unsere Test-Methode sagen, dass sie sollte eine Exception erwarten
+            <pre>
+                <code class="language-java">
+                    @Test(expected = IllegalArgumentException.class)
+                    public void test_transform_failure() {
+                        target.transform(null);
+                    }
+                </code>
+            </pre>
         </section>
 
         <section>
             <h3>
                 Mockito
             </h3>
-            <p>
+            <p>Häufig nutzen Objekte andere Objekte, d.h. Abhängigkeiten. Wie können wir unsere Tests "isoliert" machen?</p>
+            <ul>
+                <li>Shared Datenbank?</li>
+                <li>Einfach warten, bis alle die andere Komponenten erledigt sind?</li>
+            </ul>
+            <p>Ein Mocking-Framework:</p>
+            <ul>
+                <li>bietet schon vorbereitet Mocking-Code</li>
+                <li>nutzt der Proxy Entwurfsmuster</li>
+                <li>beliebte: Mockito, EasyMock, JMock</li>
+            </ul>
+            Mockito unterstütz die drei Phasen:
+            <ul>
+                <li>Setup: Mocks bauen und Vehalten spezifizieren</li>
+                <li>Execution: Mocks antworten zu MUT Aufrufen</li>
+                <li>Verification: man kann überprüfen eigentliche Wechselwirkungen zwischen Mocks</li>
+            </ul>
+            Ein Code Beispiel:
+            <pre>
+                <code class="language-java">
+                    OrderDao orderDaoMock = Mockito.mock(OrderDao.class);
+                    Mockito.when(orderDaoMock.findById(id)).thenReturn(orderFixture);
 
-            </p>
+                    // Ceate Class under test with mocked collaborator
+                    OrderService service = new OrderService(orderDaoMock);
+
+                    // Execution: nothing special to do.
+                    // Invocation is real, but MUT will use the mocks
+                    service.doSomething("id123");
+
+                    Mockito.verify(orderDaoMock).findById("id123");
+                </code>
+            </pre>
+            Eine vollständiger Beispiel:
+            <pre>
+                <code class="language-java">
+                    @Test
+                    public void test_getOrderSummary_success() {
+                        //setup
+                        orderService target = new OrderService();
+
+                        //preparing fixtures
+                        OrderEntity orderEntityFixture = new OrderEntity();
+                        List&lt;OrderEntity&gt; listFixture = asList(orderEntityFixture);
+                        OrderSummary orderSummaryFixture = new OrderSummary();
+
+                        //inject mocks
+                        OrderDao mockOrderDao = mock(OrderDao.class);
+                        target.setOrderDao(mockOrderDao);
+                        OrderTransformer mockOrderTrans = mock(OrderTransformer.class);
+
+                        //stub interaction with mocks
+                        when(mockOrderDao.findOrderByCustomerId(CUSTOMER_ID))
+                            .thenReturn(listFixture);
+                        when(mockOrderTrans.transform(orderEntityFixture))
+                            .thenReturn(orderSummaryFixture);
+
+                        //execution
+                        List&lt;OrderSummary&gt; result = target.getOrderSummary(CUSTOMER_ID);
+
+                        // verify results
+                        assertNotNull(result);
+                        assertEquals(1, result.size());
+                        assertSame(orderSummaryFixture, result.get(0));
+
+                        // verify interactions
+                        verify(mockOrderDao).findOrdersByCustomer(CUSTOMER_ID);
+                        verify(mockOrderTrans).transform(orderEntityFixture);
+                    }
+                </code>
+            </pre>
         </section>
 
         <section>
