@@ -175,9 +175,40 @@
             <h3>
                 Mockito
             </h3>
-            <p>
+            <p>Häufig nutzen Objekte andere Objekte, d.h. Abhängigkeiten. Wie können wir unsere Tests "isoliert" machen?</p>
+            <ul>
+                <li>Shared Datenbank?</li>
+                <li>Einfach warten, bis alle die andere Komponenten erledigt sind?</li>
+            </ul>
+            <p>Ein Mocking-Framework:</p>
+            <ul>
+                <li>bietet schon vorbereitet Mocking-Code</li>
+                <li>nutzt der Proxy Entwurfsmuster</li>
+                <li>beliebte: Mockito, EasyMock, JMock</li>
+            </ul>
+            Mockito unterstütz die drei Phasen:
+            <ul>
+                <li>Setup: Mocks bauen und Vehalten spezifizieren</li>
+                <li>Execution: Mocks antworten zu MUT Aufrufen</li>
+                <li>Verification: man kann überprüfen eigentliche Wechselwirkungen zwischen Mocks</li>
+            </ul>
+            Ein Code Beispiel:
+            <pre>
+                <code class="language-java">
+                    OrderDao orderDaoMock = Mockito.mock(OrderDao.class);
+                    Mockito.when(orderDaoMock.findById(id)).thenReturn(orderFixture);
 
-            </p>
+                    // Ceate Class under test with mocked collaborator
+                    OrderService service = new OrderService(orderDaoMock);
+
+                    // Execution: nothing special to do.
+                    // Invocation is real, but MUT will use the mocks
+                    service.doSomething("id123");
+
+                    Mockito.verify(orderDaoMock).findById("id123");
+                </code>
+            </pre>
+            
         </section>
 
         <section>
