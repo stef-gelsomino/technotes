@@ -662,8 +662,72 @@
                 a test should never undo the state (left dirty) of another!
             </p>
             <h4>Mocks</h4>
+            <p class="eng">
+                if an object is a member of the CUT then it's better if the related mock is a member of the test class.
+                Otherwise it can be a local variable in the test method.
+                IMPORTANT: Mocking in the @Before is not a good practice.
+                The test becomes obscure and moreover would be the same for all tests. <br>
+                Do not overinitialize Fixtures returned from stubbed calls!
+            </p>
             <h4>Persistent data</h4>
+            <p class="eng">
+                Sometime one ends up using the same shared DB for maybe many projects. This leads to unpredictable
+                test executions. <br>
+                - tests that insert/manipulate data
+                - "stealing" existing data is a bad idea: DB's are periodically cleaned/refreshed and data (and date ranges) may no longer match.
+            </p>
+            <p class="eng">
+                Best practice: dedicated DB instance per developer with setup/teardown executed for each scenario. <br>
+                Here we need to use a framework like DBUnit (see later).
+            </p>
+
             <h4>Files</h4>
+            <p class="eng">
+                A good strategy is to: <br>
+                1. Store a base template file
+                2. if only-read operation, use the template
+                3. if write operation, create a per-test copy and work on it
+            </p>
+            <p class="eng">JUnit provides a @Rule annotation and a TemporaryFolder class to facilitate file cleanup.</p>
+
+            <h4>Data Access Testing</h4>
+            <p class="eng">
+                The preferredd way is to have a H2 in-memory which ensures data is gone after a test is done.
+                In this way we also get a fresh state, even after abrupt termination in previous test.
+            </p>
+            <p class="eng">
+                The setup of tables is required per-execution when running in-memory -> RunScript class from H2.
+            </p>
+            <h4>DBUnit</h4>
+            <p class="eng">
+                Three core abstractions <br>
+                1. Database connection
+                2. Data set management
+                3. Database operations
+            </p>
+            <p class="eng">
+                IDatabaseConnection <br>
+                --- DatabaseConnection <br>
+                --- DatabaseDatasourceConnection (JDBC pooled data source)
+            </p>
+            <p class="eng">
+                IDataSet: many implementations (collection of tables stored in-memory in the JVM). <br>
+                Possible sources: XML, Excel, CSV. <br>
+                Database is programmatically created, we can combine multiple datasets into one. <br>
+                There are 2 common scenarios:
+            </p>
+            <ul>
+                <li>
+                    data is stored in XML and prior to executing the test you load the data in the DB (READ OP)
+                </li>
+                <li>
+                    a stored procedure takes a set of data, transforms it and then loads it into another table. <br>
+                    Use 2 datasets when testing data transformations one as source, one as expected results.
+                </li>
+            </ul>
+            <p class="eng">
+
+            </p>
         </section>
     </article>
 </div>
