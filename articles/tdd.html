@@ -123,7 +123,7 @@
                 <b style="font-family:monospace">HamcrestMatcherAssert</b> Methoden.
             </p>
             <p>Hamcrest ist eine Bibliotheke, die das regelmäßige JUnit Assert-Mechanismus erweitert. Manchmal (eigentlich oft) sind die Assertions von
-            Hamcrest lesbarer als die JUnit, manchmal aber umgekehrt.</p>
+                Hamcrest lesbarer als die JUnit, manchmal aber umgekehrt.</p>
             Ein paar Beispiele:
             <pre>
                 <code class="language-java">
@@ -246,27 +246,429 @@
                     }
                 </code>
             </pre>
+            <p class="eng">
+                creating mocks with Mockito.mock(...) create extra code though.
+                We can use annotations and do initialization in the setup.
+            </p>
+            <pre>
+                <code class="language-java">
+                    @Mock OrderDao mockOrderDao;
+
+                    @Before
+                    public void setup(){
+                        MockitoAnnotations.initMocks(this);
+                    }
+                </code>
+            </pre>
+            <p class="eng">
+                If a given dependency implements multiple interfaces we use MockSettings.
+            </p>
+            <pre>
+                <code class="language-java">
+                    @Test
+                    public void test_getOrderSummary() {
+                        MockSettings settings = Mockito.withSettings();
+                        OrderDao mockOrderDao = Mockito.mock(OrderDao.class, settings);
+                    }
+                </code>
+            </pre>
+            <div class="eng">
+                Here Diagram: <br>
+                OrderUtil extends both OrderFilter, OrderTransformer <br>
+                OrderServiceImpl (class under test) uses OrderTransformer
+            </div>
+            <pre>
+                <code class="language-java">
+                    // Inside OrderServiceImpl
+
+                    private OrderTransformer transformer;
+
+                    ...
+
+                    if(transformer instanceof OrderFilter) {
+                        ((OrderFilter)transformer).filter(dataToFilter);
+                    }
+                </code>
+            </pre>
+            <p class="eng">
+                in the corresponding test
+            </p>
+            <pre>
+                <code class="language-java">
+                    // In the test
+
+                    MockSettings settings = Mockito.withSettings();
+                    OrderTransformer mockTransform = Mockito.mock(OrderTransformer.class, settings.extraInterface(OrderFilter.class));
+
+                    // also available:
+                    settings.serializable();
+                    settings.name("..."); // give a name to be logged when verification fails
+                </code>
+            </pre>
+            <p class="eng">
+                After we set up our mocks, we need to progam their interactions. It happens through the when/then pattern.
+                Mockito.when() returns an OngoingStub&lt;T&gt; which offers the following: <br>
+                - thenReturn(...) <br>
+                - thenThrow(...) <br>
+                - thenCallRealMethod(...) <br>
+                - thenAnswer(...) <br>
+                Let's see what do they offer us.
+            </p>
+
+            <p class="eng">
+                thenReturn() - returns a specific object or value
+            </p>
+            <pre>
+                <code class="language-java">
+                    List&lt;OrderSummary&gt; listFixture = ...;
+                    OngoingStub&lt;List&lt;OrderSummary&gt;&gt; invocationStub = when(mockOrderService.getOrderSummary(customerId));
+                    invocationStub.thenReturn(listFixture);
+                </code>
+            </pre>
+
+            <p class="eng">
+                thenThrow() - returns a specific object or value
+            </p>
+            <pre>
+                <code class="language-java">
+                    when(obj.someMethod()).thenThrow(new MyException("msg"));
+                    // Note that the exception must be supported by the "someMethod"
+
+                    // for void methods can make sense:
+                    Stubber stubber = Mockito.doThrow(new MyException("msg"));
+                    stubber.when(mockService.processOrder(orderFixture));
+                </code>
+            </pre>
+
+            <p class="eng">
+                thenCallRealMethod() - uses the real instance
+            </p>
+            <pre>
+                <code class="language-java">
+                    Mockito.when(mockObj.targetMethod()).thenCallRealMethod();
+                </code>
+            </pre>
+
+            <p class="eng">
+                thenAnswer() - it's about argument matching
+            </p>
+            <pre>
+                <code class="language-java">
+                    when(mock.targetMethod(anyString()))
+                        .thenAnswer(new Answer(){
+                            Object answer(InvocationOnMock invocation){
+                                // evaluate parameters to contro what is returned
+                            }
+                        });
+                </code>
+            </pre>
+            <p class="eng">
+                Mockito allows us to check our executions with Mockito.verify() <br>
+                this method returns a proxy on which we can verify our calls.
+            </p>
+            <pre>
+                <code class="language-java">
+                    OrderService verificationProxy = Mockito.verify(mockOrderService);
+                    verificationProxy.getOrderSummary(customerId);
+
+                    // ... or
+
+                    Mockito.verify(mockOrderService, Mockito.times(2))getOrderSummary(customerId);
+                </code>
+            </pre>
+            <p class="eng">
+                The Mockito class also provides us other "counting" tools for interactions: times(n), atLeastOnce(), atLeast(n), atMost(n), never().
+                Thanks to these methods we can check if an interaction happened and how many times.
+                It's also possible to verify global interactions, as in the following example:
+            </p>
+            <pre>
+                <code class="language-java">
+                    Mockito.verifyZeroInteractions(mockOne, mockTwo, ... );
+
+                    // no more interactions after here
+                    Mockito.verifyNoMoreInteractions(mockOne, mockTwo, ... );
+                </code>
+            </pre>
+            <h4>Argument Matching</h4>
+            <p class="eng"> What happens when we would pass in the MUT a value not mocked? </p>
+            <pre><code class="language-java"> when(mockOrderDao.findById("23")).thenReturn(...); </code></pre>
+            <p class="eng">
+                How is the argument "23" matched? <br>
+                The rule is: reference types <i>by equals()</i> value types by <i>==</i> <br>
+                Explicit argument matching (i.e. with Matchers) gives more flexibility:
+            </p>
+            <pre>
+                <code class="language-java">
+                    List&lt;OrderEntity&gt; listFixure = ... ;
+
+                    // more generic with anyString
+                    when(mockOrderDao.findById(Matchers.anyString()))
+                        .thenReturn(listFixture);
+                </code>
+            </pre>
+            <p class="eng">
+                <b>NOTICE</b> once a single argument is a Matcher instead of an actual value, then we need to use <b>only matchers</b>.
+            </p>
+            <pre>
+                <code class="language-java">
+                    // WRONG!!!
+                    when(mockDao.findByStateAndRegion("DE", anyString())).thenReturn();
+
+                    // Right
+                    when(mockDao.findByStateAndRegion(Matchers.eq("DE"), anyString())).thenReturn();
+                </code>
+            </pre>
+            <p>
+                Hier eine Liste von häufige benutzt Matchers
+            </p>
+            <ul class="eng">
+                <li>
+                    Matchers.eq(...)
+                </li>
+                <li>
+                    Matchers Any: anyInt(), anyDouble(), any(MyStuff.class), anySet(String.class).
+                </li>
+                <li>
+                    String matchers: contains("substr"), endsWith("suffix"), startsWith("prefix"), match("^(Br|Cr)own")
+                </li>
+                <li>
+                    Reference equality: same(ref), refEq(ref), refEq(ref, "excludeField")
+                </li>
+            </ul>
+
+            <h4>Stubbing consecutive calls</h4>
+            <p class="eng">
+                When testing logic that needs to be resilient when error occurs (e.g. retry logic on errors or looping
+                logic that either short-circuits or continues on exceptions <br>
+                Example, business logic does some retrying:
+            </p>
+            <pre>
+                <code class="language-java">
+                    public String openNewOrder(long customerId) throws ServiceException {
+                        // create an OrderEntity
+                        boolean insertSuccessful = false;
+                        int attempt = 1;
+                        while(!insertSuccessful && attempt <= MAX_ATTEMPTS) {
+                            try {
+                                int resultValue = orderDato.insert(orderEntity);
+                                if(resutValue==1)
+                                    insertSuccessful = true;
+                                else
+                                    attempt++;
+                            } catch(Exception e) {
+                                attempt++;
+                            }
+                        }
+                        if(!insertSuccessful)
+                            throw new ServiceException("Data Error");
+                        return orderEntity.getOrderNumber();
+                    }
+                </code>
+            </pre>
+            <p class="eng">Then in the tests: </p>
+            <pre>
+                <code class="language-java">
+                    @Test
+                    public void test_openNewOrder_successfullyRetries() throws Exception {
+
+                        // mocking a sequence of 2 calls
+
+                        when(orderDao.insert(any(OrderEntity.class)))
+                            .thenThrow(new Exception("First attempt exception"))
+                            .thenReturn(1);
+
+                        target.openNewOrder(CUSTOMER_ID);
+                        verify(orderDao, times(2)).insert(any(OrderEntity.class));
+                    }
+
+                    @Test(expected = ServiceException.class)
+                    public void test_openNewOrder_failedDataInsert() throws Exception {
+                        when(orderDao.insert(any(OrderEntity.class)))
+                            .thenThrow(new Exception("First attempt exception"))
+                            .thenThrow(new Exception("Second attempt exception"))
+
+                        try {
+                            target.openNewOrder(CUSTOMER_ID);
+                        } finally {
+                            verify(orderDao, times(2)).insert(any(OrderEntity.class));
+                        }
+                    }
+
+                    // Also something like this is possible
+
+                    InOrderVerifier inOrder = Mockito.inOrder(mockOrderService, mockTaxService);
+                    inOrder.verify(mockOrderService).createOrder();
+                    inOrder.verify(mockTaxService).calculateTax();
+                </code>
+            </pre>
+            <h4>Argument Captors und Partial Mocks</h4>
+            <p class="eng">
+                Valiedating objects without direct access e.g. when the MUT creates an object and passes it
+                to a dependency, but does not return it (thus it wouldn't be visible to the test). <br>
+                Example: the openNewOrder method creates an OrderEntity and saves it through the DAO. The test
+                never gets explicit access to that instance...
+            </p>
+            <pre>
+                <code class="language-java">
+                    ArgumentCaptor&lt;OrderEntity&gt; entityCaptor = ArgumentCaptor.forClass(OrderEntity.class);
+
+                    // execute MUT
+
+                    verify(orderDao).insert(entityCaptor.capture());
+                    OrderEntity capturedEntity = entity.getValue();
+
+                    // assertions on the captured value
+                    assertNotNull(capturedEntity);
+                </code>
+            </pre>
+            <p class="eng">
+                Partial mocking: mock part of the behavior and rely on the implementation for the rest (mock any public/protected method).
+            </p>
+
+            Mocks:
+            <ul class="eng">
+                <li>Proxy-based instance routing calls to the mocking library</li>
+                <li>When mocking a class, the proxy creates an instance of said class</li>
+                <li>By default returns null, when no invocation stub is defined</li>
+            </ul>
+
+            Spy:
+            <ul class="eng">
+                <li>Proxies an existing object instance</li>
+                <li>By default, when an invocation is not stubbed, it will call the real method!</li>
+                <li>Invocation stubbing is needed to avoid actual call to the real method</li>
+            </ul>
+            <p class="eng">When spying, pay attention: initial call is routed to the real method, need accurate setup!</p>
+            <pre>
+                <code class="language-java">
+                    List&lt;String&gt; liveList = new LinkedList&lt;&gt();
+                    List&lt;String&gt; spyList = Mockito.spy(liveList);
+                    //will result in IndexOutOfBoundException
+                    when(spyList.get(0)).thenReturn("a result");
+                </code>
+            </pre>
+
+            <p class="eng">Watch out: cannot mock final and/or private methods!</p>
+
         </section>
+
 
         <section>
             <h3>
                 Powermock
             </h3>
             <p>
-
+                Tool to be used in conjunction with Mockito for cases where Mockito is not enough. While Mockito uses
+                a Proxy-based approach, PowerMock uses a custom classloader and manipulates bytecode.
             </p>
+            <h4>Mocking static methods</h4>
+            <pre>
+                <code class="language-java">
+                    // On the test class
+                    @RunWith(PowerMockRunner.class)
+                    @PrepareForTest(value = {WharehouseService.class})
+
+                    // in the test method
+                    PowerMockito.mockStatic(WharehouseService.class);
+                    PowerMockito.when(WharehouseService.sendOrder(any(OrderMessage.class))
+                        .thenReturn(true);
+
+                    PowerMockito.verifyStatic();
+
+                    ArgumentCaptor&lt;OrderMessage&gt; msgCaptor = ArgumentCaptor.forClass(OrderMessage.class);
+                    WharehouseService.sendOrder(msgCaptor.capture());
+                    OrderMessage capturedMsg = msgCaptor.getValue();
+                    assertNotNull(capturedMsg);
+                </code>
+            </pre>
+
+            <h4>Replacing object instantiation a.k.a. new XY()</h4>
+            <p class="eng">
+                PowerMockito.whenNew(…) <br>
+                #1 zero-param constructor by class name (returns OngoingStub&lt;T&gt;) <br>
+                #2 use reflection for specific constructor (returns WithOrWithoutExpectedArguments&lt;T&gt;) <br>
+                #3 constructor by string value (returns ConstructorExpectationSetup&lt;T&gt;) <br>
+                IMPORTANT! In this case we need to mention the class under test not the one being instantiated.
+            </p>
+            <pre>
+                <code class="language-java">
+                    @PrepareForTest(value = {ClassUnderTest.class})
+
+                    Logger AUDIT_LOGGER = LoggerFactory.getLogger("Audit");
+
+                    OrderCompletionAudit record = new OrderCompletionAudit();
+
+                    // before execution of MUT
+
+                    OrderCompletionAudit auditFixture = new OrderCompletionAudit();
+                    PowerMockito.whenNew(OrderCompletionAudit.class)
+                                .withNoArguments()
+                                .thenReturn(auditFixture);
+                </code>
+            </pre>
+            <p class="eng">Then we can do all the assertions we need on the auditFixture object</p>
+
+            <h4>PowerMockito.mock(…)</h4>
+            <p class="eng">
+                like the one in regular Mockito, but also allows to mock final/private methods
+            </p>
+            <pre>
+                <code class="language-java">
+                    Method calculateDiscount = …
+
+                    WithOrWithoutExpectedArguments args = when(mockedService, calculateDiscount);
+                    args.withArguments(item1, order).thenReturn(discountedResult);
+
+                    // to verify
+
+                    PrivateMethodVerification ver = PowerMockito.verifyPrivate(mockService);
+
+                    // use either this
+                    ver.invoke(method).withArguments(item1, order);
+                    //or this
+                    ver.invoke("calculateDiscount", item1, order);
+
+                </code>
+            </pre>
         </section>
 
         <section>
             <h3>
                 Verwaltung von Fixture und Testing von Datenkomponenten
             </h3>
-            <p>
-
+            <p class="eng">
+                Fixture state initialization for each test, so tests run independently. <br>
+                Examples: <br>
+                - instantiate objects to pass into methods <br>
+                - declare mock stubs/initialize objects they return <br>
+                - insert data in RDBMS for data access tests <br>
+                - create files <br>
+                Teardown everything not purged by JVM Garbage Collector: delete data from RDBMS and files.
             </p>
+            <p class="eng">
+                There are 4 core types of fixtures:
+            </p>
+            <ol>
+                <li>Objects</li>
+                <li>Mocks</li>
+                <li>Persistent data</li>
+                <li>Files</li>
+            </ol>
+            <h4>Objects</h4>
+            <p class="eng">
+                Can be verbose; find a balance between redundant setup and minimal field setup. <br>
+                Consider a fixture FACTORY or a utility class (impact on readability?). <br>
+                Create fresh instances per test: don't reuse instances across tests! Also teardown is per-test so
+                a test should never undo the state (left dirty) of another!
+            </p>
+            <h4>Mocks</h4>
+            <h4>Persistent data</h4>
+            <h4>Files</h4>
         </section>
     </article>
 </div>
+
+
 <div class="footer">
     <div id="fool">
         <h3><a target="_blank" href="https://www.linkedin.com/in/stefano-gelsomino-8b0b7913a/"><span>Site by</span> <span>Stefano Gelsomino</span> </a></h3>

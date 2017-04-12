@@ -29,7 +29,8 @@ a {
 
 body {
 	margin: 0;
-	background-color: grey;
+	background-color: #fefefe;
+    color: #3f3f3f;
 }
 
 
@@ -290,4 +291,6 @@ nav ul li:nth-of-type(7) ul {
   padding: 6;
 }
 
-/*  */
+.eng {
+    background-color: #d6fffc;
+}
