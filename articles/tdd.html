@@ -726,6 +726,23 @@
                 </li>
             </ul>
             <p class="eng">
+                DatabaseOperation (abstract class) <br>
+                Example: testing a DAO
+            </p>
+            <pre>
+                <code class="language-java">
+                    @BeforeClass
+
+                    public static void setupClass(){
+                        Properties dbProps = new Properties();
+                        dbProps.put("user", DBInfo.USER);
+                        dbProps.put("password", DBInfo.PASSWORD);
+
+                        Connection jdbcConn = Driver.load().connect(DBInfo.URL, dbProps);
+                    }
+                </code>
+            </pre>
+            <p class="eng">
 
             </p>
         </section>
