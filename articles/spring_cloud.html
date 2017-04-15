@@ -1,0 +1,109 @@
+<html>
+<head>
+    <title> Mein persoenlich Wiki auf Deutsch! </title>
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lora:i' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="../prism/prism_2.css">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+</head>
+<body>
+<script type="text/javascript" src="../prism/prism_2.js"></script>
+<div id="header">
+    <h1><a href="../index.html">Architektur und Entwicklung</a></h1>
+    <nav>
+        <a href="http.html"> HTTP </a> &nbsp;
+        <a href="ansible.html"> Ansible </a> &nbsp;
+        <a href="go.html"> Go </a> &nbsp;
+        <a href="spring.html"> Spring </a> &nbsp;
+        <a href="spring_data.html"> Spring Data </a> &nbsp;
+        <a href="tdd.html"> TDD </a> &nbsp;
+        <a href="python.html"> Python </a> &nbsp;
+    </nav>
+</div>
+<div class="main">
+    <article>
+        <header>
+            <h2>
+                Spring Boot
+            </h2>
+            <p>
+            <hr>
+            </p>
+        </header>
+
+        <section>
+            <h3>
+                Introduction to Microservices, Spring Boot and Spring Cloud
+            </h3>
+            <p>
+                Microservices: loosely coupled service oriented architecture with bounded context <br>
+                Why?
+            </p>
+            <ul>
+                <li>Desire for faster changes (release often)</li>
+                <li>Greated availability: not all the availab. tied up in a single place </li>
+                <li>Better fine-grained scaling</li>
+                <li>DevOps compatible</li>
+            </ul>
+            <p>
+                Components as service; Tie to a specific domain; Loosely coupled: evolve separately; <br>
+                Built to tolerate failure (cascading failure); Continuous delivery (= TDD); Built and run by independent Teams
+            </p>
+            <p>
+                Scaffolding with Spring Cloud (includes NetflixOSS stuff) <br>
+                 - Spring Cloud Task - e.g. Serverless functions  <br>
+                 - Spring Cloud Stream - message bus  <br>
+                 - Spring Cloud Contract - Stubs for service contracts  <br>
+                 - Spring Cloud Dataflow - orchestration of data microservices <br>
+
+                Interesting endpoints from Actuator: localhost:8080/ {health, beans, env, metrics, mappings, trace}
+            </p>
+        </section>
+
+        <section>
+            <h3>
+                Simplifying Environment Management with Centralized Configuration
+            </h3>
+            <p>
+
+            </p>
+        </section>
+
+        <section>
+            <h3>
+                Offloading asynchronous activities with lightweight, short-lived tasks
+            </h3>
+            <p>
+            </p>
+        </section>
+
+        <section>
+            <h3>
+                Securing your microservices with a declarative model
+            </h3>
+            <p>
+
+        </section>
+
+        <section>
+            <h3>
+                Chasing down performance issues using distributed tracing
+            </h3>
+            <p>
+            </p>
+        </section>
+    </article>
+</div>
+<div class="footer">
+    <div id="fool">
+        <h3><a target="_blank" href="https://www.linkedin.com/in/stefano-gelsomino-8b0b7913a/"><span>Site by</span> <span>Stefano Gelsomino</span> </a></h3>
+    </div>
+    <a id="follow" target="_blank" href="https://www.linkedin.com/in/stefano-gelsomino-8b0b7913a/">
+        <img src="../img/linkedin.png"/>
+    </a>
+    <div id="foor">
+        <h3>2017</h3>
+    </div>
+</div>
+</body>
+</html>
