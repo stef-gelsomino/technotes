@@ -65,7 +65,115 @@
                 Simplifying Environment Management with Centralized Configuration
             </h3>
             <p>
+                Benefits: <br>
+                settings in the compiled code <br>
+                changing runtime behavior & refresh (logging level, feature toggles, ...) <br>
+                enforce consistency between services - matching versions etc...  <br>
+                cache values to reduce loads on databases
+            </p>
+            <p>
+                Current problems: <br>
+                local files go out of sync / change file in production? <br>
+                no change history <br>
+                config changes could require a restart <br>
+                challenges with sensitive infos: in-app-files could be encrypted but ... <br>
+                inconsistent use of configurations (each team will configure stuff differently)
+            </p>
+            <h4>Spring Cloud Config</h4>
+            <p>
+                Basically HTTP access to git or file-based configuration.
+                One uses an HTTP server which serves values to your Spring Boot App taking them from a git or file "backend?".
+                1. Chhose a Config source
+                2. Add files to such source
+                3. The ConfigServe can be a simple Spring Boot App
+                4. Optionally secure the configuration / encrypt values.
+            </p>
+            <p>
+                Using Local file
+            </p>
+            <ul>
+                <li>Point to classpath</li>
+                <li>Multiple search locations possible</li>
+                <li>No audit trail (no history)</li>
+                <li>Support labeling (classification for config files)</li>
+                <li>Supports placeholder in URI (talking about URI exposed by the ConfigServer to access values) </li>
+                <li>Uses the "native" profile (spring.profiles.active=native)</li>
+                <li>Dev/Test only. Make sure it's made reliable (see redundancy)</li>
+            </ul>
+            <p>
+                Using Git-based Config
+            </p>
+            <ul>
+                <li>Points to Git repo</li>
+                <li>Also multiple search lcoation search</li>
+                <li>Full change history</li>
+                <li>Supports labelling</li>
+                <li>Supports placeholder in URI</li>
+                <li>Using multiple profiles</li>
+            </ul>
+            <p>
+                By convention, app1.yml refers to the "app1" App. The profile name, always with -profilename: app1-dev.yml
+            </p>
+            <p>
+                Nested folder can be created, eg. folder / hierarchy for files. ALL Matching files will be returned, while searching. <br>
+                If there are common (i.e. default) config files, those are merged together with the app-specifice ones:
+                In case of conflict (same values in more property files) wins the one that most closely matches the name and the profile in the label.
+            </p>
+            <ol>
+                <li>Srat a spring Boot App</li>
+                <li>Make sure the spring-cloud-config-server and the spring-boot-starter-actuator dependencies are there</li>
+                <li>Add the @EnableConfigServer annotation to the class</li>
+                <li>Create application properties (or YAML) with server, port, app name, and profile (of the CONFIG SERVER)</li>
+            </ol>
+            <p>
+                It's basically enough to create a folder "config" under the folder "resources" which contains a file for each app:
+                app1.properties, app1.properties and app3.properties. Then we can directly get the properties by calling
+                localhost:8080/app1/default
+            </p>
+            <p>
+                We query with localhost:8888/s1rates-dev.{properties | yml | json}
+            </p>
+            <pre>
+                <code class="language-yaml">
+                    ---
+                    spring:
+                      cloud:
+                        config:
+                          server:
+                            git:
+                              uri: https://github.com/wa-tolls/rates-default
+                              searchPaths: 'station*'
+                              repos:
+                                prod:
+                                  pattern: '*/prod'
+                                  uri: https://github.com/wa-tolls/rates-prod
+                </code>
+            </pre>
+            <p>
+                To query the Config Server we always use a pattern like /{application}/{profile} [/{label}] <br>
+                Name should match of app spring.application.name of our Spring App. Notice that application and profile are required.
+                PROFILE WILL HAVE MATCH THE PROFILE OF THE CONSUMING APP... (???)
+                Label is normally used to indicate version: could be branch name, tag name, even a commit hash.
+            </p>
+            <p>
+                 - application.properties
+                 --- station1/
+                    --> s1rates-dev.properties
+                    --> s1rates-qa.properties
+                    --> s1rates.properties
+                 --- station2/
+                    --> s2rates-dev.properties
+                    --> s2rates.properties
 
+                <br>
+                If we query for s1rates/default will return the default one under station1/ and the general default one application.properties <br>
+                If we query for s1rates/dev we also get the "-dev" file together with the 2 forementioned ones. The properties in "-dev" will possibly
+                override properties with the same name in the more generic files (more specific wins).
+                If we query for something where the profile doesn't match, e.g. /s2rates/qa then we get back the default generic one plus s2rates.properties.
+                Basically the general rule is: it matches as much as it can - otherwise it returns defaults (which don't "contradict" what was specified).
+            </p>
+            <p>
+                When a more specific repository is matched, the default one is not used.
             </p>
         </section>
 
