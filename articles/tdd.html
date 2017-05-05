@@ -731,20 +731,238 @@
             </p>
             <pre>
                 <code class="language-java">
-                    @BeforeClass
+                    public class BaseDBUnitTestForDao {
 
-                    public static void setupClass(){
-                        Properties dbProps = new Properties();
-                        dbProps.put("user", DBInfo.USER);
-                        dbProps.put("password", DBInfo.PASSWORD);
+                        protected static IDatabaseConnection CONN = null;
 
-                        Connection jdbcConn = Driver.load().connect(DBInfo.URL, dbProps);
+                        @BeforeClass
+                        public static void setupClass(){
+                            Properties dbProps = new Properties();
+                            dbProps.put("user", DBInfo.USER);
+                            dbProps.put("password", DBInfo.PASSWORD);
+
+                            Connection jdbcConn = Driver.load().connect(DBInfo.URL, dbProps);
+
+                            CONN = new DatabaseConnection(jdbcConn);
+
+                            RunScript.execute(CONN.getConnection(), new FileReader("tabledef/site.ddl.sql"));
+
+                            Map&lt;Object, Object&gt; props = new HashMap&lt;&gt;();
+                            props.put();
+
+                            EMF = Persistence.createEntityManagerFactory("orderPu", props);
+                        }
+
+                        @AfterClass
+                        public static void teardownClass() throws Exception {
+                            try {
+                                if(EMF != null)
+                                    if(EMF.isOpen())
+                                        EMF.close();
+                                    EMF = null;
+                            }
+                            finally {
+                                if(EMF != null){
+                                    CONN.close();
+                                    CONN = null;
+                                }
+                            }
+                        }
+
+                        @Before
+                        public void setup() throws Exception {
+                            entityManager = EMF.createEntityManager();
+                        }
+
+                        @After
+                        public void teardown() throws Exception {
+                            if(entityManager != null){
+                                if(entityManager.isOpen())
+                                    entityManager.close();
+                                entityManager = null;
+                            }
+                        }
+                    }
+                </code>
+                <p>
+                    Die DBInfo Klasse wird so aussehen:
+                </p>
+                <pre>
+                    <code class="language-java">
+                        public class DBInfo {
+                            public final static String DRIVER = "org.h2.Driver";
+                            public final static String URL = "jdbc:h2:mem:test" ;
+                            public final static String USER = "sa";
+                            public final static String PASSWORD = "";
+                        }
+                    </code>
+                </pre>
+            </pre>
+            <p>
+                Die eigentliche Test Klasse muss die BaseDBUnitTest Klasse erweitern.
+            </p>
+            <pre>
+                <code class="language-java">
+                    public class OrderDaoTest extends BaseDBUnitTest {
+
+                        private OrderDaoImpl target = null;
+
+                        private DefaultDataSet dataSet = null;
+
+                        @Before
+                        public void setup() throws Exception {
+                            target = new OrderDaoJpaImpl();
+                            target.setEntityManager(entityManager);
+                            dataSet = new DefaultDataSet();          // proper order!
+                            DefaultTable orderSourceTable = new DefaultTable("OrderSource", DBDataDef.ORDER_SOURCE_COLUMNS);
+                            // a Column[] defined somewhere else
+
+                            Object[][] orderSourceRows = createOrderSourceRows();
+                            for(Object{} current : orderSourceRows)
+                                orderSourceTable.addRow(current);
+                            dataSet.addTable(orderSourceTable);
+                            DatabaseOperation.INSERT.execute(CONN, dataSet);
+                        }
+
+                        @After
+                        public void teardown() throws Exception {
+                            DatabaseOperation.DELETE.execute(CONN, dataSet);
+                        }
+
+                        @Test
+                        public void test_findByOrderSource() throws Exception {
+                            List&lt;OrderEntity&gt; orderList = target.findByOrderSource("wo");
+                            assertNotNull(orderList);
+                            // etc ...
+                        }
+
+                        private Object[][] createOrderSourceRows(){
+                            Object[][] orderSourceRows = new Object[][] {
+                                new Object[] {
+                                    1,
+                                    "so",
+                                    "Store Order",
+                                    "cbrown",
+                                    new DateTime().withYear(2012)
+                                                    .withMonthOfYear(12)
+                                                    .withDayOfMonth(31)
+                                                    .toDate();
+                                },
+                                new Object[] {
+                                    // similar as above ...
+                                }
+                            }
+                            return orderSourceRows;
+                        }
                     }
                 </code>
             </pre>
             <p class="eng">
-
+                The DatabaseOperation class offers lots of DB statements on datasets:
             </p>
+            <ul class="eng">
+                <li>INSERT - single inserts, based on the order tables were added to the DataSet</li>
+                <li>UPDATE - fails if not each row already exists in the Dataset. Only specified columns are updated</li>
+                <li>DELETE - deletes data specified in the data set matching the entries to rows in the table based on ID specified</li>
+                <li>DELETE_ALL - delete all entries of a table </li>
+                <li>TRUNCATE_TABLE - same as previous but uses truncate</li>
+                <li>REFRESH - basically has the UPSERT "update or insert" semantics</li>
+            </ul>
+            <p>
+                Es gibt noch CompositeOperation wie CLEAN_INSERT (erst DELETE und dann INSERT) und TransactionOperation, wo mehrere Operationen sind in einem Tansaktion gruppiert.
+            </p>
+            <p>
+                File-based Datasets
+            </p>
+            <p>
+                IDataSet
+            </p>
+            <ul>
+                <li>getTable(tableName: String): ITable</li>
+                <li>getTables(): ITable[]</li>
+                <li>getTableNames(): String[]</li>
+                <li>iterator : ITableIterator</li>
+                <li>getTableMetadata(): ITableMetaData</li>
+            </ul>
+            <p>
+                XML DataSets
+            </p>
+            <pre>
+                <code class="language-xml">
+                    &lt;dataset&gt;
+                        &lt;table name="OrderSource"&gt;
+                            &lt;coumn&gt;id&lt;/column&gt;
+                            &lt;column&gt;code&lt;/column&gt;
+                            &lt;row&gt;
+                                &lt;value&gt;1&lt;/value&gt;
+                                &lt;value&gt;so&lt;/value&gt;
+                            &lt;/row&gt;
+                        &lt;/table&gt;
+                    &lt;/dataset&gt;
+                </code>
+            </pre>
+            <p>
+                Flat XML DataSets (falls eine Spalte vergessen wurde, Wert ist einfach null)
+            </p>
+            <pre>
+                <code class="language-xml">
+                    &lt;dataset&gt;
+                        &lt;OrderSource id="1" code="so" /&gt;
+                    &lt;/dataset&gt;
+                </code>
+            </pre>
+            <p class="eng">
+                There's a FlatXMLDataSetBuilder to create instances -> columnSensing field set to true will scan all elements of same name first.
+                It slightly slows down... <br>
+                The order the table is specified is very important! <br>
+                [ORDER]  ---fk----> [ORDER_SOURCE]  THE REFERENCED TABLE MUST BE DECLARED FIRST
+            </p>
+            <p class="eng">
+                Demo <br>
+                we only modify the setup, test method stays the same <br>
+                Folder: <br>
+                 ./ src/test/resources
+                 |---/ combigbox.b2csite.order.dao.impl
+                    |__ orderDaoTest.xml
+                    |__ orderDaoTest_flat.xml
+            </p>
+            <p>
+                In die Test Klasse, man muss nur die zwei folgende ändern
+            </p>
+            <pre>
+                <code class="language-java">
+                    // first thing
+                    IDataSet dataSet = null;
+                    ...
+                    @Before
+                    public void setup() throws Exception {
+                        target = new OrderDaoImpl();
+                        target.setEntityManager(entityManager);
+                        InputStream is = ClassLoader.getSystemResourceAsStream("path_to_file");
+                        FlatXMLDataSetBuilder builder = new FlatXMLDataSetBuilder();
+                        dataSet = builder.build();
+                    }
+                </code>
+            </pre>
+
+            <p>
+                Composite Data Set - sie erlauben mehrfache Datasets durch eine
+            </p>
+            <pre>
+                <code class="language-java">
+                    IDataSet dataset1 = ...
+                    IDataSet dataset2 = ...
+                    IDataSet[] sourceDataSets = new IDataSet[]{dataset1, dataset2};
+                    IDataSet compositeDataSet = new CompositeDataSet(sourceDataSets);
+                </code>
+            </pre>
+            <p class="eng">
+                Filter Data Set
+            </p>
+            <ul>
+                <li>Store a lot of data in a single DataSet and narrow down when loaded (specify table to include/exclude)</li>
+                <li>Re-sequence table in the dataset (i.e. change the loading ordering)</li>
+            </ul>
         </section>
     </article>
 </div>
