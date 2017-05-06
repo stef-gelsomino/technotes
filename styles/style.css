@@ -1,9 +1,4 @@
 @font-face {
-	font-family: Mostra;
-	src: url('../fonts/mostra.ttf');
-}
-
-@font-face {
 	font-family: Sanser;
 	src: url('../fonts/helvetica.otf');
 }
@@ -35,7 +30,7 @@ body {
 
 
 h1 {
-	font-family: Mostra;
+	font-family: Istok Web;
 	font-size: 56px;
 	font-weight: 200;
 	margin-top: 0px;
@@ -61,7 +56,7 @@ h2, nav {
 }
 
 nav>a {
-	font-family: Mostra;
+	font-family: Istok Web;
 	color: #454343;
 	font-weight: bold;
 	font-size: 15px;
@@ -203,7 +198,7 @@ img.article-img {
 }
 
 .footer h3 {
-	font-family: Mostra;
+	font-family: Istok Web;
 }
 .footer span:nth-of-type(1) {
 	font-size: small;
@@ -234,7 +229,7 @@ img.article-img {
 
 
 nav ul li>a {
-	font-family: Mostra;
+	font-family: Istok Web;
 	color: #454343;
 	font-weight: bold;
 	font-size: 15px;
