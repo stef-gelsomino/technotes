@@ -963,6 +963,40 @@
                 <li>Store a lot of data in a single DataSet and narrow down when loaded (specify table to include/exclude)</li>
                 <li>Re-sequence table in the dataset (i.e. change the loading ordering)</li>
             </ul>
+            <p class="eng">
+                Replacement Data Set
+            </p>
+            <ul>
+                <li>
+                    wraps an IDataSet and allows replacing value <br>
+                    IDataSet replaceDataSet = new ReplacementDataSet(aDataSet); <br>
+                    replaceDataSet.addReplacementSubstring("x-null-x", null);
+                </li>
+            </ul>
+            <p class="eng">
+                Datasets created from other Datasets
+            </p>
+            <ol>
+                <li>
+                    DatabaseDataSet (all the database & tables data is loaded lazily)
+                </li>
+                <li>
+                    QueryDataSet
+                    <ol>
+                        <li>upfront definition of accessed tables</li>
+                        <li>limit tables, rows (via criteria) and columns fetched</li>
+                        <li>create logical tables based on results of a complex query</li>
+                    </ol>
+                </li>
+                <pre>
+                    <code class="language-java">
+                        IDataSet expectedDataSet = ... // load from file
+                        IDataSet actualDataSet = new QueryDataSet();
+                        // add tables that you want to verify in the query dataset
+                        Assertion.assertEquals(expectedDataSet, actualDataSet);
+                    </code>
+                </pre>
+            </ol>
         </section>
     </article>
 </div>
