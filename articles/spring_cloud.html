@@ -149,13 +149,13 @@
                                   uri: https://github.com/wa-tolls/rates-prod
                 </code>
             </pre>
-            <p>
+            <p class="eng">
                 To query the Config Server we always use a pattern like /{application}/{profile} [/{label}] <br>
                 Name should match of app spring.application.name of our Spring App. Notice that application and profile are required.
                 PROFILE WILL HAVE MATCH THE PROFILE OF THE CONSUMING APP... (???)
                 Label is normally used to indicate version: could be branch name, tag name, even a commit hash.
             </p>
-            <p>
+            <p class="eng">
                  - application.properties
                  --- station1/
                     --> s1rates-dev.properties
@@ -172,9 +172,51 @@
                 If we query for something where the profile doesn't match, e.g. /s2rates/qa then we get back the default generic one plus s2rates.properties.
                 Basically the general rule is: it matches as much as it can - otherwise it returns defaults (which don't "contradict" what was specified).
             </p>
-            <p>
-                When a more specific repository is matched, the default one is not used.
+            <p class="eng">
+                When a more specific repository is matched, the default one is not used. Notice that such a Config Server can be basically used by any Client App written in whatever language and running
+                on whatever platform, since it's possible to query through REST and consume JSON.
             </p>
+            <p class="eng">
+                When we create a client app, we'll be consuming the properties we set up during the previous step. This comes quite easy:
+                The client app will have settings which override stuff defined locally (e.g. in the application.yml). Such settings basically instruct the App on how/where to fetch the right properties.
+                <br>
+                There are properties to be set up, while fetching the properties from the Config-Server.
+            </p>
+            <ul>
+                <li>APP NAME (spring.application.name) </li>
+                <li>PROFILE (i.e. spring.cloud.config.env)</li>
+                <li>LABEL (i.e. spring.cloud.config.label)</li>
+            </ul>
+            <p class="eng">
+                many properties that needs to be loaded at the very startup, must be put in the bootstrap.properties file. Otherwise through application.properties that would be loaded to late.
+                That makes somewhat sense, cause application.properties is needed for the App itself <i>while</i> starting it, but we actually need to fetch those properties <i>before</i> the start.
+                <br>
+                These properties can be easily injected through the @Value("${my.property.name}") Annotation in the appropriate instance variable of some bean.
+            </p>
+            <p>
+                It is also possible to set up authentication for the properties hosted on the Config-Server, by just adding the spring-starter-security dependency. This will set up Basic Auth through which the
+                Client App will ask the needed properties to the server. After adding the dependency we just need to put a few matching properties, in order to allow Client and Server to talk to each other.
+            </p>
+            <pre>
+                <code class="language-yaml">
+                    # bootstrap.properties (CLIENT)
+                    spring.profiles.active=qa
+                    spring.cloud.config.uri=http://localhost:8888
+                    spring.cloud.config.username=technotes
+                    spring.cloud.config.password=technotes
+
+                    # application.properties (CLIENT)
+                    spring.application.name=s1rates
+
+                    # application.yml (SERVER)
+                    security:
+                      basic:
+                        enabled: true
+                      user:
+                        name: technotes
+                        password: technotes
+                </code>
+            </pre>
         </section>
 
         <section>
