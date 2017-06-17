@@ -232,6 +232,7 @@ nav {
 
 #b1b {
     margin-bottom: 4px; /*added*/
+	margin-right: 4px;
 	border: none;
     background: brown;   
 	padding-top: 10px;
@@ -278,6 +279,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     padding-right: 0px;
     padding-bottom: 10px;
     padding-left: 0px;
+    margin-right: 4px;
 	font-size: 15px;
 	border-radius: 5px;
 	position: relative;
@@ -318,6 +320,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     padding-right: 0px;
     padding-bottom: 10px;
     padding-left: 0px;
+    margin-right: 4px;
 	font-size: 15px;
 	border-radius: 5px;
 	position: relative;
@@ -358,6 +361,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     padding-right: 0px;
     padding-bottom: 10px;
     padding-left: 0px;
+    margin-right: 4px;
 	font-size: 15px;
 	border-radius: 5px;
 	position: relative;
@@ -398,6 +402,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     padding-right: 0px;
     padding-bottom: 10px;
     padding-left: 0px;
+    margin-right: 4px;
 	font-size: 15px;
 	border-radius: 5px;
 	position: relative;
@@ -438,6 +443,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     padding-right: 0px;
     padding-bottom: 10px;
     padding-left: 0px;
+    margin-right: 4px;
 	font-size: 15px;
 	border-radius: 5px;
 	position: relative;
@@ -479,6 +485,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     padding-right: 0px;
     padding-bottom: 10px;
     padding-left: 0px;
+    margin-right: 4px;
 	font-size: 15px;
 	border-radius: 5px;
 	position: relative;
@@ -519,6 +526,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     padding-right: 0px;
     padding-bottom: 10px;
     padding-left: 0px;
+    margin-right: 4px;
 	font-size: 15px;
 	border-radius: 5px;
 	position: relative;
