@@ -203,7 +203,7 @@ body {
 	width: 75%;
 	margin-left: 12.5%;
 	text-align: justify;
-    margin-top: 350px !important;
+    margin-top: 360px !important;
     margin-bottom: 50px !important;
 }
 .main article {
@@ -434,6 +434,48 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #b5b a:hover {
 	background: rgba(0,0,0,0);
 	color: brown;
+}
+
+#b9b {
+    margin-bottom: 7px; /*added*/
+    margin-right: 9px;
+	border: none;
+    background: brown;   
+	padding-top: 10px;
+    padding-right: 0px;
+    padding-bottom: 10px;
+    padding-left: 0px;
+	font-size: 15px;   
+	border-radius: 5px;
+	position: relative;
+	box-sizing: border-box;
+	transition: all 500ms ease; 
+    transform-style: preserve-3d;
+}
+
+user agent stylesheet
+input[type="button" i], input[type="submit" i], input[type="reset" i], input[type="file" i]::-webkit-file-upload-button, button {
+    padding: 0px 0px;
+}
+
+#b9b a {
+    padding-top: 11px;
+    padding-right: 11px;
+    padding-bottom: 11px;
+    padding-left: 11px;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;    
+} 
+
+#b9b:hover {
+	background: rgba(0,0,0,0);
+	color: brown;              
+	box-shadow: inset 0 0 0 3px brown;     
+}
+
+#b9b a:hover {
+	background: rgba(0,0,0,0);
+	color: brown;       
 }
 
 #b6b {
