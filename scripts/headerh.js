@@ -1,4 +1,0 @@
-$(document).ready(function() {
-    var content = '<h1><a href="index.html">Architektur und Entwicklung</a></h1><nav><ul id="barb"><li><button id="b1b"><a href="articles/http.html">HTTP</a></button></li><li><button id="b2b"><a href="articles/ansible.html">Ansible</a></button></li><li><button id="b3b"><a href="articles/go.html">Go</a></button></li><li><button id="b4b"><a href="articles/spring.html">Spring</a></button></li><li><button id="b5b"><a href="articles/spring_data.html">Spring Data</a></button></li><li><button id="b9b"><a href="spring_cloud.html">Spring Cloud</a></button></li><li><button id="b6b"><a href="articles/tdd.html">TDD</a></button></li><li><button id="b7b"><a href="articles/python.html">Python</a></button></li><li><button id="b8b"><a href="articles/jenkins.html">Jenkins</a></button></li></ul></nav>';
-    $('#header').html(content);
-});
