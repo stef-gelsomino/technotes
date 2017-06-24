@@ -605,3 +605,45 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #barb li {
     display: inline;
 }
+
+#toc {
+    position: sticky;
+    top: 18em;
+    left: 6em;
+}
+
+#toc nav {
+    background-color: brown;
+    display: grid;
+    width: 200px;
+    border: solid 1px black;
+    border-radius: 5px;
+}
+
+#toc nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px black; 
+}
+
+#toc nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+#tocn nav a:first-of-type {
+    padding-bottom: 10px;
+    padding-top: 15px;
+}
+
+#toc nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+}
+
+#toc nav a:hover {
+	color: black;              
+} 
