@@ -203,7 +203,7 @@ body {
 	width: 75%;
 	margin-left: 12.5%;
 	text-align: justify;
-    margin-top: 360px !important;
+    margin-top: 168px !important;
     margin-bottom: 50px !important;
 }
 .main article {
@@ -606,17 +606,49 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     display: inline;
 }
 
+@media screen and ( max-width: 1300px ) {
+  #toc {
+    display: none;
+  }
+  #toc2 {
+    display: none;
+  }
+  #toc3 {
+    display: none;
+  }
+  #toc4 {
+    display: none;
+  }
+  #toc5 {
+    display: none;
+  }
+  #toc6 {
+    display: none;
+  }
+  #toc7 {
+    display: none;
+  }
+  #toc8 {
+    display: none;
+  }
+  #toc9 {
+    display: none;
+  }
+}
+
+/* HTTP TOC */
+
 #toc {
-    position: sticky;
-    top: 18em;
-    left: 6em;
+    position: fixed;
+    top: 23em;
+    left: 4em;
 }
 
 #toc nav {
     background-color: brown;
     display: grid;
     width: 200px;
-    border: solid 1px black;
+    border: solid 1px aliceblue;
     border-radius: 5px;
 }
 
@@ -625,7 +657,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     text-align: center;
     color: #f2f2f2;              
     font-family: "Arial", "Helvetica", sans-serif;
-    border-bottom: solid 1px black; 
+    border-bottom: solid 1px aliceblue; 
 }
 
 #toc nav a {
@@ -633,7 +665,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     padding-top: 10px;
 }
 
-#tocn nav a:first-of-type {
+#toc nav a:first-of-type {
     padding-bottom: 10px;
     padding-top: 15px;
 }
@@ -647,3 +679,131 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #toc nav a:hover {
 	color: black;              
 } 
+
+#ressources:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+}
+
+#messages:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+}
+
+#verbindungen:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+}
+
+#architektur:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+}
+
+#sundc:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -5em
+} 
+
+/* Ansible TOC */
+
+#toc2 {
+    position: fixed;
+    top: 23em;
+    left: 4em;
+}
+
+#toc2 nav {
+    background-color: brown;
+    display: grid;
+    width: 200px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+}
+
+#toc2 nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px aliceblue; 
+}
+
+#toc2 nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+#toc2 nav a:first-of-type {   
+    padding-bottom: 10px;
+    padding-top: 15px;
+}
+
+#toc2 nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+}
+
+#toc2 nav a:hover {
+	color: black;              
+} 
+
+#einf:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+}
+
+#veinerb:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben2:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -5em
+} 
+
+/* Go TOC */
+

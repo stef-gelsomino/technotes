@@ -16,12 +16,12 @@
 
 <nav>
 
-	<a href="articles/http.html">Ressources</a>
-	<a href="articles/http.html">Messages</a>
-	<a href="articles/http.html">Verbindungen</a>
-	<a href="articles/http.html">Architektur</a>
-	<a href="articles/http.html">Sicherheit und Cookies</a>
-	<a href="articles/http.html">Zurück nach oben</a>
+	<a href="http.html#ressources">Ressources</a>
+	<a href="http.html#messages">Messages</a>
+	<a href="http.html#verbindungen">Verbindungen</a>
+	<a href="http.html#architektur">Architektur</a>
+	<a href="http.html#sundc">Sicherheit und Cookies</a>
+	<a href="http.html#oben">Zurück nach oben</a>
 
 </nav>
 
@@ -31,14 +31,14 @@
 <div class="main">
 <article>
     <header>
-        <h2>
+        <h2 id="oben">
             HTTP (Hyper-Text Transfer Protocol)
         </h2>
         <hr>
     </header>
 
     <section>
-        <h3>
+        <h3 id="ressources">
             Ressources
         </h3>
         <p>
@@ -160,16 +160,16 @@
                 <td>text/html</td>
                 <td>HTML</td>
             </tr>
-            <tr>
+            <tr> 
                 <td>text/plain</td>
                 <td>Just simple text</td>
             </tr>
-        </table>
-        <div class="warning">
+        </table> 
+    <div class="warning">
             <div class="warning-title">Content Type richtig setzen</div>
             Falls wir ein falsch Nachrichtenkopf einsetzen (z.B. "text/html" für eine PDF Datei) der Browser wird die Detei für HTML halten, auch wenn die Deteinamenerweiterung ".pdf" lautet.
         </div>
-        </p>
+        </p> 
         <p>
             <b>Inhaltsvereinbarung</b><br>
             Wenn ein Client eine Anfrage sendet, es kann die gewünschte Inhaltstyp und Sprache angeben (z.B. "Italienisch" und "HTML"). Browsers normalerweise stellt diese Nachrichtenkopf automatisch nach unsere Einstellungen ein. Wir können natürlich es in der Browsereinstellungen verändern.
@@ -178,7 +178,7 @@
 
 
     <section>
-        <h3>
+        <h3 id="messages">
             Messages
         </h3>
         <p>
@@ -349,7 +349,7 @@
 
 
     <section>
-        <h3>
+        <h3 id="verbindungen">
             Verbindungen
         </h3>
         <p>
@@ -378,7 +378,7 @@
     </section>
 
     <section>
-        <h3>
+        <h3 id="architektur">
             Architektur
         </h3>
         <p>
@@ -469,7 +469,7 @@
     </section>
 
     <section>
-        <h3>
+        <h3 id="sundc">
             Sicherheit und Cookies
         </h3>
         <p>
