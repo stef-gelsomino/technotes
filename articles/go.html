@@ -12,31 +12,51 @@
 <script type="text/javascript" src="../prism/prism_2.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="../scripts/mask.js"></script>
+<div class="authorInfo">
+    <img src="../img/authorPic.jpg" alt="Author Pic" style="width:280px;height:228px;">
+    <h3>von <i>Gabriele Falace</i></h3>
+    <p>Gabriele ist im Deutschen die weibliche Form des männlichen Vornamens Gabriel. Im Italienischen hingegen ist Gabriele die männliche Form des deutschen Gabriel. Die Form Gabriela ist ein weiblicher Vorname.
+    Evangelischer Namenstag ist am 24. März. Der katholische Namenstag ist am 29. September. Einer der Erzengel der Bibel heißt Gabriel (hebr. „Held Gottes“).
+    Der Name „Gabi“ wird in Teilen der deutschsprachigen Schwulenszene auch als Bezeichnung für eine nahestehende oder befreundete weibliche Person benutzt.</p>
+    <br />
+    <h4>Kontakten</h4>
+    <a href="" target="_blank"><i>LinkedIn</i></a>
+    <a href="" target="_blank"><i>E-Mail</i></a>
+    <br />
+    <a>space</a>
+</div>    
+<div ID = "toc3">
+
+<nav>
+
+	        <a href="go.html#intro">Einführung</a>
+            <a href="go.html#first_steps">Erste Schritte im Quelltext</a>
+            <a href="go.html#func_syntax">Syntax von Funktionen</a>
+            <a href="go.html#control_structures">Kontrollstrukturen</a>
+            <a href="go.html#loops">Schleifen</a>
+            <a href="go.html#array_slice">Arrays und Slices</a>
+            <a href="go.html#maps">Maps</a>
+            <a href="go.html#structs">Structs</a>
+            <a href="go.html#concurrency">Concurrency</a>
+            <a href="go.html#oben3">Zurück nach oben</a>
+
+</nav>
+
+</div>
 <div id="header">
 </div>
 <div class="main">
 <article>
-    <header id="top">
-        <h2>
+    <header>
+        <h2 id="oben3">
             Die Go (golang) Programmiersprache
         </h2>
         <hr>
-        <ol>
-            <li><a href="#intro">Einführung</a></li>
-            <li><a href="#first_steps">Erste Schritte</a></li>
-            <li><a href="#func_syntax">Syntax von Funktionen</a></li>
-            <li><a href="#control_structures">Kontrollstrukturen</a></li>
-            <li><a href="#loops">Schleifen</a></li>
-            <li><a href="#array_slice">Arrays und Slices</a></li>
-            <li><a href="#maps">Maps</a></li>
-            <li><a href="#structs">Structs</a></li>
-            <li><a href="#concurrency">Concurrency</a></li>
-        </ol>
     </header>
 
-    <section id="intro">
-        <h3>
-            Einführung <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="intro">
+            Einführung
         </h3>
         <p>
             Go ist eine neue Programmiersprache, die besonders geeignet für <i>system programming</i> ist.
@@ -59,9 +79,9 @@
         Der "go env" Befehl wird der Wert von aller Variablen zeigen.
         </p>
     </section>
-    <section id="first_steps">
-        <h3>
-            Erste Schritte im Quelltext <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="first_steps">
+            Erste Schritte im Quelltext 
         </h3>
         <p>
             Ganz oben, stellen wir unsere "package main" Deklaration. Das eigentlich heißt, dass dieser Quelltext wie einen
@@ -157,9 +177,9 @@
 					</pre>
         </p>
     </section>
-    <section id="func_syntax">
-        <h3>
-            Syntax von Funktionen <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="func_syntax">
+            Syntax von Funktionen
         </h3>
         <p>
             In Go es ist verboten, die { auf eine neue Reihe zu stellen. Das muss immer in der gleiche Reihe wie die Deklaration sein.
@@ -192,9 +212,9 @@
 					</pre>
         </p>
     </section>
-    <section id="control_structures">
-        <h3>
-            Kontrollstrukturen <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="control_structures">
+            Kontrollstrukturen
         </h3>
         <p>
             Grundsätzlich es gibt if und switch Anweisungen. Zwei Beispiele folgen:
@@ -264,9 +284,9 @@
 					</pre>
         </p>
     </section>
-    <section id="loops">
-        <h3>
-            Schleifen <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="loops">
+            Schleifen
         </h3>
         <p>
             Um eine Schleife aufzusetzen, ham wir nur die
@@ -303,9 +323,9 @@
         Ein Paar (index, element) ist eigentlich von die range Operator zurückgegeben. Mit dem Underscore Zeichen wir nur einfach ignorieren es. Auch
         <span class="mono-box">break</span> und <span class="mono-box">continue</span> Schlüsselwörter stehn bequem zu Verfügung.
     </section>
-    <section id="array_slice">
-        <h3>
-            Arrays und Slices <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="array_slice">
+            Arrays und Slices
         </h3>
         <p>
             Arrays und Lists sind einfach indizierte Liste, die enthält Elementen von dem gleichem Typ. Die einzige Unterschied ist, dass ein Array hat eine bestimmte Größe (z.B. N Elementen) anders ein Slice hat keine schon festgesetzte Größe. Merkwürdig, dass Slices sind durch Arrays implementiert.
@@ -348,9 +368,9 @@
 					</pre>
         </p>
     </section>
-    <section id="maps">
-        <h3>
-            Maps <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="maps">
+            Maps
         </h3>
         <p>
         <pre>
@@ -382,9 +402,9 @@
 					</code>
 				</pre>
     </section>
-    <section id="structs">
-        <h3>
-            Structs <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="structs">
+            Structs 
         </h3>
         <p>
             Structs sind individualisierte Datenstrukture z.B.
@@ -414,9 +434,9 @@
 
         </p>
     </section>
-    <section id="concurrency">
-        <h3>
-            Concurrency <a href="#top" class="top">&#10514;</a>
+    <section>
+        <h3 id="concurrency">
+            Concurrency
         </h3>
         <p>
             In Go gibt eine spezielle Weise, Concurrency zu tun, die auf <i>goroutines</i> basierte ist. <br>

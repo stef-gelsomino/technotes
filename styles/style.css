@@ -606,6 +606,60 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     display: inline;
 }
 
+/* Author Info */
+
+.authorInfo {
+    position: absolute;
+    top: 23em;
+    right: 4em;
+    background-color: brown;
+    width: 280px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+    color: #f2f2f2;
+    font-family: "Arial", "Helvetica", sans-serif;
+}
+
+.authorInfo p {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: justify;
+}
+
+.authorInfo h4 {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 8px;
+}
+
+.authorInfo h3 {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+.authorInfo a {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-decoration: none;
+    color: #f2f2f2;
+}
+
+.authorInfo a:last-of-type {
+    color: brown;
+}
+
+.authorInfo img {
+    border-radius: 2px 2px 0px 0px;
+}
+
+/******************************************/
+
+@media screen and ( max-width: 1650px ) {
+  .authorInfo {
+    display: none;
+  } 
+}
 @media screen and ( max-width: 1300px ) {
   #toc {
     display: none;
@@ -663,6 +717,8 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #toc nav a {
     padding-bottom: 10px;
     padding-top: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 #toc nav a:first-of-type {
@@ -761,6 +817,8 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #toc2 nav a {
     padding-bottom: 10px;
     padding-top: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 #toc2 nav a:first-of-type {   
@@ -807,3 +865,245 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 /* Go TOC */
 
+#toc3 {
+    position: fixed;
+    top: 23em;
+    left: 4em;
+}
+
+#toc3 nav {
+    background-color: brown;
+    display: grid;
+    width: 200px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+}
+
+#toc3 nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px aliceblue; 
+}
+
+#toc3 nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+#toc3 nav a:first-of-type {
+    padding-bottom: 10px;
+    padding-top: 15px;
+}
+
+#toc3nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+}
+
+#toc3 nav a:hover {
+	color: black;              
+} 
+
+#intro:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#first_steps:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#func_syntax:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#control_structures:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#loops:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#array_slice:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#maps:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#structs:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#concurrency:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben3:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -5em
+} 
+
+/* Spring Boot TOC */
+
+#toc4 {
+    position: fixed;
+    top: 23em;
+    left: 4em;
+}
+
+#toc4 nav {
+    background-color: brown;
+    display: grid;
+    width: 200px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+}
+
+#toc4 nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px aliceblue; 
+}
+
+#toc4 nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+#toc4 nav a:first-of-type {
+    padding-bottom: 10px;
+    padding-top: 15px;
+}
+
+#toc4 nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+}
+
+#toc4 nav a:hover {
+	color: black;              
+} 
+
+#einstieg:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#verwaltung:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#wie:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#weban:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#datas:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#anwendungen:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben4:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -5em
+} 
