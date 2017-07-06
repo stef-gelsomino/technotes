@@ -12,7 +12,7 @@ $(document).ready(function() {
         prefixArticle = 'articles/';
     }
 
-        var headerContent = '<h1><a href="' + prefixDir + 'index.html">Architektur und Entwicklung</a></h1>' +
+        var headerContent = '<h1><a href="' + prefixDir + 'index.html">Technotes</a></h1>' +
                       '<nav><ul id="barb"><li><button id="b1b"><a href="'+ prefixArticle +'http.html">HTTP</a></button></li>' +
                                          '<li><button id="b2b"><a href="'+ prefixArticle +'ansible.html">Ansible</a></button></li>' +
                                          '<li><button id="b3b"><a href="'+ prefixArticle +'go.html">Go</a></button></li>' +

@@ -32,7 +32,7 @@ body {
 
 
 h1 {
-	font-family: "Arial", "Helvetica", sans-serif;
+	font-family: 'Orbitron', sans-serif;
 	font-size: 56px;
 	font-weight: 200;
 	margin-top: 0px;
@@ -203,7 +203,7 @@ body {
 	width: 75%;
 	margin-left: 12.5%;
 	text-align: justify;
-    margin-top: 168px !important;
+    margin-top: 98px !important;   /*168px*/
     margin-bottom: 50px !important;
 }
 .main article {
@@ -610,10 +610,10 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 .authorInfo {
     position: absolute;
-    top: 23em;
+    top: 20em;
     right: 4em;
     background-color: brown;
-    width: 280px;
+    width: 200px;
     border: solid 1px aliceblue;
     border-radius: 5px;
     color: #f2f2f2;
@@ -623,30 +623,13 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 .authorInfo p {
     padding-left: 10px;
     padding-right: 10px;
-    text-align: justify;
-}
-
-.authorInfo h4 {
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-bottom: 8px;
+    text-align: center;
 }
 
 .authorInfo h3 {
     padding-left: 10px;
     padding-right: 10px;
-    text-align: right;
-}
-
-.authorInfo a {
-    padding-left: 10px;
-    padding-right: 10px;
-    text-decoration: none;
-    color: #f2f2f2;
-}
-
-.authorInfo a:last-of-type {
-    color: brown;
+    text-align: center;
 }
 
 .authorInfo img {
@@ -655,7 +638,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 /******************************************/
 
-@media screen and ( max-width: 1650px ) {
+@media screen and ( max-width: 1300px ) {
   .authorInfo {
     display: none;
   } 
@@ -694,12 +677,11 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 #toc {
     position: fixed;
-    top: 23em;
+    top: 20em;
     left: 4em;
 }
 
 #toc nav {
-    background-color: brown;
     display: grid;
     width: 200px;
     border: solid 1px aliceblue;
@@ -717,24 +699,31 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #toc nav a {
     padding-bottom: 10px;
     padding-top: 10px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
 }
 
 #toc nav a:first-of-type {
     padding-bottom: 10px;
     padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
 }
 
 #toc nav a:last-of-type {
     padding-bottom: 15px;
     padding-top: 10px;
     border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
 }
 
 #toc nav a:hover {
-	color: black;              
-} 
+    color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
+}
 
 #ressources:before { 
     content: ''; 
@@ -794,12 +783,11 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 #toc2 {
     position: fixed;
-    top: 23em;
+    top: 20em;
     left: 4em;
 }
 
 #toc2 nav {
-    background-color: brown;
     display: grid;
     width: 200px;
     border: solid 1px aliceblue;
@@ -817,23 +805,30 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #toc2 nav a {
     padding-bottom: 10px;
     padding-top: 10px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
 }
 
 #toc2 nav a:first-of-type {   
     padding-bottom: 10px;
     padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
 }
 
 #toc2 nav a:last-of-type {
     padding-bottom: 15px;
     padding-top: 10px;
     border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
 }
 
 #toc2 nav a:hover {
-	color: black;              
+	color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
 } 
 
 #einf:before { 
@@ -867,12 +862,11 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 #toc3 {
     position: fixed;
-    top: 23em;
+    top: 20em;
     left: 4em;
 }
 
 #toc3 nav {
-    background-color: brown;
     display: grid;
     width: 200px;
     border: solid 1px aliceblue;
@@ -890,23 +884,30 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #toc3 nav a {
     padding-bottom: 10px;
     padding-top: 10px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
 }
 
 #toc3 nav a:first-of-type {
     padding-bottom: 10px;
     padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
 }
 
-#toc3nav a:last-of-type {
+#toc3 nav a:last-of-type {
     padding-bottom: 15px;
     padding-top: 10px;
     border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
 }
 
 #toc3 nav a:hover {
-	color: black;              
+	color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
 } 
 
 #intro:before { 
@@ -1003,12 +1004,11 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 #toc4 {
     position: fixed;
-    top: 23em;
+    top: 20em;
     left: 4em;
 }
 
 #toc4 nav {
-    background-color: brown;
     display: grid;
     width: 200px;
     border: solid 1px aliceblue;
@@ -1026,23 +1026,30 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 #toc4 nav a {
     padding-bottom: 10px;
     padding-top: 10px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
 }
 
 #toc4 nav a:first-of-type {
     padding-bottom: 10px;
     padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
 }
 
 #toc4 nav a:last-of-type {
     padding-bottom: 15px;
     padding-top: 10px;
     border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
 }
 
 #toc4 nav a:hover {
-	color: black;              
+	color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
 } 
 
 #einstieg:before { 
