@@ -32,14 +32,17 @@ body {
 
 
 h1 {
-	font-family: 'Orbitron', sans-serif;
-	font-size: 56px;
+	font-family: 'Nevis', sans-serif;
+	font-size: 65px;
 	font-weight: 200;
 	margin-top: 0px;
 	margin-bottom: -15px;
 	padding: 5px;
 	text-align: center;
-	color: black;
+}
+
+h1 a {
+    color: brown;
 }
 
 h3 {
@@ -203,7 +206,7 @@ body {
 	width: 75%;
 	margin-left: 12.5%;
 	text-align: justify;
-    margin-top: 98px !important;   /*168px*/
+    margin-top: 200px !important;   /*98px*/
     margin-bottom: 50px !important;
 }
 .main article {
@@ -610,8 +613,8 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 .authorInfo {
     position: absolute;
-    top: 20em;
-    right: 4em;
+    top: 17.5em;
+    right: 3%;
     background-color: brown;
     width: 200px;
     border: solid 1px aliceblue;
@@ -638,12 +641,72 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 /******************************************/
 
+/* DROP-DOWN-MENU */
+
+.dropbtn {
+    background-color: brown;
+    color: #f2f2f2;
+    border: solid 1px aliceblue;
+    border-radius: 0px 5px 5px 0px;
+    font-family: "Arial", "Helvetica", sans-serif;
+    padding: 31px 16px 31px 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
+}
+
+.dropdown {
+    position: fixed; 
+    display: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: brown;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: #f2f2f2;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: "Arial", "Helvetica", sans-serif;
+}
+
+.dropdown-content a:hover {
+    background-color: #f2f2f2;
+    color: brown;    
+}
+
+.show {
+    display:block;
+}
+
+/******************************/
+
+@font-face { 
+    font-family: "Nevis"; 
+    src: url("../fonts/nevis.ttf"); 
+}
+
 @media screen and ( max-width: 1300px ) {
+  .main {
+    margin-left: 0px;  
+    width: 100%;
+  }     
   .authorInfo {
     display: none;
-  } 
-}
-@media screen and ( max-width: 1300px ) {
+  }     
   #toc {
     display: none;
   }
@@ -673,12 +736,61 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
   }
 }
 
+@media only screen and (max-width: 800px) {
+    .authorInfo {
+        display: none;
+    }
+    #toc {
+        display: none;
+    }
+    #toc2 {
+        display: none;
+    }
+    #toc3 {
+        display: none;
+    }
+    #toc4 {
+        display: none;
+    }
+    #toc5 {
+        display: none;
+    }
+    #toc6 {
+        display: none;
+    }
+    #toc7 {
+        display: none;
+    }
+    #toc8 {
+        display: none;
+    }
+    #toc9 {
+        display: none;
+    }
+    #header nav {
+        display: none;
+    }
+    #header h1 {
+        padding-bottom: 18px;
+        margin-left: 70px;
+        font-size: 58px;
+    }
+    .dropdown {
+        display: inline-block;
+    }
+    .main {
+        margin-left: 0px;  
+        width: 100% !important;
+        margin-top: 130px !important;
+    }   
+}
+
 /* HTTP TOC */
 
 #toc {
     position: fixed;
-    top: 20em;
-    left: 4em;
+    top: 13em;
+    left: 3%;
 }
 
 #toc nav {
@@ -776,15 +888,15 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     position: relative; 
     width: 0; 
     height: 10em; 
-    margin-top: -5em
+    margin-top: -10em
 } 
 
 /* Ansible TOC */
 
 #toc2 {
     position: fixed;
-    top: 20em;
-    left: 4em;
+    top: 13em;
+    left: 3%;
 }
 
 #toc2 nav {
@@ -855,15 +967,15 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     position: relative; 
     width: 0; 
     height: 10em; 
-    margin-top: -5em
+    margin-top: -10em
 } 
 
 /* Go TOC */
 
 #toc3 {
     position: fixed;
-    top: 20em;
-    left: 4em;
+    top: 13em;
+    left: 3%;
 }
 
 #toc3 nav {
@@ -997,15 +1109,15 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     position: relative; 
     width: 0; 
     height: 10em; 
-    margin-top: -5em
+    margin-top: -10em
 } 
 
 /* Spring Boot TOC */
 
 #toc4 {
     position: fixed;
-    top: 20em;
-    left: 4em;
+    top: 13em;
+    left: 3%;
 }
 
 #toc4 nav {
@@ -1112,5 +1224,5 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     position: relative; 
     width: 0; 
     height: 10em; 
-    margin-top: -5em
+    margin-top: -10em
 } 
