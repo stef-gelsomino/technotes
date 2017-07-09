@@ -647,7 +647,6 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     background-color: brown;
     color: #f2f2f2;
     border: solid 1px aliceblue;
-    border-radius: 0px 5px 5px 0px;
     font-family: "Arial", "Helvetica", sans-serif;
     padding: 31px 16px 31px 16px;
     font-size: 16px;
@@ -673,6 +672,8 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    max-height: 240px; 
+    overflow: auto;
 }
 
 .dropdown-content a {
@@ -685,7 +686,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 .dropdown-content a:hover {
     background-color: #f2f2f2;
-    color: brown;    
+    color: brown;   
 }
 
 .show {
@@ -736,7 +737,7 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
   }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 768px) {
     .authorInfo {
         display: none;
     }

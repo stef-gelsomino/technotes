@@ -1,4 +1,6 @@
-$(document).ready(function() {
+'use strict'
+var DEPLOY_BASE_URL = 'http://technotes.getforge.io/'; 
+$(document).ready(function () {
 
     var currentURL = window.location.href;
     var elements = currentURL.split('/');
@@ -7,11 +9,14 @@ $(document).ready(function() {
 
     var prefixDir = '../';
     var prefixArticle = '';
-    if (pageName === 'index.html') {
+    if (pageName === 'index.html' || currentURL === DEPLOY_BASE_URL) {
+        console.log('if statement was executed...');
         prefixDir = '';
         prefixArticle = 'articles/';
     }
 
+    console.log('>>> prefixDir='+prefixDir+" and prefixArticle="+prefixArticle+" current pageName="+pageName);
+    
         var headerContent = '<h1><a href="' + prefixDir + 'index.html">Technotes</a></h1>' +
                       '<nav><ul id="barb"><li><button id="b1b"><a href="'+ prefixArticle +'http.html">HTTP</a></button></li>' +
                                          '<li><button id="b2b"><a href="'+ prefixArticle +'ansible.html">Ansible</a></button></li>' +
