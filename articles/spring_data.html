@@ -18,6 +18,23 @@
     <img src="https://s.gravatar.com/avatar/eded46e11f38d45392e2c34926430fd2?s=80" alt="Author Pic" style="width:200px;height:170px;">
     <h3>von <i>Gabriele Falace</i></h3>
     <p>Computer-Ingenieur in Berlin</p>
+</div> 
+<div ID = "toc5">
+
+<nav>
+
+	        <a href="spring_data.html#ein">Einstieg zu Spring Data</a>
+            <a href="spring_data.html#rep">Spring Data JPA Repositories</a>
+            <a href="spring_data.html#dsl">DSL für Abfragen von Spring Data</a>
+            <a href="spring_data.html#nutz">Nutzung von JPQL Abfragen</a>
+            <a href="spring_data.html#fort">Fortgeschrittene Funktionalitäten</a>
+            <a href="spring_data.html#rest">Spring Data REST (Einstieg)</a>
+            <a href="spring_data.html#pay">Payload individualisieren</a>
+            <a href="spring_data.html#funk">Fortgeschrittene Funktionalitäten</a>
+            <a href="spring_data.html#oben5">Zurück nach oben</a>
+
+</nav>
+
 </div>    
 <div id="header">
 </div>
@@ -40,7 +57,7 @@
 <div class="main">
 <article>
     <header>
-        <h2>
+        <h2 id="oben5">
             Spring Data JPA
         </h2>
         <p>
@@ -49,7 +66,7 @@
     </header>
 
     <section id="introduction">
-        <h3>
+        <h3 id="ein">
             Einstieg zu Spring Data
         </h3>
         <p>
@@ -101,7 +118,7 @@
         </p>
     </section>
     <section id="repositories">
-        <h3>
+        <h3 id="rep">
             Spring Data JPA Repositories
         </h3>
         <p>
@@ -154,7 +171,7 @@
 							}
 						</code>
 					</pre>
-        Die standardmäßige Repository stellt nur die CRUD Operationen zu Verfügung. Außerdem, kriegen wir einige zusätzliche Funktionalitaten:
+        Die standardmäßige Repository stellt nur die CRUD Operationen zu Verfügung. Außerdem, kriegen wir einige zusätzliche Funktionalitäten:
         <ul>
             <li>Query DSL</li>
             <li>Paging/sorting</li>
@@ -199,7 +216,7 @@
     </section>
 
     <section id="dsl-query-language">
-        <h3>
+        <h3 id="dsl">
             DSL für Abfragen von Spring Data
         </h3>
         <p>
@@ -357,8 +374,8 @@
     </section>
 
     <section id="jpql-queries">
-        <h3>
-            Nutzung von JPQL Abfragen.
+        <h3 id="nutz">
+            Nutzung von JPQL Abfragen
         </h3>
         <p>
             Man kann noch JPQL Abfragen nutzen, aber in Kombination mit Spring Data, bedeutet, dass das Framework wird die Implementierung für uns generieren.
@@ -468,8 +485,8 @@
     </section>
 
     <section id="advanced-features">
-        <h3>
-            Fortgeschrittene Funktionalitaten
+        <h3 id="fort">
+            Fortgeschrittene Funktionalitäten
         </h3>
         <p>
             <b>Paging und Sorting</b><br>
@@ -580,7 +597,7 @@
         Mit optimistic Locking wir müssen die mögliche Exceptions verwalten, aber es geht schneller. Zum Gegenteil, wenn wir pessimistic Locking verwenden, wir kriegen weniger Sorgen im client Code aber es gibt das Risiko um Engpäße zu erstellen.
         <br>
         Auf jedem Fall:
-        <ul>
+        <ul id="rest">
             <li>Methoden, die sind mit @Lock annotiert, müssen in einer Transaktion ausgeführt werden.</li>
             <li>Wir können die Spring Data default Methoden übergehen, um die Lock Strategie zu ändern.</li>
         </ul>
@@ -604,7 +621,7 @@
             Einstieg zu Spring Data REST
         </h3>
         <p>
-            Mit Spring Data REST man kann die Funktionalitaten wie REST Services veröffentlichen, die sind mit Spring Data implementiert. <br>
+            Mit Spring Data REST man kann die Funktionalitäten wie REST Services veröffentlichen, die sind mit Spring Data implementiert. <br>
             Um dieses Teil des Frameworks zu aktivieren, man muss nur einfach die entsprechende Abhängigkeit hinzufügen.
         <pre>
 						<code class="language-xml">
@@ -765,7 +782,7 @@
     </section>
 
     <section>
-        <h3>
+        <h3 id="pay">
             Payload individualisieren
         </h3>
         <p>
@@ -868,7 +885,7 @@
     </section>
 
     <section>
-        <h3>
+        <h3 id="funk">
             Fortgeschrittene Funktionalitäten
         </h3>
         <p>

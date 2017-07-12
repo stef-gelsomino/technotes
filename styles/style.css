@@ -1227,3 +1227,129 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     height: 10em; 
     margin-top: -10em
 } 
+
+/* SPRING_DATA TOC */
+
+#toc5 {
+    position: fixed;
+    top: 13em;
+    left: 3%;
+}
+
+#toc5 nav {
+    display: grid;
+    width: 200px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+}
+
+#toc5 nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px aliceblue; 
+}
+
+#toc5 nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
+}
+
+#toc5 nav a:first-of-type {
+    padding-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+#toc5 nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
+}
+
+#toc5 nav a:hover {
+	color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
+} 
+
+#ein:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#rep:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#dsl:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#nutz:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#fort:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#pay:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#funk:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben5:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -10em
+} 
+
+/* TOC */
