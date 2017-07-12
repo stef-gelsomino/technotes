@@ -639,6 +639,18 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     border-radius: 2px 2px 0px 0px;
 }
 
+.authorInfoDi {
+    float: right;
+    background-color: brown;
+    width: 230px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+    color: #f2f2f2;
+    text-align: center;
+    font-family: "Arial", "Helvetica", sans-serif;
+    display: none;
+}
+
 /******************************************/
 
 /* DROP-DOWN-MENU */
@@ -662,6 +674,8 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
 
 .dropdown {
     position: fixed; 
+    top: 0;
+    left: 0;
     display: none;
 }
 
@@ -735,6 +749,9 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
   #toc9 {
     display: none;
   }
+  .authorInfoDi {
+    display: inline;
+  }    
 }
 
 @media only screen and (max-width: 768px) {
@@ -784,6 +801,10 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
         width: 100% !important;
         margin-top: 130px !important;
     }   
+    .authorInfoDi {
+        display: inline;
+        width: 100%;
+    } 
 }
 
 /* HTTP TOC */
@@ -1352,4 +1373,455 @@ input[type="button" i], input[type="submit" i], input[type="reset" i], input[typ
     margin-top: -10em
 } 
 
-/* TOC */
+/* Spring Cloud TOC */
+
+#toc6 {
+    position: fixed;
+    top: 13em;
+    left: 3%;
+}
+
+#toc6 nav {
+    display: grid;
+    width: 200px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+}
+
+#toc6 nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px aliceblue; 
+}
+
+#toc6 nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
+}
+
+#toc6 nav a:first-of-type {
+    padding-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+#toc6 nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
+}
+
+#toc6 nav a:hover {
+	color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
+} 
+
+#first:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#second:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#third:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#fourth:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#fifth:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben6:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -10em
+} 
+
+/* TDD TOC */
+
+#toc7 {
+    position: fixed;
+    top: 13em;
+    left: 3%;
+}
+
+#toc7 nav {
+    display: grid;
+    width: 200px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+}
+
+#toc7 nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px aliceblue; 
+}
+
+#toc7 nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
+}
+
+#toc7 nav a:first-of-type {
+    padding-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+#toc7 nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
+}
+
+#toc7 nav a:hover {
+	color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
+} 
+
+#einLeit:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#junit:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#mock:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#power:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#verWal:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben7:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -10em
+} 
+
+/* Python TOC */
+
+#toc8 {
+    position: fixed;
+    top: 13em;
+    left: 3%;
+}
+
+#toc8 nav {
+    display: grid;
+    width: 200px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+}
+
+#toc8 nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px aliceblue; 
+}
+
+#toc8 nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
+}
+
+#toc8 nav a:first-of-type {
+    padding-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+#toc8 nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
+}
+
+#toc8 nav a:hover {
+	color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
+} 
+
+#op:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#steue:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#datStr:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#funk2:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#obJ:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#iOv:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#nOf:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#bMeth:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben8:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -10em
+} 
+
+/* Jenkins TOC */
+
+#toc9 {
+    position: fixed;
+    top: 13em;
+    left: 3%;
+}
+
+#toc9 nav {
+    display: grid;
+    width: 200px;
+    border: solid 1px aliceblue;
+    border-radius: 5px;
+}
+
+#toc9 nav a {
+    text-decoration: none;
+    text-align: center;
+    color: #f2f2f2;              
+    font-family: "Arial", "Helvetica", sans-serif;
+    border-bottom: solid 1px aliceblue; 
+}
+
+#toc9 nav a {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 200px;
+    background-color: brown;
+}
+
+#toc9 nav a:first-of-type {
+    padding-bottom: 10px;
+    padding-top: 15px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+#toc9 nav a:last-of-type {
+    padding-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: none;
+    border-radius: 0px 0px 5px 5px;
+}
+
+#toc9 nav a:hover {
+	color: black;
+    background: rgba(0,0,0,0);
+	color: brown;
+	box-shadow: inset 0 0 0 3px brown;
+} 
+
+#j1:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#j2:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#j3:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#j4:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#j5:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 8em; 
+    margin-top: -5em
+} 
+
+#oben9:before { 
+    content: ''; 
+    display: block; 
+    position: relative; 
+    width: 0; 
+    height: 10em; 
+    margin-top: -10em
+} 
+
+ /********************************************************************************************/
